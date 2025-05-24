@@ -1,0 +1,1356 @@
+	/* === FULL CONSOLIDATED CSS for v4.4.5 === */
+	:root {
+	  --bg: #f0f2f5; --fg: #333; --primary: #0056b3; --accent: #fff; --sec: #d1d9e6;
+	  --shadow-color: rgba(0,0,0,0.1); --shadow-color-dark: rgba(0,0,0,0.2); --shadow-color-light: rgba(255,255,255,0.7);
+	  --professional-font: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	  --danger-bg: #e74c3c; --danger-fg: #fff; --danger-hover-bg: #c0392b;
+	  --modal-overlay-bg: rgba(0,0,0,0.6); --modal-content-bg: var(--accent);
+	  --modal-header-bg: var(--primary); --modal-header-fg: #fff;
+	  --info-bg: #3498db; --info-fg: #fff; --success-bg: #2ecc71; --success-fg: #fff; --error-bg: var(--danger-bg); --error-fg: #fff;
+	}
+	html.dark {
+	  --bg: #1e272e; --fg: #f0f2f5; --primary: #3399ff; --accent: #2f3640; --sec: #485460;
+	  --shadow-color: rgba(0,0,0,0.3); --shadow-color-dark: rgba(0,0,0,0.4); --shadow-color-light: rgba(255,255,255,0.1);
+	  --danger-bg: #c0392b; --danger-fg: #fff; --danger-hover-bg: #a93226;
+	  --modal-overlay-bg: rgba(0,0,0,0.75); --modal-content-bg: var(--accent);
+	  --modal-header-bg: var(--primary); --modal-header-fg: #fff;
+	}
+	#mobile_menu_toggle {
+	  display: none; /* Hidden by default (for desktop and larger screens) */
+	  /* Other base styles for it if needed, though display:none makes them irrelevant until shown */
+	  font-size: 1.6rem;
+	  background: none;
+	  border: none;
+	  color: #fff; /* Or your desired header icon color */
+	  cursor: pointer;
+	  padding: 5px 10px;
+	  position: absolute;
+	  left: 1px;
+	  top: 0%;
+	  transform: translateY(-50%);
+	  z-index: 1001; /* High enough to be clickable */
+	}
+	////////////////////////////////
+	//For Login//
+	      #login_screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        background: var(--bg);
+        animation: fadeIn 0.6s ease-in-out;
+        overflow: hidden;
+      }
+      #login_form {
+        background: var(--accent);
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        max-width: 400px;
+        width: 90vw;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        animation: slideUp 0.6s ease-out;
+      }
+      #login_form h2 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: var(--primary);
+      }
+      #login_form label {
+        display: flex;
+        flex-direction: column;
+        font-weight: 600;
+      }
+      #login_form input[type="email"],
+      #login_form input[type="password"] {
+        padding: 10px;
+        border: 1px solid var(--sec);
+        border-radius: 6px;
+        font-size: 1rem;
+		
+      }
+      .login-footer {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+      }
+      .login-footer a {
+        color: var(--primary);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .login-footer a:hover {
+        text-decoration: underline;
+      }
+      #remember_label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+      }
+      .social-login {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      .social-login button {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        background-color: #4285F4;
+        color: white;
+      }
+      .social-login button.microsoft {
+        background-color: #2F2F2F;
+      }
+      #spinner {
+        display: none;
+        width: 30px;
+        height: 30px;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; } to { opacity: 1; }
+      }
+      @keyframes slideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      #mmd_container {
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+	  
+	* { box-sizing: border-box; }
+	body { /* Added for standalone page */
+		margin: 0;
+		font-family: var(--professional-font);
+		background-color: var(--bg); 
+		display: flex; /* Added to center container if not full-width/height */
+		align-items: center; /* Center vertically */
+		justify-content: center; /* Center horizontally */
+		min-height: 100vh; /* Ensure body takes full viewport height */
+		padding: 2%; /* Match container's fixed positioning offset */
+	}
+	html, body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden; /* Prevent body scrollbars */
+	}
+	#mmd_header h1 {
+		margin: 0 0 2px 0;
+	}
+	#mmd_header p {
+		margin: 0 0 2px 0;
+	}
+
+		
+	#mmd_container {
+	  /* position: fixed; top: 2%; left: 2%; width: 96%; height: 96%; */ 
+	  width: 100%; 
+	  height: 100%;
+	  /*max-width: 1800px; /* Optional: max width for very large screens */
+	  background: var(--accent); color: var(--fg);
+	  border-radius: 16px;
+	  box-shadow: 0 15px 35px var(--shadow-color-dark), 0 5px 15px var(--shadow-color);
+	  display: flex; flex-direction: column;
+	  overflow-y: hidden;
+	  font-family: var(--professional-font);
+	  /* z-index: 99999; */ 
+	  border: 1px solid var(--sec);
+	  transform-style: preserve-3d; /* For 3D effects within */
+	}
+	#mmd_header {
+	  background: var(--primary);
+	  color: #fff;
+	  font-size: 1.3rem; /* Base font size for text within the header on desktop */
+	  text-align: center;
+	  font-weight: 500;
+	  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+	  border-bottom: 1px solid rgba(0,0,0,0.1);
+	  position: relative; /* For positioning theme_toggle and ::before pseudo-element */
+	  overflow: hidden; /* For shiny effect */
+	  display: flex; /* Use flexbox to arrange items */
+	  align-items: center; /* Vertically align items */
+	  box-sizing: border-box;
+	}
+
+	#mmd_header p:last-of-type {
+		margin-bottom: 0;
+	}
+	#mmd_header::before { 
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%; 
+		width: 50%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+		transition: left 0.7s ease-in-out;
+		pointer-events: none; 
+		z-index: 1; 
+	}
+	#mmd_header:hover::before {
+		left: 150%; 
+	}
+	#mmd_header label {
+		font-size: 1.5rem; /* Larger main title on desktop */
+		line-height: 0;
+		margin: 0;
+		text-align: center;
+	}
+	#mmd_header .header-center-content { /* NEW WRAPPER for H1 and P tags */
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex-grow: 1; /* Allows this central block to take available space */
+		text-align: center;
+	}
+	#mmd_header #theme_toggle {
+	  font-size: 1.5rem; /* Desktop size for theme toggle */
+	  padding: 5px 10px;
+	  color: #fff;
+	  background: transparent;
+	  border: none;
+	  cursor: pointer;
+	  position: absolute; right: 10px; top: 20%; transform: translateY(-50%); /* Alternative positioning */
+	  /* For flexbox, absolute positioning is not always needed if it's a direct child */
+	  margin-left: auto; /* Pushes it to the right if h1 doesn't take all space */
+	}
+	#mmd_tabs {
+	  display: flex; flex-wrap: wrap; justify-content: space-around;
+	  background: var(--sec); padding: 5px;
+	  box-shadow: inset 0 2px 4px var(--shadow-color);
+	}
+	#mmd_tabs button {
+	  flex: 1 1 auto; margin: 6px; padding: 5px 10px;
+	  cursor: pointer; border: none; border-radius: 8px;
+	  background: var(--accent); color: var(--fg);
+	  font-size: 1.3rem; font-weight: 500;
+	  position: relative;
+	  box-shadow: 0 3px 6px var(--shadow-color), 0 1px 2px var(--shadow-color);
+	  transform: translateY(0) translateZ(0);
+	  transition: transform .25s ease-out, box-shadow .25s ease-out, background-color .3s, color .3s;
+	}
+	#mmd_tabs button:hover {
+	  background: var(--primary); color: #fff;
+	  transform: translateY(-4px) translateZ(15px);
+	  box-shadow: 0 6px 12px var(--shadow-color-dark), 0 3px 6px var(--shadow-color);
+	}
+	#mmd_tabs button.active {
+	  background: var(--primary); color: #fff;
+	  transform: translateY(-5px) translateZ(20px) scale(1.02);
+	  box-shadow: 0 8px 16px var(--shadow-color-dark), 0 4px 8px var(--shadow-color);
+	  font-weight: 600;
+	}
+	#mmd_tabs button .badge {
+	  position: absolute; top: 2px; right: 8px;
+	  background: red; color: #fff; padding: 2px 6px;
+	  border-radius: 50%; font-size: .75em; font-weight: bold;
+	  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	}
+	#mmd_pages {
+	  flex: 1; overflow: auto; 
+	    scrollbar-width: none;
+		-ms-overflow-style: none;
+	  padding: 10px; background: var(--bg);
+	  perspective: 1800px; 
+	margin-bottom: 50px;
+	}
+	#mmd_pages::-webkit-scrollbar {
+	display: none;               /* Chrome, Safari, Opera */
+		}
+	.mmd_page { display: none; opacity: 0; transform: scale(.98) translateY(10px); transition: opacity .4s ease-out, transform .4s ease-out; }
+	.mmd_page.active { display: block; opacity: 1; transform: scale(1) translateY(0px); }
+	#home_panels {
+	  display: grid;
+	  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	  gap: 15px;
+	  padding: 10px 10px;
+	}
+	.panel3d {
+	  background: var(--accent); color: var(--fg); padding: 22px;
+	  border-radius: 12px;
+	  box-shadow: 0 7px 14px var(--shadow-color), 0 3px 6px var(--shadow-color);
+	  transform: rotateX(4deg) rotateY(-4deg) translateZ(-10px);
+	  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	  transform-style: preserve-3d;
+	}
+	.panel3d:hover {
+	  transform: rotateX(0deg) rotateY(0deg) translateZ(25px) scale(1.04);
+	  box-shadow: 0 12px 28px var(--shadow-color-dark), 0 8px 12px var(--shadow-color);
+	}
+	.panel3d h3 { margin-top: 0; margin-bottom: 15px; color: var(--primary); font-size: 1.3rem; transform: translateZ(10px); text-shadow: 0 0 5px var(--accent); }
+	.panel3d h3 a { color: inherit; text-decoration: none; } .panel3d h3 a:hover { text-decoration: underline; }
+	.panel3d div, .panel3d canvas, .panel3d select, .panel3d button, .panel3d label { transform: translateZ(5px); margin-bottom: 8px; }
+	.panel3d canvas { max-width: 100%; height: auto !important;font-size: 1.15rem; text-align: center; }
+	.panel3d canvas { transform: none !important; }
+	.panel3d input[type="number"], .panel3d select, .panel3d button { padding: 8px;font-size: 1.3rem; border-radius: 5px; border: 1px solid var(--sec); background: var(--bg); box-shadow: inset 1px 1px 2px rgba(0,0,0,0.05); }
+	.panel3d button { background: var(--primary); color: white; cursor: pointer; box-shadow: 0 2px 4px var(--shadow-color); transition: transform 0.2s, box-shadow 0.2s; }
+	.panel3d button:hover { transform: translateY(-2px) translateZ(8px); box-shadow: 0 4px 8px var(--shadow-color-dark); }
+	.info-message { text-align:left; padding:0px; color: var(--fg); font-style: italic;font-size: 1.3rem }
+	form#mmd_form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 70vw; margin: 5px auto; padding: 20px; background: var(--accent); border-radius: 10px; box-shadow: 0 5px 15px var(--shadow-color); transform: translateZ(5px); }
+	form#mmd_form label { display: flex; flex-direction: column; font-weight: 600; font-size: 1.0rem; }
+	form#mmd_form label.required::after { content: " *"; color: var(--danger-bg); font-weight:bold; }
+	form#mmd_form input, form#mmd_form select, form#mmd_form textarea { padding: 5px; border: 1px solid var(--sec); border-radius: 6px; background-color: var(--bg); color: var(--fg); font-size: 1.0rem; font-family: inherit; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1), 0 1px 1px var(--shadow-color-light); transition: box-shadow 0.2s ease, border-color 0.2s ease; }
+	form#mmd_form input:focus, form#mmd_form select:focus, form#mmd_form textarea:focus { border-color: var(--primary); box-shadow: inset 2px 2px 4px rgba(0,0,0,0.15), 0 0 0 3px color-mix(in srgb, var(--primary) 30%, transparent); outline: none; }
+	form#mmd_form .full-width { grid-column: span 2; }
+	form#mmd_form .conditional-section {
+	  display: none; 
+	  grid-template-columns: 1fr 1fr; 
+	  gap: inherit;
+	  grid-column: span 2;
+	  padding-top: 0px;
+	  margin-top: 0px;
+	  border-top: 1px solid var(--sec);
+	}
+	form#mmd_form .conditional-section.visible { display: grid !important; }
+	form#mmd_form .conditional-section h4 { grid-column: span 2; margin-top: 0; margin-bottom: 5px; color: var(--primary); }
+	form#mmd_form #children_section_fields { display: contents; }
+	form#mmd_form button[type="submit"] { grid-column: span 2; padding: 10px; font-size: 1.0rem; font-weight: bold; background: var(--primary); color: #fff; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 3px 7px var(--shadow-color-dark); transform: translateY(0) translateZ(0); transition: transform .2s ease-out, box-shadow .2s ease-out, background-color .2s; }
+	form#mmd_form button[type="submit"]:hover { background-color: color-mix(in srgb, var(--primary) 85%, black); transform: translateY(-3px) translateZ(10px); box-shadow: 0 6px 12px var(--shadow-color-dark), 0 3px 6px var(--shadow-color); }
+	table#mmd_table { width: 100%; border-collapse: collapse; margin-top: 18px; overflow-y: auto; display: block; background: var(--accent); border-radius: 8px; box-shadow: 0 4px 10px var(--shadow-color); transform: translateZ(2px); }
+	@media (min-width: 992px) { #page_view #mmd_table { display: table; } } 
+	table#mmd_table th, table#mmd_table td { border: 1px solid var(--sec); padding: 10px 12px; text-align: left; font-size: .9rem; vertical-align: middle; }
+	table#mmd_table th { background: var(--sec); font-weight: 600; cursor: pointer; }
+	table#mmd_table tbody tr:hover { background-color: color-mix(in srgb, var(--bg) 80%, var(--primary) 5%); }
+	.map-link { color: var(--primary); text-decoration: none; } .map-link:hover { text-decoration: underline; }
+	.card_view { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 10px; }
+	.member_card { background: var(--accent); color: var(--fg); border: 1px solid var(--sec); border-radius: 10px; padding: 5px; box-shadow: 0 6px 12px var(--shadow-color), 0 2px 4px var(--shadow-color); transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateZ(0); display: flex; flex-direction: column; }
+	.member_card:hover { transform: translateY(-5px) translateZ(25px) scale(1.03); box-shadow: 0 10px 25px var(--shadow-color-dark), 0 6px 10px var(--shadow-color); }
+	.member_card h4 { margin-top: 0; margin-bottom: 0; color: var(--primary); font-size: 0.9rem;}
+	.member_card p { margin-bottom: 1px; font-size: 0.75rem; line-height: 1.2;} .member_card p > strong { font-weight: 600; }
+	.member_card .relationship { font-size: 0.75em; font-style: italic; color: var(--sec); display: block; margin-bottom: 1px; }
+	.member_card a { color: var(--primary); text-decoration: none; } .member_card a:hover { text-decoration: underline; }
+	.member_card .actions { margin-top: auto; padding-top:10px; text-align:right; }
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.member-card {
+  background: var(--bg);
+  border: 1px solid var(--sec);
+  border-radius: 10px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.member-pic {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.member-basic {
+  text-align: center;
+}
+
+.member-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.member-card.expanded .member-details {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 10px;
+}
+/*  For Profile Picture  */
+	.member_card img.member_pic {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  align-self: center;
+  margin-bottom: 10px;
+  border: 2px solid var(--sec);
+}
+.member_profile_pic {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 5px auto;
+  display: block;
+  border: 2px solid var(--sec);
+}
+#crop-modal img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+}
+table#mmd_table td img {
+  display: block;
+  margin: 0 auto;
+}
+.profile-picture {
+  width: 80px;         /* Fixed width */
+  height: 80px;        /* Fixed height */
+  object-fit: cover;    /* Crops to fit, keeps aspect ratio */
+  border-radius: 50%;   /* Makes it circular (optional) */
+  border: 2px solid #ccc;
+}
+	.view-family-btn { font-size: 0.65em; padding: 2px 4px; margin-top: 1px; background-color: var(--sec); color: var(--fg); }
+	.view-family-btn:hover { background-color: var(--primary); color: #fff; }
+	.map_panel { width:100%; height:220px; border-radius:8px; overflow:hidden; margin-top:12px; border: 1px solid var(--sec); box-shadow: inset 0 0 8px var(--shadow-color); transform: translateZ(3px); background-color: var(--bg); }
+	#mmd_toast_container { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateZ(10000px); z-index:100000; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+	.toast_msg { background: var(--primary); color:#fff; padding: 14px 28px; border-radius: 28px; margin-top:10px; font-size: 1rem; font-weight: 500; box-shadow: 0 5px 15px rgba(0,0,0,0.25), 0 2px 5px rgba(0,0,0,0.15); animation: fadeInSlideUp .4s ease-out; transform: translateZ(5px); pointer-events: auto; }
+	.toast_msg.toast_success { background-color: var(--success-bg); color: var(--success-fg); }
+	.toast_msg.toast_error { background-color: var(--error-bg); color: var(--error-fg); }
+	.toast_msg.toast_info { background-color: var(--info-bg); color: var(--info-fg); }
+	@keyframes fadeInSlideUp { from { opacity:0; transform:translateY(25px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+	.generic_button_styles { padding: 2px 4px; font-size: 0.79rem; background: var(--accent); color: var(--fg); border: 1px solid var(--sec); border-radius: 6px; cursor: pointer; box-shadow: 0 2px 5px var(--shadow-color); transform: translateY(0) translateZ(0); transition: transform .2s ease-out, box-shadow .2s ease-out, background-color .2s, border-color .2s, color .2s; margin: 0 5px; }
+	.generic_button_styles:hover { border-color: var(--primary); background: var(--primary); color: #fff; transform: translateY(-2px) translateZ(8px); box-shadow: 0 4px 10px var(--shadow-color-dark); }
+	.generic_button_styles.danger { background-color: var(--danger-bg); color: var(--danger-fg); border-color: var(--danger-bg); }
+	.generic_button_styles.danger:hover { background-color: var(--danger-hover-bg); border-color: var(--danger-hover-bg); }
+	#theme_toggle { font-size: 1.5rem; padding: 5px 10px; line-height: 1; background: transparent; border: none; color: #fff; box-shadow: none; transition: transform 0.2s ease-out, background-color 0.2s ease-out; flex-shrink: 0; }
+	#theme_toggle:hover { background: rgba(255, 255, 255, 0.2); border-color: transparent; transform: scale(1.1); box-shadow: none; }
+	html.dark #theme_toggle { color: #fff; }
+	#panel_age input, #panel_age button, #panel_dist select { margin-right: 5px; }
+	#mmd_modal_overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--modal-overlay-bg); display: flex; align-items: center; justify-content: center; z-index: 100001; padding:0px; box-sizing: border-box; }
+	.mmd_modal_content {
+	  background-color: var(--modal-content-bg);
+	  color: var(--fg);
+	  padding: 0; /* Header/body/footer add their own */
+	  border-radius: 8px; 
+	  box-shadow: 0 5px 15px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.1); /* Adjust shadow as needed */
+	  width: 90%;                
+	  max-width: 450px;           
+	  display: flex;
+	  flex-direction: column;
+	  /* Max height is important if content can be long */
+	  max-height: 70vh; 
+	  overflow: hidden; 
+	}
+	.mmd_modal_header {
+	  padding: 12px 15px; 
+	  background-color: var(--modal-header-bg);
+	  color: var(--modal-header-fg);
+	  border-top-left-radius: 8px; 
+	  border-top-right-radius: 8px;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  flex-shrink: 0; /* Prevent header from shrinking */
+	}
+	.mmd_modal_header h2 {
+	  margin: 0;
+	  font-size: 1.2rem; /* Smaller header text in modal */
+	}
+	.mmd_modal_close_btn {
+	  font-size: 1.2rem; 
+	}
+	.mmd_modal_body {
+	  padding: 15px; 
+	  overflow-y: auto;  /* THIS IS KEY: Body scrolls if content exceeds modal's max-height */
+	  flex-grow: 1;      /* Allows body to take available space */
+	  min-height: 50px;  /* Ensure it has some height even if content is minimal */
+	}
+	.mmd_modal_body ul { list-style: none; padding-left: 0; } .mmd_modal_body ul li { padding: 8px 0; border-bottom: 1px solid var(--sec); } .mmd_modal_body ul li:last-child { border-bottom: none; }
+	.mmd_modal_body .contact-link { color: var(--primary); text-decoration: none; } .mmd_modal_body .contact-link:hover { text-decoration: underline; }
+	.mmd_modal_footer {
+	  padding: 10px 15px;
+	  text-align: right;
+	  border-top: 1px solid var(--sec);
+	  flex-shrink: 0; /* Prevent footer from shrinking */
+	}
+	.mmd_modal_footer button {
+	  margin-left: 8px; 
+	}
+	.mmd_modal_input, .mmd_modal_select, .mmd_modal_textarea { width: 100%; padding: 10px; margin-bottom:10px; border: 1px solid var(--sec); border-radius: 6px; background-color: var(--bg); color: var(--fg); font-size: 1rem; }
+	.mmd_modal_body .checkbox-group label { display: block; margin-bottom: 8px; cursor:pointer;}
+	.mmd_modal_body .checkbox-group input[type="radio"], .mmd_modal_body .checkbox-group input[type="checkbox"] { margin-right: 8px; vertical-align: middle;}
+	.modal-date-filter { margin-top: 15px; padding-top:15px; border-top: 1px solid var(--sec); }
+	.modal-date-filter label { margin-right: 5px; font-size:0.9em; }
+	.modal-date-filter input[type="date"], .modal-date-filter input[type="number"] { padding: 5px; font-size:0.9em; border:1px solid var(--sec); border-radius:4px; background-color:var(--bg); color:var(--fg); width: auto; margin-right: 10px;}
+	.modal-date-filter button { font-size:0.9em; padding: 5px 10px; margin-left:10px;}
+	.clickable-count { cursor: pointer; text-decoration: underline; color: var(--primary); font-weight: bold; } .clickable-count:hover { color: color-mix(in srgb, var(--primary) 70%, black); }
+	.details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+	.details-grid h4 { grid-column: 1 / -1; margin-bottom: 5px; color: var(--primary); }
+	.details-grid div { background: var(--bg); padding: 10px; border-radius: 6px; }
+	#member_view_controls { display: flex; flex-wrap: wrap; gap: 15px; align-items:flex-end; margin-bottom: 15px; padding:15px; background:var(--sec); border-radius:8px;}
+	#member_view_controls input[type="search"] { padding: 8px; border-radius: 5px; border: 1px solid var(--accent); background: var(--bg); color: var(--fg); flex-grow: 1.5; min-width: 100px; min-height: 40px; }
+	#member_view_controls .filter-group { display: flex; flex-direction: column; flex-grow: 1; min-width:150px; }
+	#member_view_controls .filter-group legend { font-weight: bold; margin-bottom: 5px; font-size: 0.9em; color: var(--primary); padding:0; }
+	#member_view_controls .filter-group select { width:100%; padding: 8px; border-radius: 5px; border: 1px solid var(--accent); background: var(--bg); color: var(--fg); }
+	#page_audit #mmd_table { table-layout: 100%; width: 100%; }
+	#page_audit #mmd_table th, #page_audit #mmd_table td { white-space: nowrap; }
+	#page_audit #mmd_table td:nth-child(3), 
+	#page_audit #mmd_table td:nth-child(4) { white-space: normal; word-break: break-word; }
+	.reminder-list-view { display: flex; flex-direction: column; gap: 5px; }
+	.reminder-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--sec); background-color: var(--accent); border-radius: 6px; }
+	.reminder-list-item:last-child { border-bottom: none; }
+	.reminder-list-item div:first-child { flex: 1; margin-right: 10px; font-size: 0.9rem; }
+	.reminder-list-item .actions button { font-size: 0.8rem; padding: 5px 8px;}
+	.acknowledged { opacity: 0.65; }
+	.acknowledged .btn_ack_reminder { background-color: var(--sec) !important; color: var(--fg) !important; cursor: not-allowed !important; border-color: var(--sec) !important; }
+	.acknowledged .btn_ack_reminder:hover { background-color: var(--sec) !important; color: var(--fg) !important; box-shadow: none; transform: none;}
+	#page_import_export .panel3d { margin-bottom: 25px; gap: 25px; }
+	#page_import_export textarea { width: 100%; min-height: 150px; font-family: monospace; background-color: var(--bg); color:var(--fg); border:1px solid var(--sec); padding:8px; border-radius: 6px;}
+	#page_import_export button { margin-top: 10px; font-size: 1.2rem; }
+	#json_file_name_display { font-style: italic; margin-left: 10px; color: var(--fg); opacity: 0.8; }
+	/* Leaflet map container default styles */
+	.leaflet-container {
+		height: 100%;
+		width: 100%;
+	}
+	#page_reminders .reminder-heading {
+	  font-size: 1.5rem; 
+	  margin-top: 10px; 
+	  margin-bottom: 10px;
+	  color: var(--primary);
+	}
+	.reminders-columns-container {
+	  display: flex;
+	  flex-direction: row; 
+	  flex-wrap: nowrap;   
+	  gap: 15px;          
+	  margin-top: 20px;   
+	  /*border: 5px solid red;*/
+	}
+	.reminder-column {
+		flex-grow: 1;       
+		flex-shrink: 1;     
+		flex-basis: 0;      
+		min-width: 150px;   
+		box-sizing: border-box;
+	}
+	@media screen and (min-width: 769px) { /* Use a pixel value just ABOVE your mobile breakpoint */
+	  #mobile_menu_toggle {
+		display: none !important;
+		border: 10px solid red !important; /* Add this to see if rule is even partially processed if display:none fails*/
+		background-color: yellow !important; /* Add this too */
+	  }
+		/* Also, ensure the tabs ARE visible on desktop if the toggle is hidden */
+	  #mmd_tabs {
+		display: flex !important; /* Or whatever your normal desktop display is for the tabs */
+		/* Reset any mobile-specific hiding properties if they were accidentally global */
+		max-height: none !important;
+		opacity: 1 !important;
+		visibility: visible !important;
+		position: static !important; /* Or your default desktop position */
+		/* background-color: lightblue !important; /* DEBUG: Check if tabs are styled */
+	  }
+	}
+#logout_btn {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+	/* =============== Mobile Header Adjustments =============== */
+	@media (max-width: 768px) {
+		html {
+	  font-size: 14px !important; 
+	}
+	  #mmd_header {
+		padding: 10px !important; 
+		font-size: 1.5rem !important;  
+		display: flex; 
+		flex-direction: column; 
+		align-items: center; 
+		position: relative;   /* Crucial for absolute positioning of children like menu/theme toggles */
+		min-height: 60px; /* Set a minimum height, adjust as needed */
+		box-sizing: border-box;
+	}
+	 .member_card {
+		display: flex;
+		flex-direction: column;
+		font-size: 1.0rem;
+		line-height: 1.0;
+	 }
+	.member_card p{
+		font-size: 1.0rem !important; /* This will be 0.9 * 14px = 12.6px */
+		line-height: 1.2 !important;  /* Adjust line-height for readability */
+	  }
+	  .member_card h4{
+		font-size: 1.0rem !important; /* This will be 0.9 * 14px = 12.6px */
+		line-height: 1.2 !important;  /* Adjust line-height for readability */
+	  }
+	  .member_card p > strong {
+	  font-weight: 600;
+	}
+		form#mmd_form label {
+		font-size: 0.95rem !important; /* Was 1.15rem, now 0.95 * 14px */
+	  }
+	  form#mmd_form input, 
+	  form#mmd_form select, 
+	  form#mmd_form textarea {
+		font-size: 0.9rem !important; /* Was 1rem, now 0.9 * 14px */
+		padding: 5px !important; /* Adjust padding too if they feel chunky */
+	  }
+	  table#mmd_table th, table#mmd_table td {
+		font-size: 0.8rem !important; /* Was 0.9rem, now 0.8 * 14px */
+		padding: 8px 10px !important; /* Was 10px 12px */
+	  }
+	  #mmd_header h1 {
+		font-size: 1.5rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
+		line-height: 1 !important;   /* Adjust line height for a potentially shorter H1 */
+		margin: 0 0 2px 0; /* Add a little space below H1 if Bible verse is staying */
+	  }
+	  #mmd_header label {
+		font-size: 0.9rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
+		line-height: 0.1 !important;   /* Adjust line height for a potentially shorter H1 */
+		margin-bottom: 0.1px !important; /* Add a little space below H1 if Bible verse is staying */
+	  }
+	  #mmd_header p {
+		margin: 0 0 2px 0;    /* Reduce top/bottom margin for paragraphs */
+
+	  }
+	  #mmd_header #theme_toggle {
+		font-size: 1.0rem !important; /* Slightly smaller theme toggle */
+		padding: 2px 3px !important;  /* Adjust padding if needed */
+		position: absolute !important; /* Keep it positioned if that's how it is */
+		top: 10px !important;         /* Adjust position as needed with new padding */
+		right: 5px !important;
+	  }
+	#mmd_tabs button {
+	  font-size: 0.9rem !important;   /* Significantly reduce font size */
+	  padding: 5x 3px !important;   /* Reduce padding */
+	  margin: 1px !important;         /* Slightly reduce margin */
+	  flex-grow: 1 !important;  /* Stop them from growing to fill space, let their content and padding define width more */
+	  flex-basis: auto !important;    /* Reset flex-basis if needed, or set to a specific value if you want uniform width */
+	  flex-basis: calc(33% - 4px) !important; /* e.g., flex-basis: 120px; if you want them to be a certain min width before wrapping */
+	  min-width: 0 !important;    /* Allow buttons to shrink if needed if you use flex-basis with text overflow */
+	}
+	#mmd_tabs button .badge {
+	  font-size: 0.65em !important; /* Adjust badge size relative to new button font size */
+	  top: 1px !important;
+	  right: 5px !important;
+	  padding: 1px 4px !important;
+	}
+	#home_panels {
+	  display: grid; /* Ensure display grid is still set if overridden elsewhere */
+	  grid-template: 1fr; /* This creates exactly 2 equal-width columns */
+	  gap: 5px; /* You might want to reduce the gap for mobile */
+	  padding: 5px 5px; /* Or adjust padding as needed */
+	}
+	.panel3d {
+		font-size: 1.0rem;
+	  padding: 5px !important;
+	  margin-bottom: 5px !important;
+	  }
+	  .panel3d h3 {
+	  font-size: 1.2rem !important;
+	  }
+	.panel3d div,/* Text in home page panels */
+	.panel3d p,
+	.panel3d label,
+	.panel3d select, /* Target select elements specifically if needed */
+	.panel3d input[type="number"], /* Target inputs */
+	.panel3d button { /* Target buttons */
+	  font-size: 1.0rem !important;
+	}
+	.panel3d canvas {
+	  height: 100% !important; /* Reduce chart height */
+	  width: 100% !important;
+	  font-size: 1.15rem;
+	}
+	#panel_gender {
+		display: grid;
+		height: auto;
+		flex-grow: 0; 
+		flex-shrink: 0;
+		flex-basis: 60%;
+		transform: none;
+		max-width: 100vw;  
+	} 
+	#panel_group {
+		
+		display: grid;
+		height: auto;
+		flex-grow: 0; 
+		flex-shrink: 0;
+		flex-basis: 60%;
+		transform: none;
+		max-width: 100vw; 
+	} 
+	#panel_group #chart_group {
+		height: auto; /* Reduce chart height */
+		width: auto !important;
+		font-size: 0.8rem;
+		transform: none;
+	}
+	#panel_gender #chart_gender {
+		height: auto !important; /* Reduce chart height */
+		width: auto !important;
+		font-size: 0.8rem;
+		transform: none;
+	}
+	#panel_age #chart_age {
+		height: auto !important; /* Reduce chart height */
+		width: 100% !important;
+		font-size: 1.15rem;
+		transform: none;
+	}
+	#panel_dist #chart_dist {
+		height: auto !important; /* Reduce chart height */
+		width: 100% !important;
+		font-size: 1.15rem;
+		transform: none;
+	}
+	#panel_reg #chart_reg {
+		height: auto !important; /* Reduce chart height */
+		width: 100% !important;
+		font-size: 1.15rem;
+		transform: none;
+	}
+	  .chart-with-stats-container {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column; /* Stack chart on top of stats text */
+	   /* align-items: stretch; */
+		gap: 1px;
+		width: 200px;
+		height: 200px;
+		/* Make items full width */
+	  }
+	  .chart-with-stats-container canvas {
+		display: block;
+		box-sizing: border-box;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 50%;
+		max-width: 100%; 
+		width: 220px;
+		height: 220px;
+		/* height: 180px !important; /* You might need a fixed height for mobile charts */
+		margin-bottom: 5px; /* Space between chart and text when stacked */
+	  }
+	  .chart-stats-text {
+		flex-basis: auto;
+		margin: 1px 0;
+		justify-content: left;
+		width: auto;
+		padding-left: 0; /* No left padding when stacked */
+		text-align: left; /* Center text when stacked */
+		font-size: 0.8rem;
+	  }
+	  .chart-stats-text p {
+		margin: 1px 0;
+		display: flex;
+		/* Center label and value, or adjust */
+		gap: 1px;
+		font-size: 1.0rem;
+		justify-content: space-between;
+	  }
+	  
+	  .chart-stats-text p .stat-label {
+	  opacity: 0.8;
+	  margin-right: 2px;
+	  font-size: 0.9rem;
+	  font-weight: bold;
+	   }
+	  .chart-stats-text p .stat-value {
+		opacity: 0.8;
+		margin-right: 1px;
+		font-size: 0.9rem;
+		font-weight: bold;
+	  }
+	.map_panel, /* If the map panel itself has a fixed height not set by its content */
+	#map_home img { /* Target the image inside the map panel directly */
+	  height: 150px !important; /* Reduce map/image height */
+	}
+	.mmd_page, /* General page content */
+	.mmd_page p,
+	.mmd_page label,
+	.mmd_page input,
+	.mmd_page select,
+	.mmd_page textarea,
+	.mmd_page td, /* Table data */
+	.mmd_page th, /* Table headers */
+	.member_card p, /* Card view paragraphs */
+	.mmd_modal_body p,
+	.mmd_modal_body label {
+	  font-size: 0.9rem !important;
+	}
+
+	}
+	/* For very small screens, you might want even more aggressive changes */
+	@media (max-width: 480px) {
+	  #mmd_header {
+		padding: 8px 10px;
+		font-size: 1.0rem; 
+		position: relative;   /* Crucial for absolute positioning of children like menu/theme toggles */
+		min-height: 30px; /* Set a minimum height, adjust as needed */
+	  box-sizing: border-box
+	  }
+	  #mmd_header h1 {
+		font-size: 1.1rem; 
+		/* Optionally, you could even hide the H1 sub-text (Bible verse) on very small screens */
+	  }
+	  #mmd_header p label {
+		font-size: 0.65rem;
+	  }
+	  /* Further adjustments for very small screens */
+	  #mmd_tabs {
+		padding: 3px;
+	  }
+	  #mmd_tabs button {
+		font-size: 0.8rem;
+		padding: 3px 6px;
+		margin: 1px;
+		/* On very small screens, you might want them to stack or be 1 per row */
+		/* flex-basis: 100%; */ /* This would make each button take full width */
+	  }
+	  #mmd_tabs button .badge {
+		font-size: 0.4em;
+	  }
+	}
+
+	/* AT THE VERY END OF YOUR CSS / MEDIA QUERY BLOCK */
+	@media screen and (max-width: 768px) {
+		#mmd_pages {
+		flex: 1;
+		overflow: auto;
+		padding: 5px; 
+		background: var(--bg);
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+	#mmd_pages::-webkit-scrollbar {
+	display: none;               /* Chrome, Safari, Opera */
+	}
+		.reminder-column {
+		flex-grow: 1;       
+		flex-shrink: 1;     
+		flex-basis: 0;      
+		min-width: 100px;   
+		box-sizing: border-box;
+		margin-bottom: 0;
+		}
+		.reminders-columns-container {
+	  display: flex;
+	  flex-direction: row; 
+	  flex-wrap: nowrap;   
+	  gap: 5px;          
+	  margin-top: 20px;
+	  /*border: 5px solid red;*/
+		}
+		.reminder-column .card_view,
+		.reminder-column .reminder-list-view {
+		}
+	#page_reminders .reminder-heading {
+	  font-size: 1.0rem !important; 
+	  margin-top: 1px !important; 
+	  margin-bottom: 1px !important;
+	  color: var(--primary);
+	}
+	.reminder-list-item {
+	  flex-direction: column; 
+	  align-items: flex-start; 
+	  gap: 8px; 
+	}
+	.reminder-list-item div:first-child { 
+	  margin-right: 0; 
+	  width: 100%;    
+	}
+	.reminder-list-item .actions { 
+	  width: 100%;         
+	  text-align: right;   
+	  margin-top: 5px; 
+	}
+	.reminder-list-item .actions button {
+	  padding: 6px 10px; 
+	  font-size: 0.75rem;
+	}
+	.reminders-info-message {
+	  font: 1.0rem; 
+	  text-align: left;
+	}
+	form#mmd_form {
+		display: grid; 
+		grid-template-columns: 1fr !important; 
+		width: 90% !important;
+		padding: 5px 5px;
+	}
+	#page_register {
+		align-items: center;
+	}
+	/*
+	form#mmd_form .full-width,
+	form#mmd_form .conditional-section,
+	form#mmd_form label, 
+	form#mmd_form input, 
+	form#mmd_form select, 
+	form#mmd_form textarea, 
+	form#mmd_form button[type="submit"] {
+		grid-column: 1 / -1 !important; 
+	}
+	form#mmd_form .conditional-section.visible { 
+		display: grid; 
+		grid-template-columns: 1fr !important; 
+		gap: 10px !important; 
+	}
+	form#mmd_form .conditional-section.visible label,
+	form#mmd_form .conditional-section.visible input,
+	form#mmd_form .conditional-section.visible select {
+		grid-column: 1 / -1 !important; 
+	}
+	form#mmd_form label {
+		font-size: 0.9rem; 
+	}
+	form#mmd_form input,
+	form#mmd_form select,
+	form#mmd_form textarea {
+		font-size: 0.9rem;
+		padding: 10px 8px; 
+	}
+	*/
+		#member_view_controls {
+		padding: 10px;
+		align-items: center;
+		}
+		#member_view_controls input[type="search"] {
+		flex-grow: 1; 
+		margin-bottom: 10px; 
+		min-width: auto; 
+		width: 100%; 
+		}
+		#member_view_controls .filter-group {
+		display: none !important;                      
+		}
+		#member_view_controls #clear_member_filters_btn {
+		padding: 8px 10px;
+		font-size: 0.85rem;
+		}	
+		.reminder-column .card_view { 
+	  display: grid;
+	  grid-template-columns: 1fr !important; /* Force a single column for cards on mobile */
+	  gap: 5px; /* Adjust gap between cards */
+	}
+	#list_birth.card_view,
+	#list_anniversary.card_view {
+	  grid-template-columns: 1fr; /* Force single column for cards */
+	  gap: 5px; /* Adjust vertical gap between cards */
+	}
+		
+	}
+
+
+	/*@media (max-width: 768px) { 
+	  .reminders-columns-container {
+		flex-direction: column; 
+		gap: 0;                 
+	  }
+	  .reminder-column {
+		flex-basis: auto;      
+		width: 100%;           
+		min-width: 0;          
+		margin-bottom: 20px;   
+	  }
+	  .reminder-column:last-child {
+		margin-bottom: 0;
+	  }
+	*/ 
+
+
+	/*
+	.reminders-columns-container {
+		display: flex !important; 
+		flex-direction: row !important; 
+		flex-wrap: nowrap !important; 
+		justify-content: space-between; 
+		gap: 20px;
+		width: 100%; 
+		border: 2px dotted blue; 
+		padding: 5px; 
+		box-sizing: border-box;
+	}
+	.reminder-column {
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0; 
+		min-width: 200px; 
+		border: 2px dotted green; 
+		padding: 5px; 
+		box-sizing: border-box;
+		background-color: #f0f0f0; 
+	}
+
+	*/
+
+	/* --- END: FORCE DESKTOP REMINDER COLUMNS --- */
+	/* --- MOBILE OVERRIDES (ensure this is AFTER the above block if testing order) --- */
+	/*@media (max-width: 768px) {
+		.reminders-columns-container {
+			flex-direction: column !important; 
+			gap: 0 !important;
+			border-color: orange !important; 
+		}
+		.reminder-column {
+			width: 100% !important;
+			flex-basis: auto !important; 
+			margin-bottom: 20px !important;
+			border-color: magenta !important; 
+			background-color: #lightyellow !important; 
+		}
+		.reminder-column:last-child {
+			margin-bottom: 0 !important;
+		}
+	*/
+
+		/* Slightly smaller button */
+		/*flex-grow: 0;
+		width: auto; /* Or width: 100%; to take full width on its own line */
+		/*margin-top: 5px; /* If it wraps below search */
+		/*}
+	} */
+	/*.reminders-columns-container {
+		display: flex;
+		flex-direction: row; 
+		flex-wrap: nowrap;   
+		gap: 20px;           
+		width: 100%;         
+		box-sizing: border-box;
+		margin-top: 20px;    
+	} */
+
+	/* Styles for the H4 headings inside each column */
+
+	/* Ensure the card view inside takes up the column width well */
+	.reminder-column .card_view {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); 
+		gap: 15px;
+	}
+	/* --- Dedicated Stats Popup Styles --- */
+	#stats_popup_overlay {
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100vw;
+	  height: 100vh;
+	  background-color: rgba(0, 0, 0, 0.5); 
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  z-index: 100002; 
+	  padding: 20px; 
+	  box-sizing: border-box;
+	}
+	#stats_popup_content {
+	  background-color: var(--accent); 
+	  color: var(--fg);
+	  border-radius: 8px;
+	  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0,0,0,0.05);
+	  width: auto; 
+	  min-width: 320px;
+	  max-width: 550px; 
+	  display: flex;
+	  flex-direction: column;
+	  max-height: 80vh; 
+	  overflow: hidden; 
+	}
+	#stats_popup_header {
+	  padding: 10px 15px;
+	  background-color: var(--primary); 
+	  color: #fff; 
+	  border-top-left-radius: 8px;
+	  border-top-right-radius: 8px;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  flex-shrink: 0;
+	}
+	#stats_popup_header h2 {
+	  margin: 0;
+	  font-size: 1.1rem; 
+	}
+	#stats_popup_close_btn {
+	  background: none;
+	  border: none;
+	  color: #fff;
+	  font-size: 1.6rem;
+	  font-weight: bold;
+	  cursor: pointer;
+	  line-height: 1;
+	  padding: 0 5px;
+	}
+	#stats_popup_close_btn:hover {
+	  opacity: 0.8;
+	}
+	#stats_popup_body {
+	  padding: 15px;
+	  flex-grow: 1;
+	  overflow-y: auto; 
+	  min-height: 100px; 
+	}
+	/* Styles for the content inside the stats popup body (details-grid, etc.) */
+	#stats_popup_body .details-grid {
+	  display: grid;
+	  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+	  gap: 10px;
+	  font-size: 0.9rem; 
+	}
+	#stats_popup_body .details-grid h4 {
+	  grid-column: 1 / -1;
+	  margin-bottom: 5px;
+	  color: var(--primary);
+	  font-size: 1rem;
+	}
+	#stats_popup_body .details-grid div {
+	  background: var(--bg);
+	  padding: 8px;
+	  border-radius: 4px;
+	}
+	#stats_popup_body .modal-date-filter { 
+	  margin-top: 10px;
+	  padding-top: 10px;
+	  border-top: 1px solid var(--sec);
+	}
+	#stats_popup_body .modal-date-filter h4 {
+		font-size: 0.95rem;
+		margin-bottom: 8px;
+	}
+	#stats_popup_body .modal-date-filter label,
+	#stats_popup_body .modal-date-filter input,
+	#stats_popup_body .modal-date-filter button {
+	  font-size: 0.85rem;
+	}
+	#stats_popup_body .modal-date-filter input {
+		padding: 5px;
+		width: 60px; 
+	}
+	#stats_popup_body .modal-date-filter button {
+		padding: 5px 8px;
+	}
+	#stats_popup_body #age_filter_note_container p {
+		font-size: 0.8em;
+		color: var(--sec);
+		margin-top: 5px;
+	}
+	#stats_popup_footer {
+	  padding: 10px 15px;
+	  text-align: right;
+	  border-top: 1px solid var(--sec);
+	  flex-shrink: 0;
+	}
+	#stats_popup_footer button {
+	  margin-left: 8px;
+	}
+	/* Container for the two columns of stats (original and age-filtered) */
+	#stats_popup_body .stats-columns-container {
+	  display: flex;
+	  flex-wrap: wrap; 
+	  gap: 15px;       
+	  margin-top: 15px;
+	}
+	#stats_popup_body .stats-column {
+	  flex: 1; 
+	  min-width: 200px; 
+	  box-sizing: border-box;
+	}
+	/* Styling for the new age-filtered results box */
+	#stats_popup_body .age-filter-results {
+	  background: var(--bg); 
+	  padding: 10px 12px;
+	  border-radius: 6px;
+	  border: 1px solid var(--sec);
+	  font-size: 0.9rem;
+	}
+	#stats_popup_body .age-filter-results h4 {
+	  margin-top: 0;
+	  margin-bottom: 8px;
+	  color: var(--primary);
+	  font-size: 1rem; 
+	}
+	#stats_popup_body .age-filter-results p {
+	  margin: 4px 0;
+	}
+	/* Ensure the original details-grid items are styled as before */
+	#stats_popup_body .original-stats .details-grid-item { 
+		/* background: var(--bg); */
+		/* padding: 8px; */
+		/* border-radius: 4px; */
+	}
+	/* Adjustments for the filter note, if it's separate */
+	#stats_popup_body #age_filter_note_container p {
+		font-size: 0.8em;
+		font-style: italic;
+		color: var(--sec); /* Or var(--fg) for more prominence */
+		margin-top: 5px;
+		margin-bottom: 10px;
+		text-align: center; 
+	}
+	form#mmd_form .section-divider {
+	  padding-top: 10px;
+	  border-top: 1px dotted var(--sec); 
+	  margin-top: 10px;
+	  grid-column: span 2; 
+	}
+	form#mmd_form .section-divider h4 {
+		margin-bottom: 5px; 
+		font-size: 1.05rem; 
+	}
+	@media (max-width: 480px) {
+	 form#mmd_form {
+		display: grid; 
+		grid-template-columns: 1fr !important; 
+		gap: 12px !important;
+		width: 100vw !important;
+	}
+	form#mmd_form .full-width,
+	form#mmd_form .conditional-section,
+	form#mmd_form label, 
+	form#mmd_form input, 
+	form#mmd_form select, 
+	form#mmd_form textarea, 
+	form#mmd_form button[type="submit"] {
+		grid-column: 1 / -1 !important; 
+	}
+	form#mmd_form .conditional-section.visible { 
+		display: grid; 
+		grid-template-columns: 1fr !important; 
+		gap: 10px !important; 
+	}
+	form#mmd_form .conditional-section.visible label,
+	form#mmd_form .conditional-section.visible input,
+	form#mmd_form .conditional-section.visible select {
+		grid-column: 1 / -1 !important; 
+	}
+	form#mmd_form label {
+		font-size: 0.9rem; 
+	}
+	form#mmd_form input,
+	form#mmd_form select,
+	form#mmd_form textarea {
+		font-size: 0.9rem;
+		padding: 10px 8px; 
+	}
+    #login_form {
+        padding: 25px; /* Reduced padding for smaller screens */
+        width: 90vw; /* Maintain responsive width */
+        gap: 12px; /* Slightly reduce gap for smaller screens */
+    }
+
+    #login_form h2 {
+        font-size: 1.5rem; /* Adjust heading size if needed */
+    }
+
+    #login_form input[type="email"],
+    #login_form input[type="password"] {
+        padding: 10px; /* Adjust input padding if needed */
+        font-size: 0.95rem; /* Adjust font size in inputs */
+    }
+
+    .social-login button {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+
+    .login-footer {
+        font-size: 0.85rem;
+    }
+}
+	
+
+	/* --- Mobile Menu Button Styles --- */
+	#mobile_menu_toggle {
+	  display: block ; /* Hidden by default, shown only on mobile */
+	  font-size: 1.5rem; /* Adjust size of hamburger/close icon */
+	  background: none;
+	  border: none;
+	  color: #fff; /* Match header text color */
+	  cursor: pointer;
+	  padding: 5px 10px;
+	  position: absolute; /* Position it within the header */
+	  left: 5px;       /* Example: top-left */
+	  top: 80% ;
+	  transform: translateY(-50%);
+	  z-index: 10; /* Ensure it's above other header content if needed */
+	}
+
+
+
+	/* --- Mobile Styles for Tabs --- */
+	@media (max-width: 768px) { /* Your mobile breakpoint */
+
+	#mmd_tabs { /* This is the DEFAULT state for mobile when the menu is HIDDEN */
+	  display: flex; /* Keep as flex for internal column direction, but it will be visually hidden */
+	  flex-direction: column; 
+	  position: absolute;    
+	  top: 85px !important; /* EXAMPLE: Adjust this to be below your header. Measure your header's height. */
+	  left: 0;
+	  width: 250px; /* Or a specific width like 250px for a narrower slide-out */
+	  background-color: var(--accent); /* Or var(--primary) for a dark menu */
+	  color: var(--fg); /* Ensure text is visible */
+	  z-index: 1000; 
+	  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+	  border: 1px solid var(--sec); /* Add border to define edges */
+	  
+	  /* --- Visibility Control --- */
+	  max-height: 0; /* Start with no height */
+	  opacity: 0;
+	  overflow: hidden; /* Clip content when max-height is 0 */
+	  visibility: hidden;
+	  pointer-events: none;
+	  transition: max-height 0.15s ease-in-out, opacity 0.2s ease-in-out, visibility 0s linear 0.35s;
+	}
+
+	#mmd_tabs.mmd_tabs_visible_mobile { /* This is when the menu should BE VISIBLE */
+	  max-height: 50vh;   /* Allow it to grow to this height. Adjust as needed. e.g., 300px, 400px */
+	  opacity: 1;
+	  visibility: visible;
+	  overflow-y: auto;   /* Add scroll if many tabs exceed max-height */
+	  pointer-events: auto;
+	  transition: max-height 0.35s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0s;
+	}
+
+	/* Styles for buttons INSIDE the opened mobile menu */
+	#mmd_tabs.mmd_tabs_visible_mobile button {
+	  width: 100%; 
+	  justify-content: flex-start; /* Align icon and text to the left */
+	  text-align: left;
+	  padding: 12px 20px;
+	  margin: 0; 
+	  border-radius: 0; 
+	  border: none; /* Remove individual button borders */
+	  border-bottom: 1px solid var(--sec); /* Use as a separator */
+	  font-size: 1rem; 
+	  color: var(--fg); /* Ensure button text is visible on menu background */
+	  background-color: transparent; /* Or var(--accent) if you want distinct button backgrounds */
+	  box-shadow: none; 
+	  transform: none; 
+	}
+
+	#mmd_tabs.mmd_tabs_visible_mobile button:last-child {
+	  border-bottom: none;
+	}
+
+	#mmd_tabs.mmd_tabs_visible_mobile button:hover {
+	  background-color: var(--bg); /* Hover effect */
+	}
+
+	#mmd_tabs.mmd_tabs_visible_mobile button.active {
+	  background-color: var(--primary); /* Active tab in menu */
+	  color: #fff;
+	  font-weight: bold;
+	}
+	}
+img[src="/images/default-avatar.png"] {
+  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAkFBMVEX///8AAACWlpb4+PhsbGz5+fnh4eHq6uqkpKTS0tKhoaG3t7fe3t7V1dW2tra+vr4SEhL09PQZGRkxMTGi4uK6urrDw8OKiorFxcVNTU0mJiY+Pj7IyMglJSV+fn4aGhoTExMdHR0tLS2FhYWSkpKS0tKhQwQgAAAD+klEQVR4nO2diXKqMAyAq1EQUlFSdPv/f4A4igpuGxu3FznPcuST1iSCQQAAAAAAAAAAAAAAAAAAAAAwN8r5K9jUbU2WpJLznUlNdL3LzSHmtFcc1RyX3w4qO6+lO+MPbpvHoefFny1ePJ0Ou1pxX/SJz8mu+UdMl/LHbplG5/NO+3MxdPOpHo6UksVZ3B7Zt9pgpbgkbOS8VRU18TYsXTjGHUVVPHba5sVkk1nh2KpW2nnj3Hus9T0VbBtOX01pPsZRW7fNUb0nCvdqeE9wzUqvJ7+RnT8g99nK9mqMvCSzmnm/Rg1/btF2tc5u6X7L/FzWr7HePdNjWbtVv73xw9Rylc6L6ysPymk+hT21FbtaZR5ff8eK+4Z7q2R9zLP1Z48P3ZhPtJzEw76xR+G3M/PkfrZV0+b+lx1+3o7eP8zD1H3w6fmh72eyLzMLfWx63aZrGvUWW9zBPW9YoP+TqZXytcW8leVY9b/jOfEV+UOZUX1Rx3fL4ylnzYROAAAAAAAAAAAAAAAAAAAAAMAX/wCZTltzTRe2nQAAAABJRU5ErkJggg==");
+}

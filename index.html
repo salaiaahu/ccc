@@ -1,0 +1,101 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCC Professional 3D Member Dashboard</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login_screen">
+        <form id="login_form" class="panel3d">
+            <h2>Church Member Login</h2>
+            <label>Email:
+              <input type="email" id="login_email" required>
+            </label>
+            <label>Password:
+              <input type="password" id="login_password" required>
+            </label>
+            <label id="remember_label">
+              <input type="checkbox" id="remember_me"> Remember Me
+            </label>
+            <button type="submit" class="generic_button_styles">Login</button>
+            <div id="spinner"></div>
+            <p id="login_error" style="color: red; display:none;"></p>
+            <div class="login-footer">
+              <a id="signup_link">Sign up</a>
+              <a id="reset_link">Forgot Password?</a>
+            </div>
+            <div class="social-login">
+              <button type="button" id="google_login_btn">Sign in with Google</button>
+              <button type="button" id="microsoft_login_btn" class="microsoft">Sign in with Microsoft</button>
+            </div>
+        </form>
+    </div>
+
+<div id="signup_form_container" style="display: none; width: 100%; max-width: 400px; margin: auto; padding: 20px; background: var(--bg-alt, #f0f0f0); border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; color: var(--fg);">Create Account</h2>
+    <form id="mmd_signup_form" novalidate>
+        <div style="margin-bottom: 15px;">
+            <label for="signup_name" style="display: block; margin-bottom: 5px; color: var(--fg-muted);">Full Name</label>
+            <input type="text" id="signup_name" required style="width: 100%; padding: 10px; border: 1px solid var(--sec); border-radius: 4px; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="signup_email" style="display: block; margin-bottom: 5px; color: var(--fg-muted);">Email</label>
+            <input type="email" id="signup_email" required style="width: 100%; padding: 10px; border: 1px solid var(--sec); border-radius: 4px; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="signup_phone" style="display: block; margin-bottom: 5px; color: var(--fg-muted);">Phone Number (Optional)</label>
+            <input type="tel" id="signup_phone" style="width: 100%; padding: 10px; border: 1px solid var(--sec); border-radius: 4px; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="signup_password" style="display: block; margin-bottom: 5px; color: var(--fg-muted);">Password (min. 6 characters)</label>
+            <input type="password" id="signup_password" required minlength="6" style="width: 100%; padding: 10px; border: 1px solid var(--sec); border-radius: 4px; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label for="signup_confirm_password" style="display: block; margin-bottom: 5px; color: var(--fg-muted);">Confirm Password</label>
+            <input type="password" id="signup_confirm_password" required minlength="6" style="width: 100%; padding: 10px; border: 1px solid var(--sec); border-radius: 4px; box-sizing: border-box;">
+        </div>
+
+        <div id="signup_error" style="display: none; color: red; margin-bottom: 15px; text-align: center;"></div>
+
+        <button type="submit" id="create_account_btn" class="generic_button_styles" style="width: 100%; padding: 12px; margin-bottom: 15px;">Create Account</button>
+        
+        <p style="text-align: center; color: var(--fg-muted);">
+            Already have an account? <a href="#" id="back_to_login_link" style="color: var(--primary); text-decoration: none;">Login</a>
+        </p>
+    </form>
+</div>
+
+ <div id="mmd_container" style="display: none;">
+
+</div>
+<!--- <button id="logout_btn_global" class="generic_button_styles danger" style="display:none; position:fixed; bottom:10px; right:10px; z-index:10000;">Logout</button>  --->
+    <script src="script.js"></script>
+</body>
+</html>
