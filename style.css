@@ -304,7 +304,7 @@
 	.panel3d button { background: var(--primary); color: white; cursor: pointer; box-shadow: 0 2px 4px var(--shadow-color); transition: transform 0.2s, box-shadow 0.2s; }
 	.panel3d button:hover { transform: translateY(-2px) translateZ(8px); box-shadow: 0 4px 8px var(--shadow-color-dark); }
 	.info-message { text-align:left; padding:0px; color: var(--fg); font-style: italic;font-size: 1.3rem }
-	form#mmd_form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 70vw; margin: 5px auto; padding: 20px; background: var(--accent); border-radius: 10px; box-shadow: 0 5px 15px var(--shadow-color); transform: translateZ(5px); }
+	form#mmd_form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: auto; margin: 5px auto; padding: 20px; background: var(--accent); border-radius: 10px; box-shadow: 0 5px 15px var(--shadow-color); transform: translateZ(5px); }
 	form#mmd_form label { display: flex; flex-direction: column; font-weight: 600; font-size: 1.0rem; }
 	form#mmd_form label.required::after { content: " *"; color: var(--danger-bg); font-weight:bold; }
 	form#mmd_form input, form#mmd_form select, form#mmd_form textarea { padding: 5px; border: 1px solid var(--sec); border-radius: 6px; background-color: var(--bg); color: var(--fg); font-size: 1.0rem; font-family: inherit; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1), 0 1px 1px var(--shadow-color-light); transition: box-shadow 0.2s ease, border-color 0.2s ease; }
@@ -423,7 +423,7 @@ table#mmd_table td img {
 	.toast_msg.toast_error { background-color: var(--error-bg); color: var(--error-fg); }
 	.toast_msg.toast_info { background-color: var(--info-bg); color: var(--info-fg); }
 	@keyframes fadeInSlideUp { from { opacity:0; transform:translateY(25px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
-	.generic_button_styles { padding: 2px 4px; font-size: 0.79rem; background: var(--accent); color: var(--fg); border: 1px solid var(--sec); border-radius: 6px; cursor: pointer; box-shadow: 0 2px 5px var(--shadow-color); transform: translateY(0) translateZ(0); transition: transform .2s ease-out, box-shadow .2s ease-out, background-color .2s, border-color .2s, color .2s; margin: 0 5px; }
+	.generic_button_styles { padding: 4px 4px; font-size: 0.79rem; background: var(--accent); color: var(--fg); border: 1px solid var(--sec); border-radius: 6px; cursor: pointer; box-shadow: 0 2px 5px var(--shadow-color); transform: translateY(0) translateZ(0); transition: transform .2s ease-out, box-shadow .2s ease-out, background-color .2s, border-color .2s, color .2s; margin: 0 5px; }
 	.generic_button_styles:hover { border-color: var(--primary); background: var(--primary); color: #fff; transform: translateY(-2px) translateZ(8px); box-shadow: 0 4px 10px var(--shadow-color-dark); }
 	.generic_button_styles.danger { background-color: var(--danger-bg); color: var(--danger-fg); border-color: var(--danger-bg); }
 	.generic_button_styles.danger:hover { background-color: var(--danger-hover-bg); border-color: var(--danger-hover-bg); }
@@ -443,7 +443,7 @@ table#mmd_table td img {
 	  display: flex;
 	  flex-direction: column;
 	  /* Max height is important if content can be long */
-	  max-height: 70vh; 
+	  max-height: 90vh; 
 	  overflow: hidden; 
 	}
 	.mmd_modal_header {
@@ -473,7 +473,7 @@ table#mmd_table td img {
 	.mmd_modal_body ul { list-style: none; padding-left: 0; } .mmd_modal_body ul li { padding: 8px 0; border-bottom: 1px solid var(--sec); } .mmd_modal_body ul li:last-child { border-bottom: none; }
 	.mmd_modal_body .contact-link { color: var(--primary); text-decoration: none; } .mmd_modal_body .contact-link:hover { text-decoration: underline; }
 	.mmd_modal_footer {
-	  padding: 10px 15px;
+	  padding: 0px 0px;
 	  text-align: right;
 	  border-top: 1px solid var(--sec);
 	  flex-shrink: 0; /* Prevent footer from shrinking */
