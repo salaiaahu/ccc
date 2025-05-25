@@ -323,7 +323,7 @@
 /* --- Member Card Responsive Grid --- */
 .card_view {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* WAS 300 or 320 */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* WAS 300 or 320 */
   gap: 16px;
   padding: 10px;
   width: 100%;
@@ -480,7 +480,7 @@
 	.member_card .actions { margin-top: auto; padding-top:10px; text-align:right; }
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
   margin-top: 15px;
 }
@@ -790,7 +790,7 @@ table#mmd_table td img {
 	}
 	.panel3d {
 		font-size: 1.0rem;
-	  padding: 5px !important;
+	  padding: 10px !important;
 	  margin-bottom: 5px !important;
 	  }
 	  .panel3d h3 {
