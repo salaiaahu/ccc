@@ -319,6 +319,145 @@
 	  margin-top: 0px;
 	  border-top: 1px solid var(--sec);
 	}
+/* --- Member Card Responsive Grid --- */
+.card_view {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* WAS 300 or 320 */
+  gap: 16px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.member-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background: var(--accent);
+  border: 1px solid var(--sec);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  gap: 10px;
+}
+
+.member-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 16px var(--shadow-color-dark), 0 4px 8px var(--shadow-color);
+}
+
+.member_profile_pic {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--sec);
+  flex-shrink: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.member_profile_pic:hover {
+  transform: scale(1.3);
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.card_view.single-card .member-card {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.card_view:has(.member-card:only-child) {
+  justify-content: center;
+}
+
+.card_view .member-card:only-child {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+#zoom_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.75);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 10000;
+}
+
+#zoom_modal_overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+  transition: transform 0.3s ease;
+}
+
+#zoom_modal_overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+#zoom_modal_overlay img:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+#close_zoom_btn:hover {
+  opacity: 0.7;
+}
+
+.basic-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.basic-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.basic-info p {
+  margin: 1px 0;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.toggle-details-btn {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  align-self: flex-start;
+}
+
+.member-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.member-card.expanded .member-details {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 6px;
+}
 	form#mmd_form .conditional-section.visible { display: grid !important; }
 	form#mmd_form .conditional-section h4 { grid-column: span 2; margin-top: 0; margin-bottom: 5px; color: var(--primary); }
 	form#mmd_form #children_section_fields { display: contents; }
@@ -330,7 +469,7 @@
 	table#mmd_table th { background: var(--sec); font-weight: 600; cursor: pointer; }
 	table#mmd_table tbody tr:hover { background-color: color-mix(in srgb, var(--bg) 80%, var(--primary) 5%); }
 	.map-link { color: var(--primary); text-decoration: none; } .map-link:hover { text-decoration: underline; }
-	.card_view { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 10px; }
+	//.card_view { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 10px; }
 	.member_card { background: var(--accent); color: var(--fg); border: 1px solid var(--sec); border-radius: 10px; padding: 5px; box-shadow: 0 6px 12px var(--shadow-color), 0 2px 4px var(--shadow-color); transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateZ(0); display: flex; flex-direction: column; }
 	.member_card:hover { transform: translateY(-5px) translateZ(25px) scale(1.03); box-shadow: 0 10px 25px var(--shadow-color-dark), 0 6px 10px var(--shadow-color); }
 	.member_card h4 { margin-top: 0; margin-bottom: 0; color: var(--primary); font-size: 0.9rem;}
