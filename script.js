@@ -1,5 +1,4 @@
 
-
 	const firebaseConfig = {
 	  apiKey: "AIzaSyB1lbx-rlBf5m-cU4wZwLXmfhIDlj5tlJM",
 	  authDomain: "cccmembershipca.firebaseapp.com",
@@ -1002,7 +1001,7 @@ function showToast(msg, type = 'info', duration = 3500) {
 	/////////////////////////////////////////////////////////////////////////////	
      // --- Dashboard Class Definition ---
     class Dashboard {
-	DEFAULT_PROFILE_PIC_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAkFBMVEX///8AAACWlpb4+PhsbGz5+fnh4eHq6uqkpKTS0tKhoaG3t7fe3t7V1dW2tra+vr4SEhL09PQZGRkxMTGi4uK6urrDw8OKiorFxcVNTU0mJiY+Pj7IyMglJSV+fn4aGhoTExMdHR0tLS2FhYWSkpKS0tKhQwQgAAAD+klEQVR4nO2diXKqMAyAq1EQUlFSdPv/f4A4igpuGxu3FznPcuST1iSCQQAAAAAAAAAAAAAAAAAAAAAwN8r5K9jUbU2WpJLznUlNdL3LzSHmtFcc1RyX3w4qO6+lO+MPbpvHoefFny1ePJ0Ou1pxX/SJz8mu+UdMl/LHbplG5/NO+3MxdPOpHo6UksVZ3B7Zt9pgpbgkbOS8VRU18TYsXTjGHUVVPHba5sVkk1nh2KpW2nnj3Hus9T0VbBtOX01pPsZRW7fNUb0nCvdqeE9wzUqvJ7+RnT8g99nK9mqMvCSzmnm/Rg1/btF2tc5u6X7L/FzWr7HePdNjWbtVv73xw9Rylc6L6ysPymk+hT21FbtaZR5ff8eK+4Z7q2R9zLP1Z48P3ZhPtJzEw76xR+G3M/PkfrZV0+b+lx1+3o7eP8zD1H3w6fmh72eyLzMLfWx63aZrGvUWW9zBPW9YoP+TqZXytcW8leVY9b/jOfEV+UOZUX1Rx3fL4ylnzYROAAAAAAAAAAAAAAAAAAAAAMAX/wCZTltzTRe2nQAAAABJRU5ErkJggg==';
+	DEFAULT_PROFILE_PIC_URL = 'data:image/jpeg;base64,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';
 		constructor(user, role) {
 			if (!user || typeof user.email !== 'string') {
 				// ... (error handling) ...
@@ -1498,6 +1497,7 @@ function showToast(msg, type = 'info', duration = 3500) {
 
   const cardsHtml = this.filteredMembers.map(member => `
     <div class="member-card">
+<div class="member-pic-wrapper">
       <img src="${member.profilePictureUrl || this.DEFAULT_PROFILE_PIC_URL}" class="member-pic" alt="Profile">
       <div class="member-basic">
         <h3>${member.fullName}</h3>
@@ -1869,7 +1869,7 @@ function showToast(msg, type = 'info', duration = 3500) {
 						 const churchAddress = "201 E Epler Ave, Indianapolis, IN 46227";
 						// Simple static image fallback for now as geocoding is not implemented
 						 mapDiv.innerHTML = `
-							<img src="https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/282559474_1359818171152959_2716152553949141001_n.png?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=f9ezYEH791IQ7kNvwGqPWVW&_nc_oc=AdnymtDnaPnlJmRRTfhmIBGIiS3XPvzZ9iKFZ_VrGhF4zk8hkgFCbiCY39HTnitCjo8&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=G7KyyZ7XD1Sy6yBZq3VvNA&oh=00_AfJ_x20yL4hjA1dP-vUrGjrgsk6rwIIU5xdQfXCfMWKkUg&oe=6831EBAD" 
+							<img src="https://firebasestorage.googleapis.com/v0/b/cccmembershipca.firebasestorage.app/o/CCC%20Banner.png?alt=media&token=10cfcc2d-85b5-4b60-8302-baf6278ac0be" 
 								 alt="CCC Location" style="width:auto; height:100%; object-fit:fill; border-radius:8px;position:absolute; bottom:20px; width:100%;">
 							<div style="padding:8px; text-align:center; background:var(--bg); position:absolute; bottom:0; width:100%; box-sizing:border-box;">
 								 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(churchAddress)}"
@@ -2763,70 +2763,36 @@ const childData = {
 			}
 
 			if (this.viewMode === 'card') {
-				cont.className = 'card_view';
-				let cardsHTML = membersToDisplay.map(m => {
-					let relationshipInfo = '';
-					if (m.isHouseholdHead) {
-						relationshipInfo = `<span class="relationship">Head of Household</span>`;
-					} else if (m.householdId) {
-						const head = this.members.find(headMember => headMember.id === m.householdId && headMember.isHouseholdHead);
-						const headName = head ? head.fullName : `Household`;
-						const relation = m.relationshipToHead ? m.relationshipToHead : 'Member';
-						relationshipInfo = `<span class="relationship">${relation} of ${headName}</span>`;
-					}
-					if (m.maritalStatus === 'Married' && m.spouseId) { // Assuming maritalStatus is the field name
-						const spouse = this.members.find(sp => sp.id === m.spouseId);
-						relationshipInfo += ` <span class="relationship">(Spouse: ${spouse ? spouse.fullName : 'Linked'})</span>`;
-					}
+  cont.className = 'card_view';
+let cardsHTML = membersToDisplay.map(m => {
+  return `
+    <div class="member-card" data-id="${m.id}">
+      <img src="${m.profilePictureUrl || 'default.png'}" class="member_profile_pic">
+      <div class="basic-info">
+        <h4>${m.fullName}</h4>
+        <p><strong>Age:</strong> ${dateUtils.age(m.dob)}</p>
+        <p><strong>Group:</strong> ${m.homeGroup || 'N/A'}</p>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+  <button type="button" class="toggle-details-btn generic_button_styles">▼ Show More</button>
+  ${m.householdId && this.members.filter(f => f.householdId === m.householdId).length > 1 ? `
+    <button class="view-family-btn generic_button_styles" data-member-id="${m.id}" data-household-id="${m.householdId || m.id}"">
+      👨‍👩‍👧 View Family
+    </button>
+  ` : ''}
+</div>
+        <div class="member-details">
+          <p><strong>DOB:</strong> ${dateUtils.format(m.dob)} | <strong>Gender:</strong> ${m.gender}</p>
+          <p><strong>Position:</strong> ${m.position}</p>
+          <p><strong>Marital:</strong> ${m.maritalStatus || 'N/A'}</p>
+          <p>📞 <a href="tel:${m.phone}">${m.phone}</a></p>
+          <p>✉️ <a href="mailto:${m.email}">${m.email}</a></p>
+          <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank">${m.address || 'N/A'}</a></p>
+</div>
+      </div>
+    </div>`;
+}).join('');
+setElementHTML(cont, cardsHTML);
 
-					let familyButtonHTML = '';
-					if (m.householdId && this.members.filter(fam_m => fam_m.householdId === m.householdId).length > 1) {
-						familyButtonHTML = `<button class="generic_button_styles view-family-btn" data-member-id="${m.id}" data-household-id="${m.householdId}">View Family</button>`;
-					}
-
-					const uniqueHouseholdKey = m.householdId || m.id;
-					const isSelectedForRoute = this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueHouseholdKey);
-					
-					// ***** FIX: Use m.address instead of m.addr *****
-					const canBeRouted = m.address && m.address.trim() !== ''; 
-					const isRepresentativeForRoute = (m.householdId && m.isHouseholdHead) || !m.householdId;
-
-					let routeCheckboxHTML = '';
-					if (canBeRouted && isRepresentativeForRoute) {
-						routeCheckboxHTML = `
-							<div class="route-checkbox-area">
-								<label>
-									<input type="checkbox" class="route-select-checkbox"
-										   data-member-id="${m.id}"
-										   data-address="${encodeURIComponent(m.address)}" data-name="${encodeURIComponent(m.fullName)}"
-										   data-household-id="${m.householdId || ''}"
-										   ${isSelectedForRoute ? 'checked' : ''}>
-									Add to Route
-								</label>
-							</div>`;
-					}
-
-					return `
-					
-					  <div class="member_card" data-id="${m.id}">
-						${m.profilePictureUrl ? `<img src="${m.profilePictureUrl}" alt="Profile Picture of ${m.fullName}" class="member_pic">` : ''}
-
-						<h4>${m.fullName} (${dateUtils.age(m.dob)} yrs)</h4>
-						${relationshipInfo}
-						<p><strong>DOB:</strong> ${dateUtils.format(m.dob)} | <strong>Gender:</strong> ${m.gender}</p>
-						<p><strong>Group:</strong> ${m.homeGroup || 'N/A'} | <strong>Position:</strong> ${m.position}</p>
-						<p><strong>Marital:</strong> ${m.maritalStatus || m.marital || 'N/A'}</p> <p>📞 <a href="tel:${m.phone}" class="contact-link">${m.phone || 'N/A'}</a></p>
-						<p>✉️ <a href="mailto:${m.email}" class="contact-link">${m.email || 'N/A'}</a></p>
-						<p>📍 <a class="map-link contact-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank" rel="noopener noreferrer">${m.address || 'N/A'}</a></p>
-						<p><strong>Joined:</strong> ${dateUtils.format(m.joinDate || m.join)}</p> ${routeCheckboxHTML}
-						<div class="actions">
-						  ${familyButtonHTML}
-						  <button class="btn_edit_member generic_button_styles" data-id="${m.id}">Edit</button>
-						  <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}">Delete</button>
-						</div>
-					  </div>`;
-				}).join('');
-				setElementHTML(cont, cardsHTML);
 			} else { // Table view
 				cont.className = '';
 				let rowsHTML = membersToDisplay.map(m => {
@@ -2853,6 +2819,7 @@ const childData = {
 					}
 
 					const uniqueHouseholdKey = m.householdId || m.id;
+					const familyCount = this.members.filter(f => (f.householdId || f.id) === uniqueHouseholdKey).length;
 					const isSelectedForRoute = this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueHouseholdKey);
 					
 					// ***** FIX: Use m.address instead of m.addr *****
@@ -2906,6 +2873,23 @@ const childData = {
 				}
 			}
 
+document.querySelectorAll('.view-family-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+const householdId = this.dataset.householdId?.trim();
+    if (window.dashboardInstance && typeof window.dashboardInstance._showFamilyModal === 'function') {
+      window.dashboardInstance._showFamilyModal(householdId);
+    } else {
+      showToast("Family modal not available", "error");
+    }
+  });
+});
+
+const grid = document.querySelector('.card_view');
+if (grid && grid.children.length === 1) {
+  grid.classList.add('single-card');
+} else {
+  grid.classList.remove('single-card');
+}
 			// --- Attach event listeners for edit, delete, family view, and checkboxes AFTER content is set ---
 			const viewContentContainer = document.getElementById('view_content');
 			if (viewContentContainer) {
@@ -2939,7 +2923,9 @@ const childData = {
 			this.updateDynamicRouteBar();
 			// this.updateViewMemberCheckboxes(); // Called implicitly by re-rendering checkboxes with correct checked state.
 		}
-	/////////////////////////////////////
+
+///////////////////////
+
 			//Family view
 			_showFamilyModal(viewedMemberId) {
 		const viewedMember = this.members.find(m => m.id === viewedMemberId);
@@ -2960,6 +2946,7 @@ const childData = {
 
 		const householdMembers = this.members.filter(m => m.householdId === viewedMember.householdId);
 		const headOfHousehold = householdMembers.find(m => m.isHouseholdHead || m.relationshipToHead === 'Head');
+                        householdMembers.find(m => m.id === householdId);
 		// Fallback if no explicit head, though data should be consistent
 		// If viewedMember is the head, use them. Otherwise, use the found head, or first member as last resort.
 		const effectiveHead = headOfHousehold || (viewedMember.isHouseholdHead ? viewedMember : householdMembers[0]); 
@@ -3792,75 +3779,155 @@ const childData = {
 		}
 
 //////////////////////
-
-	_showFamilyModal(householdId) {
-		if (!householdId) {
-			showToast("Household ID not provided for family view.", "error");
-			return;
-		}
-		const familyMembers = this.members.filter(m => m.householdId === householdId);
-		const headMember = familyMembers.find(m => m.isHouseholdHead) || familyMembers.find(m => m.relationshipToHead === 'Head') || familyMembers[0];
-
-		if (!headMember) {
-			showModal("Family Members", "<p>Could not determine head of household or find family members.</p>");
-			return;
-		}
-
-		// --- MODIFIED LINE HERE ---
-		let listHTML = `<h4>Family of ${headMember.fullName}</h4><ul>`; // Removed Household ID from title
-
-		if (familyMembers.length > 0) {
-			familyMembers.sort((a, b) => { /* ... existing sort logic ... */
-				const roleOrder = { 'Head': 1, 'Spouse': 2, 'Child': 3 };
-				const roleA = roleOrder[a.relationshipToHead] || (a.isHouseholdHead ? 0 : 4);
-				const roleB = roleOrder[b.relationshipToHead] || (b.isHouseholdHead ? 0 : 4);
-				if (roleA !== roleB) return roleA - roleB;
-				if (a.dob && b.dob) return new Date(a.dob) - new Date(b.dob);
-				return a.fullName.localeCompare(b.fullName);
-			}).forEach(m => {
-				let relationDisplay = m.relationshipToHead || "Member";
-				if (m.id === headMember.id && m.isHouseholdHead) relationDisplay = "Head of Household";
-
-				listHTML += `<li>
-					<strong>${m.fullName}</strong> (${relationDisplay})<br>
-					<span style="font-size:0.85em;">
-						📞 ${m.phone || 'N/A'} | ✉️ ${m.email || 'N/A'} <br/>
-						DOB: ${dateUtils.format(m.dob) || 'N/A'} | Age: ${dateUtils.age(m.dob) || 'N/A'}
-					</span><br/>
-					<button class="generic_button_styles btn_edit_member_from_family" data-id="${m.id}" style="font-size:0.8em; padding:3px 6px; margin-top:3px;">Edit</button>
-				</li>`;
-			});
-		} else {
-			listHTML += `<li>No family members found for this household.</li>`;
-		}
-		listHTML += "</ul>";
-
-		const modal = showModal(`Family View: ${headMember.fullName}'s Household`, listHTML);
-		if (modal) {
-			modal.querySelectorAll('.btn_edit_member_from_family').forEach(btn => {
-				btn.onclick = (e) => {
-					const memberIdToEdit = e.target.dataset.id;
-					modal.remove(); // Close family modal before opening edit form
-					this.editMember(memberIdToEdit);
-				};
-			});
-		}
-	}
-	
-	}
-document.addEventListener('click', function (e) {
-  const card = e.target.closest('.member-card');
-  if (card) {
-    card.classList.toggle('expanded');
+_showFamilyModal(householdId) {
+if (!this.members || !Array.isArray(this.members)) {
+  showToast("Members list is not ready.", "error");
+  return;
+}
+  if (!householdId) {
+    showToast("Household ID not provided for family view.", "error");
+    return;
   }
-});
-	/*
-		const dashboard = new Dashboard();
+
+  // ✅ Include head (whose id === householdId)
+  const familyMembers = this.members.filter(m =>
+    m.householdId === householdId || m.id === householdId
+  );
+
+  const headMember =
+    familyMembers.find(m => m.isHouseholdHead) ||
+    familyMembers.find(m => m.relationshipToHead === 'Head') ||
+    familyMembers.find(m => m.id === householdId) ||
+    familyMembers[0];
+
+  if (!headMember) {
+    showModal("Family Members", "<p>Could not determine head of household or find family members.</p>");
+    return;
+  }
+
+  let listHTML = `<h4>Family of ${headMember.fullName}</h4><ul>`;
+
+  const roleOrder = { 'Head': 1, 'Spouse': 2, 'Child': 3 };
+
+  function getBadge(role) {
+    const badgeMap = {
+      "Head": "👑 Head",
+      "Spouse": "💍 Spouse",
+      "Child": "👶 Child",
+      "Sibling": "🧑‍🤝‍🧑 Sibling",
+      "Household Member": "👤 Member",
+      "Member": "👤 Member"
+    };
+    return badgeMap[role] || `👤 ${role}`;
+  }
+
+  if (familyMembers.length > 0) {
+    familyMembers.sort((a, b) => {
+      const roleA = roleOrder[a.relationshipToHead] || (a.isHouseholdHead ? 0 : 4);
+      const roleB = roleOrder[b.relationshipToHead] || (b.isHouseholdHead ? 0 : 4);
+      if (roleA !== roleB) return roleA - roleB;
+      if (a.dob && b.dob) return new Date(a.dob) - new Date(b.dob);
+      return a.fullName.localeCompare(b.fullName);
+    }).forEach(m => {
+      let role = m.relationshipToHead || "Member";
+      if (m.id === headMember.id && m.isHouseholdHead) role = "Head";
+
+      listHTML += `
+        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+          <img src="${m.profilePictureUrl || 'default.png'}" alt="${m.fullName}'s photo" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--sec);">
+          <div style="flex-grow: 1;">
+            <strong>${m.fullName}</strong> <span style="font-size: 0.8em; color: var(--fg-muted);">(${getBadge(role)})</span><br>
+            <span style="font-size: 0.85em;">
+              📞 ${m.phone || 'N/A'} | ✉️ ${m.email || 'N/A'}<br>
+              DOB: ${dateUtils.format(m.dob) || 'N/A'} | Age: ${dateUtils.age(m.dob) || 'N/A'}
+            </span><br/>
+            <button class="generic_button_styles btn_edit_member_from_family" data-id="${m.id}" style="font-size:0.8em; padding:3px 6px; margin-top:4px;">Edit</button>
+          </div>
+        </li>`;
+    });
+  } else {
+    listHTML += `<li>No family members found for this household.</li>`;
+  }
+
+  listHTML += "</ul>";
+
+  const modal = showModal(`Family View: ${headMember.fullName}'s Household`, listHTML);
+  if (modal) {
+    modal.querySelectorAll('.btn_edit_member_from_family').forEach(btn => {
+      btn.onclick = (e) => {
+        const memberIdToEdit = e.target.dataset.id;
+        modal.remove(); // Close family modal before opening edit form
+        this.editMember(memberIdToEdit);
+      };
+    });
+  }
+}
+	
+	}
 
 	
-	*/
+		const dashboard = new Dashboard();
+window.dashboardInstance = dashboard;
+	
+	
 	}); 
 		
 					// Instantiate and start the application
 	// End DOMContentLoaded	
 	
+
+
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('toggle-details-btn')) {
+    const card = e.target.closest('.member-card');
+    if (card) {
+      card.classList.toggle('expanded');
+      e.target.textContent = card.classList.contains('expanded') ? '▲ Hide Details' : '▼ Show More';
+    }
+  }
+});
+
+/////////////////////////////////////////
+//   for profile picture animation 
+document.addEventListener('DOMContentLoaded', function () {
+  const zoomOverlay = document.getElementById('zoom_modal_overlay');
+  const zoomImage = zoomOverlay.querySelector('img');
+  const closeBtn = document.getElementById('close_zoom_btn');
+
+  function openModal(src) {
+    zoomImage.src = src;
+    zoomOverlay.style.display = 'flex';
+    requestAnimationFrame(() => zoomOverlay.classList.add('show'));
+  }
+
+  function closeModal() {
+    zoomOverlay.classList.remove('show');
+    setTimeout(() => {
+      zoomOverlay.style.display = 'none';
+    }, 300);
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('member_profile_pic')) {
+      openModal(e.target.src);
+    }
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+
+  zoomOverlay.addEventListener('click', function (e) {
+    if (e.target.id === 'zoom_modal_overlay') closeModal();
+  });
+
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  zoomOverlay.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  zoomOverlay.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (Math.abs(touchStartX - touchEndX) > 80) closeModal();
+  });
+});
