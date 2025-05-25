@@ -305,7 +305,7 @@
 	.panel3d button { background: var(--primary); color: white; cursor: pointer; box-shadow: 0 2px 4px var(--shadow-color); transition: transform 0.2s, box-shadow 0.2s; }
 	.panel3d button:hover { transform: translateY(-2px) translateZ(8px); box-shadow: 0 4px 8px var(--shadow-color-dark); }
 	.info-message { text-align:left; padding:0px; color: var(--fg); font-style: italic;font-size: 1.3rem }
-	form#mmd_form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: auto; margin: 5px auto; padding: 20px; background: var(--accent); border-radius: 10px; box-shadow: 0 5px 15px var(--shadow-color); transform: translateZ(5px); }
+	form#mmd_form { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: auto; margin: 5px auto; padding: 10px; background: var(--accent); border-radius: 10px; box-shadow: 0 5px 15px var(--shadow-color); transform: translateZ(5px); }
 	form#mmd_form label { display: flex; flex-direction: column; font-weight: 600; font-size: 1.0rem; }
 	form#mmd_form label.required::after { content: " *"; color: var(--danger-bg); font-weight:bold; }
 	form#mmd_form input, form#mmd_form select, form#mmd_form textarea { padding: 5px; border: 1px solid var(--sec); border-radius: 6px; background-color: var(--bg); color: var(--fg); font-size: 1.0rem; font-family: inherit; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1), 0 1px 1px var(--shadow-color-light); transition: box-shadow 0.2s ease, border-color 0.2s ease; }
@@ -324,7 +324,7 @@
 .card_view {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* WAS 300 or 320 */
-  gap: 16px;
+  gap: 10px;
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
@@ -366,7 +366,7 @@
 }
 
 .card_view.single-card .member-card {
-  max-width: 450px;
+  max-width: 350px;
   margin: 0 auto;
 }
 
@@ -375,7 +375,7 @@
 }
 
 .card_view .member-card:only-child {
-  max-width: 450px;
+  max-width: 350px;
   margin: 0 auto;
 }
 
