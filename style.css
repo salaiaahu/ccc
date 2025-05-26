@@ -155,7 +155,13 @@
 	#mmd_header p {
 		margin: 0 0 2px 0;
 	}
-
+#church_logo_header {
+    height: 40px; /* Desktop height */
+    width: auto;
+    margin-right: 15px; /* Space between logo and the central text block */
+    flex-shrink: 0; /* Prevents the logo from shrinking if space is tight */
+    /* vertical-align: middle; /* Not strictly necessary for direct flex children */
+}
 		
 	#mmd_container {
 	  /* position: fixed; top: 2%; left: 2%; width: 96%; height: 96%; */ 
@@ -180,6 +186,7 @@
 	  font-size: 1.3rem; /* Base font size for text within the header on desktop */
 	  text-align: center;
 	  font-weight: 500;
+		padding: 10px 15px;
 	  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 	  border-bottom: 1px solid rgba(0,0,0,0.1);
 	  position: relative; /* For positioning theme_toggle and ::before pseudo-element */
