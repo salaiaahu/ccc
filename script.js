@@ -151,7 +151,31 @@ const dateUtils = {
 };
 window.dateUtils = dateUtils; // Expose for debugging if needed
 
-		function setElementHTML(element, htmlString) { if (!element) { console.error("setElementHTML: Target element is null for HTML:", String(htmlString).substring(0, 100) + "..."); return; } try { let child; while ((child = element.firstChild)) { element.removeChild(child); } const range = document.createRange(); range.selectNodeContents(element); const fragment = range.createContextualFragment(htmlString); element.appendChild(fragment); } catch (e) { console.error("Error in setElementHTML with createContextualFragment:", e, "HTML (first 100 chars):", String(htmlString).substring(0, 100)); try { console.warn("Falling back to direct innerHTML assignment for element:", element); element.innerHTML = htmlString; } catch (trustedTypesError) { console.error("TrustedHTML error on fallback innerHTML:", trustedTypesError); element.textContent = "Error: Could not render content due to page security policy."; } } }
+function setElementHTML(element, htmlString) {
+    if (!element) {
+        console.error("setElementHTML: Target element is null for HTML:", String(htmlString).substring(0, 100) + "...");
+        return;
+    }
+    try {
+        let child;
+        while ((child = element.firstChild)) {
+            element.removeChild(child);
+        }
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const fragment = range.createContextualFragment(htmlString);
+        element.appendChild(fragment);
+    } catch (e) {
+        console.error("Error in setElementHTML with createContextualFragment:", e, "HTML (first 100 chars):", String(htmlString).substring(0, 100));
+        try {
+            console.warn("Falling back to direct innerHTML assignment for element:", element);
+            element.innerHTML = htmlString; // Fallback
+        } catch (trustedTypesError) {
+            console.error("TrustedHTML error on fallback innerHTML:", trustedTypesError);
+            element.textContent = "Error: Could not render content due to page security policy.";
+        }
+    }
+}
 	function showModal(title, contentHTML, buttonsConfig = [{ label: "Close", action: (modal) => modal.remove() }], customModalClass = '') {
     // Ensure body.classList.remove('modal-open') happens when this modal closes too
     // Or make showModal only for non-auth related modals if stats_popup is different
@@ -425,7 +449,7 @@ function showToast(msg, type = 'info', duration = 3500) {
 
 	view: `
 	  <div id="member_view_controls">
-		
+
 		<input type="search" id="member_search_input" placeholder="Search..." style="min-width:250px; flex-basis: 300px; margin-bottom:5px;">
 	   <fieldset class="filter-group">
 				  <legend>Home Group</legend>
@@ -444,31 +468,38 @@ function showToast(msg, type = 'info', duration = 3500) {
 				  <select id="member_filter_marital"><option value="">All</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option><option>Other</option></select>
 				</fieldset>
 		<button id="clear_member_filters_btn" class="generic_button_styles" style="padding:8px 12px; align-self:flex-end;">Clear Filters</button>
-	  </div>
+        <button id="show_favorites_btn" class="generic_button_styles" style="padding:8px 12px; align-self:flex-end; background-color: #ffc107; color: #333;">
+            ⭐ Show Favorites (<span id="fav_count">0</span>)
+        </button>
+        </div>
 
-	  
+
 	  <div id="route_planner_dynamic_bar" style="
-			display: none; 
-			position: sticky; 
-			top: 0; 
+			display: none;
+			position: sticky;
+			top: 0;
+
 			
-			background-color: var(--primary-light, #e0e9f5);
 			padding: 10px;
-			z-index: 999; 
+			z-index: 999;
 			box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 			text-align: center;
 			border-bottom: 1px solid var(--sec);
 		">
 		<span style="margin-right:15px; color: var(--fg); font-weight:bold;">
-			Selected for Route: <span id="dynamic_selected_count">0</span>
+			Selected: <span id="dynamic_selected_count">0</span>
 		</span>
-		<button id="btn_dynamic_generate_route" class="generic_button_styles" disabled>Plan Optimized Route</button>
-		<button id="btn_dynamic_clear_route" class="generic_button_styles danger" style="margin-left: 10px;">Clear Selection</button>
-	  </div>
+        <div class="dynamic-button-group">
+		    <button id="btn_dynamic_generate_route" class="generic_button_styles" disabled>Plan Optimized Route</button>
+            <button id="btn_dynamic_add_favorites" class="generic_button_styles" style="background-color: #ffc107; color: #333;" disabled>
+                ⭐ Add to Favorites
+            </button>
+		    <button id="btn_dynamic_clear_route" class="generic_button_styles danger">Clear Selection</button>
+        </div>
 
 	  <button id="toggle_view" class="generic_button_styles" style="margin-bottom: 15px; margin-top:10px;">Toggle View</button>
 	  <div id="view_content">
-		
+
 	  </div>
 	`,
 
@@ -695,13 +726,17 @@ function showToast(msg, type = 'info', duration = 3500) {
 						// ----- End UI Transition -----
 
 						if (!dashboardInstance) {
-							console.log("Creating new Dashboard instance.");
+							console.log("CCC Dashboard: onAuthStateChanged - Creating new Dashboard instance."); // LOG
 							dashboardInstance = new Dashboard(enrichedUser, enrichedUser.role);
+                            console.log("CCC Dashboard: onAuthStateChanged - Calling initializeData..."); // LOG
 							const dataLoadedSuccessfully = await dashboardInstance.initializeData();
+                            console.log("CCC Dashboard: onAuthStateChanged - initializeData returned:", dataLoadedSuccessfully); // LOG
 
 							if (dataLoadedSuccessfully) {
-								dashboardInstance.init(); // This makes mainAppContainerEl display: flex and loads content
+                                console.log("CCC Dashboard: onAuthStateChanged - Calling dashboardInstance.init()."); // LOG
+								dashboardInstance.init();
 								dashboardInstance.applyRoleRestrictions();
+
 
 								let firstTabClicked = false;
 								const homeButton = dashboardInstance.getAppContainer()?.querySelector('#mmd_tabs button[data-page="home"]');
@@ -727,15 +762,16 @@ function showToast(msg, type = 'info', duration = 3500) {
 										setElementHTML(appContainer, "<div class='mmd_page active' style='padding:20px;text-align:center;'>No content available for your user role.</div>");
 									}
 								}
-							} else {
+					} else {
+                                console.log("CCC Dashboard: onAuthStateChanged - Data load FAILED. Logging out."); // LOG
 								showToast("Failed to load dashboard data. Logging out.", "error", 10000);
-								if (auth) auth.signOut(); // This will trigger onAuthStateChanged again with user=null
-								// No need to call displayLoginScreen here, onAuthStateChanged will handle it.
-								toggleSpinner(false); // Ensure spinner is off before returning
+								if (auth) auth.signOut();
+								toggleSpinner(false);
 								return;
 							}
 						} else { // Dashboard instance exists
-							console.log("Dashboard instance exists. Updating user/role and refreshing.");
+                            console.log("CCC Dashboard: onAuthStateChanged - Dashboard instance EXISTS. Updating user/role and refreshing."); //LOG
+     
 							dashboardInstance.user = enrichedUser;
 							dashboardInstance.role = enrichedUser.role;
 
@@ -1015,40 +1051,42 @@ function showToast(msg, type = 'info', duration = 3500) {
 			this.members = []; // Will be loaded from Firestore
 			this.deletedMembers = []; // Can also be loaded if needed for UI elsewhere
 			this.currentEditId = null;
-			this.householdsForRoute = [];
+		//	this.householdsForRoute = [];
+            this.selectedMemberIds = [];
 			this.filteredMembers = [];
 			this.currentReminderView = storage.load(REMINDER_VIEW_MODE_STORAGE_KEY, 'card');
 			const storedViewMode = storage.load(VIEW_MODE_STORAGE_KEY);
 			this.viewMode = storedViewMode || (window.innerWidth <= 768 ? 'card' : 'table');
-
+            this.favorites = storage.load('mmd_favorites', []);
 			// Note: init() which builds the UI will be called after data is loaded
 		}
 
 		async initializeData() {
+            console.log("CCC Dashboard: initializeData START");
 			if (!db) {
 				showToast("Error: Database service is not available. Cannot load member data.", "error", 10000);
 				document.body.innerHTML = "<p style='color:red; text-align:center; font-size:1.2em; padding:20px;'>Critical Error: Database service unavailable. Cannot start app.</p>";
+                console.error("CCC Dashboard: initializeData - db not available");
 				return false; // Indicate failure
 			}
 			try {
 				toggleSpinner(true); // Show spinner during data load
 				const membersSnapshot = await db.collection('members').get();
 				this.members = membersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-				this.filteredMembers = [...this.members]; // Initialize filteredMembers
-				console.log(`Members data loaded from Firestore: ${this.members.length} members.`);
+				console.log(`CCC Dashboard: initializeData - Members data loaded from Firestore: ${this.members.length} members.`); // LOG COUNT
+				this.filteredMembers = [...this.members];
+				console.log(`CCC Dashboard: initializeData - Initial filteredMembers count: ${this.filteredMembers.length}`); // LOG FILTERED COUNT
 
-				// Optionally load deleted members too if they are used globally
-				// const deletedSnapshot = await db.collection('deleted_members').get();
-				// this.deletedMembers = deletedSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
+                toggleSpinner(false);
+                console.log("CCC Dashboard: initializeData SUCCESS");
 				return true; // Indicate success
 			} catch (error) {
-				console.error("Error loading initial members data from Firestore:", error);
+				console.error("CCC Dashboard: initializeData - Error loading initial members data from Firestore:", error);
 				showToast("Failed to load essential member data. The application might not work correctly.", "error", 10000);
 				document.body.innerHTML = `<p style='color:red; text-align:center; font-size:1.2em; padding:20px;'>Critical Error: Could not load data from database. Details: ${error.message}</p>`;
+                toggleSpinner(false);
+                console.log("CCC Dashboard: initializeData FAILED");
 				return false; // Indicate failure
-			} finally {
-				toggleSpinner(false);
 			}
 		}
 //////////////////
@@ -1102,7 +1140,8 @@ function showToast(msg, type = 'info', duration = 3500) {
                     <div id="page_importExport" class="mmd_page admin-only"></div>
                     <div id="page_audit" class="mmd_page admin-only"></div>
                 </div>
-                <div id="mmd_toast_container"></div>`;
+                <!-- <div id="mmd_toast_container"></div> -->
+`;
             
             setElementHTML(appContainer, initialHTML);
             console.log("Dashboard UI injected into #mmd_container.");
@@ -1483,43 +1522,78 @@ function showToast(msg, type = 'info', duration = 3500) {
 			};
 		}
 		}
+////////////////////////////////////
 			
-		loadView() {
-			console.log("CCC Dashboard Web App v4.4.5: Loading View Members page...");
+loadView() {
+			console.log("CCC Dashboard: Restoring full loadView structure.");
 			const pageEl = document.getElementById('page_view');
 			if (!pageEl) {
 				showToast("Error: View page UI component missing.", "error");
+                console.error("CCC Dashboard: #page_view missing in loadView.");
 				return;
 			}
-			setElementHTML(pageEl, tpl.view); // This renders the HTML, including filter inputs
-			
-			  const contentEl = document.getElementById('view_content');
-  if (!contentEl) return;
 
-  const cardsHtml = this.filteredMembers.map(member => `
-    <div class="member-card">
-<div class="member-pic-wrapper">
-      <img src="${member.profilePictureUrl || this.DEFAULT_PROFILE_PIC_URL}" class="member-pic" alt="Profile">
-      <div class="member-basic">
-        <h3>${member.fullName}</h3>
-        <p>${member.homeGroup || 'Unknown Group'}</p>
-      </div>
-      <div class="member-details">
-        <p><strong>DOB:</strong> ${dateUtils.format(member.dob)}</p>
-        <p><strong>Gender:</strong> ${member.gender}</p>
-        <p><strong>Phone:</strong> ${member.phone}</p>
-        <p><strong>Email:</strong> ${member.email}</p>
-        <p><strong>Address:</strong> ${member.address}</p>
-        <p><strong>Marital:</strong> ${member.maritalStatus}</p>
-        <p><strong>Position:</strong> ${member.position}</p>
-        <p><strong>Baptism:</strong> ${member.baptismStatus}</p>
-      </div>
-    </div>
-  `).join('');
+            // Construct the full HTML for the view page, ensuring #view_content is definitely there
+            const fullViewHTML = `
+              <div id="member_view_controls">
+                <input type="search" id="member_search_input" placeholder="Search..." style="min-width:250px; flex-basis: 300px; margin-bottom:5px;">
+                <fieldset class="filter-group">
+                  <legend>Home Group</legend>
+                  <select id="member_filter_group"><option value="">All</option><option>A</option><option>B</option><option>C</option><option>D</option><option>Unknown</option></select>
+                </fieldset>
+                <fieldset class="filter-group">
+                  <legend>Position</legend>
+                  <select id="member_filter_position"><option value="">All</option><option>Member</option><option>Pastor</option><option>Deacon</option></select>
+                </fieldset>
+                <fieldset class="filter-group">
+                  <legend>Gender</legend>
+                  <select id="member_filter_gender"><option value="">All</option><option>Male</option><option>Female</option><option>Other</option></select>
+                </fieldset>
+                <fieldset class="filter-group">
+                  <legend>Marital Status</legend>
+                  <select id="member_filter_marital"><option value="">All</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option><option>Other</option></select>
+                </fieldset>
+                <button id="clear_member_filters_btn" class="generic_button_styles" style="padding:8px 12px; align-self:flex-end;">Clear Filters</button>
+                <button id="show_favorites_btn" class="generic_button_styles" style="padding:8px 12px; align-self:flex-end; background-color: #ffc107; color: #333;">
+                    ⭐ Show Favorites (<span id="fav_count">0</span>)
+                </button>
+              </div>
 
-  contentEl.innerHTML = `<div class="card-grid">${cardsHtml}</div>`;
+              <div id="route_planner_dynamic_bar" style="
+                    display: none;
+                    position: sticky;
+                    top: 0;
 
+                    padding: 10px;
+                    z-index: 999;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    text-align: center;
+                    border-bottom: 1px solid var(--sec);
+                ">
+                <span style="margin-right:15px; color: var(--fg); font-weight:bold;">
+                    Selected: <span id="dynamic_selected_count">0</span>
+                </span>
+                <div class="dynamic-button-group">
+                    <button id="btn_dynamic_generate_route" class="generic_button_styles" disabled>Plan Route</button>
+                    <button id="btn_dynamic_add_favorites" class="generic_button_styles" style="background-color: #ffc107; color: #333;" disabled>
+                        ⭐ Add to Favorites
+                    </button>
+                    <button id="btn_dynamic_clear_route" class="generic_button_styles danger">Clear Selection</button>
+                </div>
+              </div>
 
+              <button id="toggle_view" class="generic_button_styles" style="margin-bottom: 15px; margin-top:10px;">Toggle View</button>
+              
+              <div id="view_content">
+                </div>
+            `;
+			setElementHTML(pageEl, fullViewHTML);
+            console.log("CCC Dashboard: Full view HTML (from tpl.view structure) set in loadView.");
+
+            // Re-attach ALL listeners for the controls that are now part of fullViewHTML
+            // This is crucial because we've just replaced the DOM content of #page_view
+
+            // Toggle View Button
 			const toggleViewBtn = document.getElementById('toggle_view');
 			if (toggleViewBtn) {
 				toggleViewBtn.textContent = this.viewMode === 'card' ? 'Switch to Table View' : 'Switch to Card View';
@@ -1531,31 +1605,22 @@ function showToast(msg, type = 'info', duration = 3500) {
 				};
 			}
 
-			// --- Attach event listeners for search and filters ---
+			// Search and Filter Listeners
 			const searchInput = document.getElementById('member_search_input');
 			const groupFilterSelect = document.getElementById('member_filter_group');
 			const positionFilterSelect = document.getElementById('member_filter_position');
 			const genderFilterSelect = document.getElementById('member_filter_gender');
 			const maritalFilterSelect = document.getElementById('member_filter_marital');
 			const clearFiltersBtn = document.getElementById('clear_member_filters_btn');
+            const showFavoritesBtn = document.getElementById('show_favorites_btn');
 
-			// UNCOMMENT AND ACTIVATE THESE LISTENERS:
-			if (searchInput) {
-				searchInput.addEventListener('input', () => this.applyFiltersAndSearch());
-			}
-			if (groupFilterSelect) {
-				groupFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
-			}
-			if (positionFilterSelect) {
-				positionFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
-			}
-			if (genderFilterSelect) {
-				genderFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
-			}
-			if (maritalFilterSelect) {
-				maritalFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
-			}
-			if (clearFiltersBtn) {
+			if (searchInput) searchInput.addEventListener('input', () => this.applyFiltersAndSearch());
+			if (groupFilterSelect) groupFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
+			if (positionFilterSelect) positionFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
+			if (genderFilterSelect) genderFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
+			if (maritalFilterSelect) maritalFilterSelect.addEventListener('change', () => this.applyFiltersAndSearch());
+			
+            if (clearFiltersBtn) {
 				clearFiltersBtn.addEventListener('click', () => {
 					if (searchInput) searchInput.value = '';
 					if (groupFilterSelect) groupFilterSelect.value = '';
@@ -1565,156 +1630,190 @@ function showToast(msg, type = 'info', duration = 3500) {
 					this.applyFiltersAndSearch();
 				});
 			}
-			// --- End of attaching event listeners ---
+            if (showFavoritesBtn) {
+                showFavoritesBtn.addEventListener('click', () => this._showFavoritesModal());
+            }
 
-			const dynamicGenerateBtn = document.getElementById('btn_dynamic_generate_route');
+            // Dynamic Bar Button Listeners
+            const dynamicGenerateBtn = document.getElementById('btn_dynamic_generate_route');
+            const dynamicAddFavoritesBtn = document.getElementById('btn_dynamic_add_favorites');
+            const dynamicClearBtn = document.getElementById('btn_dynamic_clear_route');
+
 			if (dynamicGenerateBtn) {
-				// ... (your existing onclick logic for dynamicGenerateBtn) ...
-				 dynamicGenerateBtn.onclick = () => {
-					const initialPromptHTML = this.generateGoogleMapsRouteLink(true);
+				dynamicGenerateBtn.onclick = () => {
+                    // ... (Keep the logic from the previous response for this button) ...
+                    // This is the version for individual member selection:
+                    const selectedMembers = this.members.filter(m => this.selectedMemberIds.includes(m.id));
+					const processedAddresses = selectedMembers.map(m => {
+						if (!m.address || typeof m.address !== 'string' || m.address.trim() === '') return null;
+						return m.address.trim().replace(/^\/+/, '');
+					}).filter(Boolean);
 
-					if (!initialPromptHTML) {
-						showToast("Please select households to visit first.", "info");
-						return;
-					}
+					if (processedAddresses.length === 0) { /* ... error handling ... */ return; }
+                    if (processedAddresses.length < 2) { /* ... error handling ... */ return; }
+					if (processedAddresses.length > 25) { /* ... warning ... */ }
+
+					const initialPromptHTML = this.generateGoogleMapsRouteLink(true);
+					if (!initialPromptHTML) { /* ... error handling ... */ return; }
 
 					const modal = showModal(
-						"Plan Route - Final Destination",
-						initialPromptHTML,
-						[
-							{
-								label: "Open in Google Maps",
-								className: "generic_button_styles primary-action",
+						"Plan Route - Final Destination", initialPromptHTML,
+						[ { label: "Open in Google Maps", className: "generic_button_styles primary-action",
 								action: (modalInstance, modalContentScope) => {
 									const finalStopInput = modalContentScope.querySelector('#final_stop_input');
 									const userInputFinalDestination = finalStopInput ? finalStopInput.value : "";
-
-									const processedAddresses = this.householdsForRoute.map(hh => {
-										if (!hh.address || typeof hh.address !== 'string') return null;
-										try {
-											// Address should already be URI component encoded from checkbox data attr,
-											// but decode for processing then re-encode for URL construction
-											return decodeURIComponent(hh.address).trim().replace(/^\/+/, '');
-										} catch {
-											return null;
-										}
-									}).filter(Boolean);
-
-									if (processedAddresses.length === 0) {
-										showToast("No valid addresses selected.", "error");
-										return;
-									}
-									this._constructAndDisplayFinalRoute(
-										userInputFinalDestination,
-										processedAddresses,
-										modalInstance // Pass modalInstance to be closed
-									);
+									this._constructAndDisplayFinalRoute(userInputFinalDestination, processedAddresses, modalInstance );
 								}
 							},
-							{
-								label: "Cancel",
-								action: modalInstance => modalInstance.remove()
-							}
-						],
-						'modal-route-prompt'
-					);
-
-					const input = modal.querySelector('#final_stop_input');
-					const modalBody = modal.querySelector('.mmd_modal_body'); // Not used here currently but good to have
-
-					if (!input) {
-						showToast("Input field not found in modal.", "error");
-						return;
-					}
-					
-					input.addEventListener('keydown', (e) => {
-						if (e.key === 'Enter') {
-							e.preventDefault();
-							const userInputFinalDestination = input.value || "";
-							 const processedAddresses = this.householdsForRoute.map(hh => {
-								if (!hh.address || typeof hh.address !== 'string') return null;
-								try {
-									return decodeURIComponent(hh.address).trim().replace(/^\/+/, '');
-								} catch { return null; }
-							}).filter(Boolean);
-
-							if (processedAddresses.length === 0) {
-								showToast("No valid addresses selected for waypoints.", "error");
-								return;
-							}
-							this._constructAndDisplayFinalRoute(
-								userInputFinalDestination,
-								processedAddresses,
-								modal // Pass the whole modal overlay to be removed
-							);
-						}
-					});
+							{ label: "Cancel", action: modalInstance => modalInstance.remove() }
+						],'modal-route-prompt');
+                    const input = modal.querySelector('#final_stop_input');
+                    if(input) {
+                        input.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                const userInputFinalDestination = input.value || "";
+                                this._constructAndDisplayFinalRoute(userInputFinalDestination, processedAddresses, modal);
+                            }
+                        });
+                    }
 				};
 			}
-
-			const dynamicClearBtn = document.getElementById('btn_dynamic_clear_route');
+            if (dynamicAddFavoritesBtn) {
+                dynamicAddFavoritesBtn.onclick = () => this._addSelectedToFavorites();
+            }
 			if (dynamicClearBtn) {
 				dynamicClearBtn.onclick = () => {
-					this.householdsForRoute = [];
+					this.selectedMemberIds = [];
 					this.updateDynamicRouteBar();
-					this.updateViewMemberCheckboxes(); // Uncheck all visible checkboxes
-					showToast("Route selection cleared.", "info");
+					this.renderViewContent(); // Re-render to uncheck boxes
+					showToast("Selection cleared.", "info");
 				};
 			}
 
-			this.updateDynamicRouteBar(); // Initial update
-			this.applyFiltersAndSearch(); // Initial load of members view
+            // Initial setup calls
+            this._updateFavoritesCount();
+			this.updateDynamicRouteBar();
+			this.applyFiltersAndSearch(); // This will call the full renderViewContent
 		}
+
+///////////////////////////
+        _updateFavoritesCount() {
+            const countEl = document.getElementById('fav_count');
+            if (countEl) {
+                countEl.textContent = this.favorites.length;
+            }
+        }
+
+         _addSelectedToFavorites() {
+            if (this.selectedMemberIds.length === 0) { // <<< Use selectedMemberIds
+                showToast("Please select members first.", "info");
+                return;
+            }
+
+            let addedCount = 0;
+            this.selectedMemberIds.forEach(memberId => { // <<< Use selectedMemberIds
+                if (!this.favorites.includes(memberId)) {
+                    this.favorites.push(memberId);
+                    addedCount++;
+                }
+            });
+
+            if (addedCount > 0) {
+                storage.save('mmd_favorites', this.favorites);
+                this._updateFavoritesCount();
+                showToast(`${addedCount} member(s) added to favorites.`, "success");
+            } else {
+                showToast("Selected members are already in favorites.", "info");
+            }
+
+            // Clear the selection after adding
+            this.selectedMemberIds = []; // <<< Use selectedMemberIds
+            this.updateDynamicRouteBar();
+            this.renderViewContent();
+        }
+
+        _removeFavorite(memberId) {
+            this.favorites = this.favorites.filter(id => id !== memberId);
+            storage.save('mmd_favorites', this.favorites);
+            this._updateFavoritesCount();
+            this._showFavoritesModal(); // Refresh the modal to show the change
+            showToast("Removed from favorites.", "info");
+        }
+
+		_showFavoritesModal() {
+            const favoriteMembers = this.members.filter(m => this.favorites.includes(m.id));
+            let contentHTML = '<h4>Your Favorite Members</h4>';
+
+            if (favoriteMembers.length === 0) {
+                contentHTML += '<p>You have no favorite members yet.</p>';
+            } else {
+                contentHTML += '<ul style="list-style: none; padding: 0; max-height: 60vh; overflow-y: auto;">';
+                favoriteMembers.forEach(m => {
+                    contentHTML += `
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid var(--sec); padding-bottom: 10px;">
+                            <img src="${m.profilePictureUrl || this.DEFAULT_PROFILE_PIC_URL}" alt="${m.fullName}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+                            <div style="flex-grow: 1;">
+                                <strong>${m.fullName}</strong><br>
+                                <span style="font-size: 0.85em;">📞 ${m.phone || 'N/A'} |<br> 📍 ${m.address || 'N/A'}</span>
+                            </div>
+                            <button class="btn_remove_fav generic_button_styles danger" data-id="${m.id}" style="padding: 4px 8px; font-size: 0.75rem;">Remove</button>
+                        </li>`;
+                });
+                contentHTML += '</ul>';
+            }
+
+            const modal = showModal("Favorites", contentHTML, [{ label: "Close", action: (modal) => modal.remove() }]);
+
+            // Add listeners to remove buttons inside the newly created modal
+            modal.querySelectorAll('.btn_remove_fav').forEach(btn => {
+                btn.onclick = (e) => {
+                    // Prevent the modal from closing if the button action handles it
+                    e.stopPropagation();
+                    this._removeFavorite(e.target.dataset.id);
+                };
+            });
+        }
 
 	// --- NEW METHOD: Update Dynamic Route Planner Bar ---
 	updateDynamicRouteBar() {
 		const dynamicRouteBar = document.getElementById('route_planner_dynamic_bar');
 		const dynamicSelectedCountEl = document.getElementById('dynamic_selected_count');
 		const dynamicGenerateBtn = document.getElementById('btn_dynamic_generate_route');
+        const dynamicAddFavoritesBtn = document.getElementById('btn_dynamic_add_favorites');
 
-		if (!dynamicRouteBar || !dynamicSelectedCountEl || !dynamicGenerateBtn) {
-			// If these elements don't exist (e.g., not on View Members page), do nothing
+		if (!dynamicRouteBar || !dynamicSelectedCountEl || !dynamicGenerateBtn || !dynamicAddFavoritesBtn) {
 			return;
 		}
 
-		const selectedCount = this.householdsForRoute.length;
+		const selectedCount = this.selectedMemberIds.length; 
 		dynamicSelectedCountEl.textContent = selectedCount;
 
 		if (selectedCount > 0) {
-			dynamicRouteBar.style.display = 'block'; // Or 'flex' if you style it with flex
+			dynamicRouteBar.style.display = 'block';
 		} else {
 			dynamicRouteBar.style.display = 'none';
 		}
-		dynamicGenerateBtn.disabled = selectedCount < 2;
+		dynamicGenerateBtn.disabled = selectedCount < 2; // Route needs at least 2
+        dynamicAddFavoritesBtn.disabled = selectedCount < 1; // Favorites needs at least 1
 	}
 		  
 
-	toggleHouseholdForRoute(memberId, address, name, isChecked, householdId) {
-		console.log("Toggling household for route:", { memberId, name, isChecked, householdId });
-		const uniqueHouseholdKey = householdId || memberId;
+        toggleMemberSelection(memberId, isChecked) {
+            console.log("Toggling member selection:", { memberId, isChecked });
 
-		if (isChecked) {
-			if (!address || address.trim() === '' || address.trim() === 'undefined') {
-				showToast(`Member ${name} has no valid address for routing.`, "error");
-				const checkbox = document.querySelector(`.route-select-checkbox[data-member-id="${memberId}"]`);
-				if (checkbox) checkbox.checked = false;
-				this.updateDynamicRouteBar(); // Update bar even on error if a checkbox changed state
-				return;
-			}
-			if (!this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueHouseholdKey)) {
-				this.householdsForRoute.push({ 
-					id: memberId, 
-					address: address, 
-					name: name, 
-					householdId: householdId 
-				});
-			}
-		} else {
-			this.householdsForRoute = this.householdsForRoute.filter(hh => (hh.householdId || hh.id) !== uniqueHouseholdKey);
-		}
-		this.updateDynamicRouteBar(); // <--- CALL THIS to update visibility and count
-this.updateViewMemberCheckboxes();
-	}
+            if (isChecked) {
+                // Add member ID if it's not already there
+                if (!this.selectedMemberIds.includes(memberId)) {
+                    this.selectedMemberIds.push(memberId);
+                }
+            } else {
+                // Remove member ID
+                this.selectedMemberIds = this.selectedMemberIds.filter(id => id !== memberId);
+            }
+            // Update the dynamic bar (count and button states)
+            this.updateDynamicRouteBar();
+        }
 
 	updateRoutePlannerSelectionDisplay() {
 		const countEl = document.getElementById('selected_household_count');
@@ -1743,48 +1842,26 @@ this.updateViewMemberCheckboxes();
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	 
 
-	generateGoogleMapsRouteLink(forModal = true) { // Keep forModal or make it default
-		if (this.householdsForRoute.length === 0) {
-			showToast("Please select at least one household to visit.", "info");
-			return null; // Return null if no action taken
-		}
-		if (this.householdsForRoute.length > 25) {
-			showToast("Too many waypoints. Google Maps may limit the route.", "error", 6000);
-			return null;
-		}
+	generateGoogleMapsRouteLink(forModal = true) {
+        // We no longer need to calculate addresses here, just return the HTML.
+        // We removed the checks, as they are now done before calling this.
 
-		const finalProcessedAddresses = this.householdsForRoute.map(hh => {
-			if (!hh.address || typeof hh.address !== 'string') return null;
-			let decodedAddr = "";
-			try {
-				decodedAddr = decodeURIComponent(hh.address);
-			} catch (e) { return null; }
-			let cleanedAddr = decodedAddr.trim().replace(/^\/+/, ''); // Remove all leading slashes
-			return cleanedAddr.length > 0 ? cleanedAddr : null;
-		}).filter(addr => addr !== null);
-
-		if (finalProcessedAddresses.length === 0) {
-			showToast("No valid addresses to generate a route.", "error");
-			return null;
-		}
-
-		// --- Part 1: HTML for the initial prompt ---
-	const promptHTML = `
-	  <div id="route_destination_prompt_content">
-		<label style="font-size:1em; font-weight:bold;">A donghnak na kalduhnak address:</label><br>
-		<input id="final_stop_input" type="text" placeholder="e.g., Nan inn address si lo le a hnubik na kalduhnak" 
-			   style="width:100%; padding:8px; margin-bottom:10px; box-sizing:border-box;">
-		<p style="font-size:0.8em; color:var(--fg-muted); margin-bottom:15px;">
-		  A donghnak ah inn ah ṭin an duh a si ahcun nan inn address ka hin ṭial, zeihmanh na ṭial lo ahcun biakinn ah an kir pi lai 
-		</p>
-	  </div>
-	  <div id="final_route_output_area" style="margin-top:15px;"></div>
-	`;
+		const promptHTML = `
+	        <div id="route_destination_prompt_content">
+		        <label style="font-size:1em; font-weight:bold;">A donghnak na kalduhnak address:</label><br>
+		        <input id="final_stop_input" type="text" placeholder="e.g., Nan inn address si lo le a hnubik na kalduhnak"
+			           style="width:100%; padding:8px; margin-bottom:10px; box-sizing:border-box;">
+		        <p style="font-size:0.8em; color:var(--fg-muted); margin-bottom:15px;">
+		          A donghnak ah inn ah ṭin an duh a si ahcun nan inn address ka hin ṭial, zeihmanh na ṭial lo ahcun biakinn ah an kir pi lai
+		        </p>
+	        </div>
+	        <div id="final_route_output_area" style="margin-top:15px;"></div>
+	    `;
 
 		if (forModal) {
-			return promptHTML; // Return the HTML for the first stage of the modal
+			return promptHTML; // Return the HTML for the modal
 		} else {
-			// Fallback for non-modal use (not currently used with this new flow)
+			// This 'else' part is likely not used now, but kept for safety.
 			const outputDiv = document.getElementById('route_link_output_on_some_page');
 			if (outputDiv) setElementHTML(outputDiv, promptHTML);
 			return null;
@@ -1831,7 +1908,7 @@ this.updateViewMemberCheckboxes();
 	  }
 	}
 
-	updateViewMemberCheckboxes() {
+/*	updateViewMemberCheckboxes() {
 		// This function is called by renderViewContent or when clearing selection
 		document.querySelectorAll('.route-select-checkbox').forEach(cb => {
 			const memberId = cb.dataset.memberId;
@@ -1840,6 +1917,7 @@ this.updateViewMemberCheckboxes();
 			cb.checked = this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueKey);
 		});
 	}
+*/
 
 	///////////////////////////////////////////////////
 
@@ -2746,17 +2824,23 @@ const childData = {
 
 /////////////////////////////////
 
-		// Inside class Dashboard:
 renderViewContent() {
-			console.log(`CCC Dashboard Web App v4.4.5: Rendering View content in ${this.viewMode} mode...`);
+			console.log("CCC Dashboard: Rendering View content. Mode:", this.viewMode, "Selected Members:", this.selectedMemberIds.length, "Members to display:", this.filteredMembers ? this.filteredMembers.length : 'N/A');
 			const membersToDisplay = this.filteredMembers;
 			const cont = document.getElementById('view_content');
 
 			if (!cont) {
-				console.error("View content container #view_content not found.");
+				console.error("CCC Dashboard: View content container #view_content not found.");
 				showToast("Error: View content UI area missing.", "error");
 				return;
 			}
+
+            if (!membersToDisplay || !Array.isArray(membersToDisplay)) {
+                 console.error("CCC Dashboard: membersToDisplay is not a valid array in renderViewContent:", membersToDisplay);
+                 setElementHTML(cont, "<p class='info-message'>Error: Member data is currently unavailable for display. Please try reloading or check console.</p>");
+                 this.updateDynamicRouteBar();
+                 return;
+            }
 
 			if (membersToDisplay.length === 0) {
 				setElementHTML(cont, "<p class='info-message'>No members match the current filters or search.</p>");
@@ -2764,139 +2848,157 @@ renderViewContent() {
 				return;
 			}
 
-            // --- NEW: Create a map for quick household address lookup ---
-            const householdAddresses = this.members.reduce((acc, member) => {
-                const hhId = member.householdId || member.id;
-                // Prefer Head's address, otherwise take the first valid one found.
-                if (member.isHouseholdHead && member.address && member.address.trim() !== '') {
-                    acc[hhId] = member.address.trim();
-                } else if (!acc[hhId] && member.address && member.address.trim() !== '') {
-                    acc[hhId] = member.address.trim();
-                }
-                return acc;
-            }, {});
-            // --- END: New map ---
+            const defaultPic = this.DEFAULT_PROFILE_PIC_URL;
+            const isAdmin = this.role === 'admin'; // Check user role once
 
 			if (this.viewMode === 'card') {
-               cont.className = 'card_view';
-                let cardsHTML = membersToDisplay.map(m => {
-                    const uniqueHouseholdKey = m.householdId || m.id;
-                    const householdAddress = householdAddresses[uniqueHouseholdKey]; // Lookup address
-                    const canBeRouted = !!householdAddress; // Check if household address exists
-                    const isSelectedForRoute = this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueHouseholdKey);
-                    let checkboxHTML = '';
+                cont.className = 'card_view';
+                let cardsHTML = "";
+                try {
+                    cardsHTML = membersToDisplay.map(m => {
+                        if (!m || !m.id) {
+                            console.warn("Skipping invalid member object in card view map:", m);
+                            return '';
+                        }
+                        const canBeRouted = m.address && m.address.trim() !== '';
+                        const isSelected = this.selectedMemberIds.includes(m.id);
+                        let checkboxHTML = '';
 
-                    if (canBeRouted) { // Show if household has an address
-                        checkboxHTML = `
-                            <div style="position: absolute; top: 5px; right: 5px; background: rgba(255,255,255,0.7); padding: 3px; border-radius: 3px; z-index: 5;">
-                                <input type="checkbox" class="route-select-checkbox"
-                                       data-member-id="${m.id}"
-                                       data-address="${encodeURIComponent(householdAddress)}"
-                                       data-name="${encodeURIComponent(m.fullName)}"
-                                       data-household-id="${uniqueHouseholdKey}"
-                                       ${isSelectedForRoute ? 'checked' : ''}
-                                       title="Add/Remove Household from Route">
+                        if (canBeRouted) {
+                            checkboxHTML = `
+                                <div style="position: absolute; top: 5px; right: 5px; background: rgba(255,255,255,0.7); padding: 3px; border-radius: 3px; z-index: 5;">
+                                    <input type="checkbox" class="route-select-checkbox"
+                                           data-member-id="${m.id}"
+                                           data-address="${encodeURIComponent(m.address || '')}"
+                                           data-name="${encodeURIComponent(m.fullName || '')}"
+                                           ${isSelected ? 'checked' : ''}
+                                           title="Select Member">
+                                </div>`;
+                        }
+
+                        let dobDisplayCard = '';
+                        if (isAdmin) {
+                            dobDisplayCard = `<strong>DOB:</strong> ${dateUtils.format(m.dob)} | `;
+                        }
+
+                        return `
+                            <div class="member-card" data-id="${m.id}" style="position: relative;">
+                              ${checkboxHTML}
+                              <img src="${m.profilePictureUrl || defaultPic}" class="member_profile_pic" alt="${m.fullName || 'Profile'}">
+                              <div class="basic-info">
+                                <h4>${m.fullName || 'N/A'}</h4>
+                                <p><strong>Age:</strong> ${dateUtils.age(m.dob)}</p>
+                                <p><strong>Group:</strong> ${m.homeGroup || 'N/A'}</p>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                                  <button type="button" class="toggle-details-btn generic_button_styles">▼ Show More</button>
+                                  ${m.householdId && this.members.filter(f => f.householdId === m.householdId).length > 1 ? `
+                                    <button class="view-family-btn generic_button_styles" data-member-id="${m.id}" data-household-id="${m.householdId || m.id}"">
+                                      👨‍👩‍👧 View Family
+                                    </button>
+                                  ` : ''}
+                                </div>
+                                <div class="member-details">
+                                  <p>${dobDisplayCard}<strong>Gender:</strong> ${m.gender || 'N/A'}</p>
+                                  <p><strong>Position:</strong> ${m.position || 'N/A'}</p>
+                                  <p><strong>Marital:</strong> ${m.maritalStatus || 'N/A'}</p>
+                                  <p>📞 <a href="tel:${m.phone}">${m.phone || 'N/A'}</a></p>
+                                  <p>✉️ <a href="mailto:${m.email}">${m.email || 'N/A'}</a></p>
+                                  <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank">${m.address || 'N/A'}</a></p>
+                                  <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--sec); text-align: right;">
+                                      <button class="btn_edit_member generic_button_styles" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Edit</button>
+                                      <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Delete</button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>`;
-                    }
-
-                    return `
-                        <div class="member-card" data-id="${m.id}" style="position: relative;">
-                          ${checkboxHTML}
-                          <img src="${m.profilePictureUrl || 'default.png'}" class="member_profile_pic">
-                          <div class="basic-info">
-                            <h4>${m.fullName}</h4>
-                            <p><strong>Age:</strong> ${dateUtils.age(m.dob)}</p>
-                            <p><strong>Group:</strong> ${m.homeGroup || 'N/A'}</p>
-                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
-                              <button type="button" class="toggle-details-btn generic_button_styles">▼ Show More</button>
-                              ${m.householdId && this.members.filter(f => f.householdId === m.householdId).length > 1 ? `
-                                <button class="view-family-btn generic_button_styles" data-member-id="${m.id}" data-household-id="${m.householdId || m.id}"">
-                                  👨‍👩‍👧 View Family
-                                </button>
-                              ` : ''}
-                            </div>
-                            <div class="member-details">
-                              <p><strong>DOB:</strong> ${dateUtils.format(m.dob)} | <strong>Gender:</strong> ${m.gender}</p>
-                              <p><strong>Position:</strong> ${m.position}</p>
-                              <p><strong>Marital:</strong> ${m.maritalStatus || 'N/A'}</p>
-                              <p>📞 <a href="tel:${m.phone}">${m.phone || 'N/A'}</a></p>
-                              <p>✉️ <a href="mailto:${m.email}">${m.email || 'N/A'}</a></p>
-                              <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank">${m.address || 'N/A'}</a></p>
-
-                              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--sec); text-align: right;">
-                                  <button class="btn_edit_member generic_button_styles" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Edit</button>
-                                  <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Delete</button>
-                              </div>
-                              </div>
-                          </div>
-                        </div>`;
-                }).join('');
-                setElementHTML(cont, cardsHTML);
-                // Ensure family buttons work (assuming bindViewFamilyButtonsWhenReady exists and works)
-                if (typeof bindViewFamilyButtonsWhenReady === 'function') {
-                   bindViewFamilyButtonsWhenReady();
+                    }).join('');
+                } catch (mapError) {
+                    console.error("CCC Dashboard: Error during card HTML generation:", mapError);
+                    setElementHTML(cont, "<p class='info-message'>Error displaying member cards. Check console.</p>");
+                    this.updateDynamicRouteBar();
+                    return;
                 }
+                setElementHTML(cont, cardsHTML);
+                if (typeof bindViewFamilyButtonsWhenReady === 'function') { bindViewFamilyButtonsWhenReady(); }
 
 			} else { // Table view
 				cont.className = '';
-				let rowsHTML = membersToDisplay.map(m => {
-					let relationshipDisplay = '';
-					const head = m.householdId ? this.members.find(headMember => headMember.id === m.householdId && headMember.isHouseholdHead) : null;
-					const headName = head ? head.fullName : 'N/A';
+                let rowsHTML = "";
+                try {
+                    rowsHTML = membersToDisplay.map(m => {
+                        if (!m || !m.id) {
+                            console.warn("Skipping invalid member object in table view map:", m);
+                            return '';
+                        }
+                        let relationshipDisplay = '';
+                        const head = m.householdId ? this.members.find(headMember => headMember.id === m.householdId && headMember.isHouseholdHead) : null;
+                        const headName = head ? head.fullName : 'N/A';
 
-					if (m.isHouseholdHead) {
-						relationshipDisplay = "Head of Household";
-						if ((m.maritalStatus === "Married" || m.marital === "Married") && m.spouseId) {
-							const spouse = this.members.find(sp => sp.id === m.spouseId);
-							relationshipDisplay += ` (Spouse: ${spouse ? spouse.fullName : 'Linked'})`;
-						}
-					} else if (m.relationshipToHead === 'Spouse' && head) {
-						relationshipDisplay = `Spouse of ${headName}`;
-					} else if (m.relationshipToHead === 'Child' && head) {
-						relationshipDisplay = `Child of ${headName}`;
-					} else if (m.relationshipToHead && head) {
-						relationshipDisplay = `${m.relationshipToHead} of ${headName}`;
-					} else if (m.relationshipToHead) {
-						relationshipDisplay = m.relationshipToHead;
-					} else {
-						relationshipDisplay = "Member";
-					}
+                        if (m.isHouseholdHead) {
+                            relationshipDisplay = "Head of Household";
+                            if ((m.maritalStatus === "Married" || m.marital === "Married") && m.spouseId) {
+                                const spouse = this.members.find(sp => sp.id === m.spouseId);
+                                relationshipDisplay += ` (Spouse: ${spouse && spouse.fullName ? spouse.fullName : 'Linked'})`;
+                            }
+                        } else if (m.relationshipToHead === 'Spouse' && head) {
+                            relationshipDisplay = `Spouse of ${headName}`;
+                        } else if (m.relationshipToHead === 'Child' && head) {
+                            relationshipDisplay = `Child of ${headName}`;
+                        } else if (m.relationshipToHead && head) {
+                            relationshipDisplay = `${m.relationshipToHead} of ${headName}`;
+                        } else if (m.relationshipToHead) {
+                            relationshipDisplay = m.relationshipToHead;
+                        } else {
+                            relationshipDisplay = "Member";
+                        }
 
-                    const uniqueHouseholdKey = m.householdId || m.id;
-                    const householdAddress = householdAddresses[uniqueHouseholdKey]; // Lookup address
-					const canBeRouted = !!householdAddress; // Check if household address exists
-					const isSelectedForRoute = this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueHouseholdKey);
-					let checkboxHTML = '';
+                        const canBeRouted = m.address && m.address.trim() !== '';
+                        const isSelected = this.selectedMemberIds.includes(m.id);
+                        let checkboxHTML = '';
 
-					if (canBeRouted) { // Show if household has an address
-						checkboxHTML = `<input type="checkbox" class="route-select-checkbox"
-												data-member-id="${m.id}"
-												data-address="${encodeURIComponent(householdAddress)}"
-												data-name="${encodeURIComponent(m.fullName)}"
-												data-household-id="${uniqueHouseholdKey}"
-												${isSelectedForRoute ? 'checked' : ''}>`;
-					}
+                        if (canBeRouted) {
+                            checkboxHTML = `<input type="checkbox" class="route-select-checkbox"
+                                                    data-member-id="${m.id}"
+                                                    data-address="${encodeURIComponent(m.address || '')}"
+                                                    data-name="${encodeURIComponent(m.fullName || '')}"
+                                                    ${isSelected ? 'checked' : ''}>`;
+                        }
 
-					return `
-					  <tr data-id="${m.id}">
-						<td style="text-align:center; vertical-align:middle; width:40px;">${checkboxHTML}</td>
-						<td>
-						  ${m.profilePictureUrl ? `<img src="${m.profilePictureUrl}" alt="Profile of ${m.fullName}" style="width:45px;height:45px;border-radius:50%;object-fit:cover;">` : ''}
-						</td>
-						<td>${m.fullName}</td>
-						<td>${relationshipDisplay}</td>
-						<td>${dateUtils.format(m.dob)}</td><td>${dateUtils.age(m.dob)}</td><td>${m.gender}</td>
-						<td>${m.maritalStatus || m.marital || 'N/A'}</td>
-						<td><a href="tel:${m.phone}" class="contact-link">${m.phone||'N/A'}</a></td>
-						<td><a href="mailto:${m.email}" class="contact-link">${m.email||'N/A'}</a></td>
-						<td><a class="map-link contact-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank" rel="noopener noreferrer">${m.address||'N/A'}</a></td>
-						<td>${dateUtils.format(m.joinDate || m.join)}</td><td>${m.position}</td><td>${m.homeGroup||'N/A'}</td>
-						<td>
-						  <button class="btn_edit_member generic_button_styles" data-id="${m.id}" style="padding:5px 8px;font-size:0.8rem;">Edit</button>
-						  <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 8px;font-size:0.8rem;">Delete</button>
-						</td>
-					  </tr>`;
-				}).join('');
+                        let dobDisplayTable = 'Restricted';
+                        if (isAdmin) {
+                            dobDisplayTable = dateUtils.format(m.dob);
+                        }
+
+                        return `
+                          <tr data-id="${m.id}">
+                            <td style="text-align:center; vertical-align:middle; width:40px;">${checkboxHTML}</td>
+                            <td>
+                              <img src="${m.profilePictureUrl || defaultPic}" alt="Profile of ${m.fullName || ''}" style="width:45px;height:45px;border-radius:50%;object-fit:cover;">
+                            </td>
+                            <td>${m.fullName || 'N/A'}</td>
+                            <td>${relationshipDisplay}</td>
+                            <td>${dobDisplayTable}</td>
+                            <td>${dateUtils.age(m.dob)}</td>
+                            <td>${m.gender || 'N/A'}</td>
+                            <td>${m.maritalStatus || m.marital || 'N/A'}</td>
+                            <td><a href="tel:${m.phone}" class="contact-link">${m.phone||'N/A'}</a></td>
+                            <td><a href="mailto:${m.email}" class="contact-link">${m.email||'N/A'}</a></td>
+                            <td><a class="map-link contact-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank" rel="noopener noreferrer">${m.address||'N/A'}</a></td>
+                            <td>${dateUtils.format(m.joinDate || '')}</td>
+                            <td>${m.position || 'N/A'}</td>
+                            <td>${m.homeGroup||'N/A'}</td>
+                            <td>
+                              <button class="btn_edit_member generic_button_styles" data-id="${m.id}" style="padding:5px 8px;font-size:0.8rem;">Edit</button>
+                              <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 8px;font-size:0.8rem;">Delete</button>
+                            </td>
+                          </tr>`;
+                    }).join('');
+                } catch (mapError) {
+                    console.error("CCC Dashboard: Error during table row HTML generation:", mapError);
+                    setElementHTML(cont, "<p class='info-message'>Error displaying member table. Check console.</p>");
+                    this.updateDynamicRouteBar();
+                    return;
+                }
 
 				setElementHTML(cont, `<table id="mmd_table" class="sortable-theme-bootstrap" data-sortable>
 										<thead><tr>
@@ -2921,11 +3023,7 @@ renderViewContent() {
 				viewContentContainer.querySelectorAll('.route-select-checkbox').forEach(checkbox => {
 					checkbox.onchange = (e) => {
 						const memberId = e.target.dataset.memberId;
-						const address = e.target.dataset.address;
-						const name = decodeURIComponent(e.target.dataset.name);
-						const householdId = e.target.dataset.householdId;
-                        // Use the unique household key for toggling
-						this.toggleHouseholdForRoute(memberId, address, name, e.target.checked, householdId);
+						this.toggleMemberSelection(memberId, e.target.checked);
 					};
 				});
 
@@ -2936,14 +3034,10 @@ renderViewContent() {
 					btn.onclick = (e) => this.deleteMember(e.target.dataset.id);
 				});
 				viewContentContainer.querySelectorAll('.view-family-btn').forEach(btn => {
-                    // Pass householdId if available, otherwise memberId
 					btn.onclick = (e) => this._showFamilyModal(e.target.dataset.householdId || e.target.dataset.memberId);
 				});
-                // Add card view specific listeners if needed (like toggle details)
-   
 			}
 			this.updateDynamicRouteBar();
-            this.updateViewMemberCheckboxes(); // Ensure checkboxes are synced on initial render
 		}
 
 ///////////////////////
@@ -3417,50 +3511,48 @@ renderViewContent() {
 	}
 
 	renderReminders() {
-		console.log("CCC Dashboard Web App v4.4.5: renderReminders() called. View mode:", this.currentReminderView);
+		console.log("CCC Dashboard: renderReminders() called. View mode:", this.currentReminderView);
 		const listBirthEl = document.getElementById('list_birth');
 		const listAnniversaryEl = document.getElementById('list_anniversary');
 		const birthdayRangeSelect = document.getElementById('sel_birthday_range');
 		const anniversaryRangeSelect = document.getElementById('sel_anniversary_range');
 
 		if (!listBirthEl || !listAnniversaryEl || !birthdayRangeSelect || !anniversaryRangeSelect) {
-			console.error("One or more critical elements for rendering reminders are missing.");
+			console.error("CCC Dashboard: One or more critical elements for rendering reminders are missing.");
 			showToast("Error: Reminder display elements are missing.", "error");
 			return;
 		}
 		const birthdayRange = parseInt(birthdayRangeSelect.value);
 		const anniversaryRange = parseInt(anniversaryRangeSelect.value);
+        const isAdmin = this.role === 'admin'; // Check user role once
 
 		let upcomingBirthdays = [];
 		try {
 			upcomingBirthdays = this.members
+				.filter(m => m && m.dob) // Ensure member and dob exist
 				.map(m => {
-					if (!m || !m.dob) return null;
 					const eventDate = dateUtils.upcomingBirthday(m.dob);
 					return eventDate ? { ...m, type: 'birthday', eventDate } : null;
 				})
 				.filter(m => m && m.eventDate && dateUtils.inRange(m.eventDate, birthdayRange))
 				.sort((a, b) => a.eventDate - b.eventDate);
 		} catch (e) {
-			console.error("Error processing upcoming birthdays:", e);
+			console.error("CCC Dashboard: Error processing upcoming birthdays:", e);
 			if(listBirthEl) setElementHTML(listBirthEl, "<p class='info-message'>Error loading birthday data.</p>");
 		}
 
 		let upcomingAnniversaries = [];
 		try {
 			upcomingAnniversaries = this.members
+                .filter(m => m && m.joinDate) // Ensure member and joinDate exist
 				.map(m => {
-                    // ================= FIX: Use m.joinDate instead of m.join =================
-					if (!m || !m.joinDate) return null;
 					const anni = dateUtils.upcomingAnniversary(m.joinDate);
-                    // =========================================================================
 					return anni ? { ...m, type: 'anniversary', eventDate: anni.date, years: anni.years } : null;
 				})
 				.filter(m => m && m.eventDate && dateUtils.inRange(m.eventDate, anniversaryRange))
 				.sort((a, b) => a.eventDate - b.eventDate);
-            console.log("Filtered Anniversaries:", upcomingAnniversaries); // For debugging
 		} catch(e) {
-			console.error("Error processing upcoming anniversaries:", e);
+			console.error("CCC Dashboard: Error processing upcoming anniversaries:", e);
 			if(listAnniversaryEl) setElementHTML(listAnniversaryEl, "<p class='info-message'>Error loading anniversary data.</p>");
 		}
 
@@ -3468,91 +3560,99 @@ renderViewContent() {
 		if (badge) badge.textContent = (upcomingBirthdays.length + upcomingAnniversaries.length).toString();
 
 		const renderItems = (items, containerEl, type) => {
-			if(!containerEl) { console.error(`Container element for reminder type "${type}" not found.`); return; }
-			setElementHTML(containerEl, ''); // Clear existing
+			if(!containerEl) { console.error(`CCC Dashboard: Container element for reminder type "${type}" not found.`); return; }
+			setElementHTML(containerEl, '');
 			containerEl.className = this.currentReminderView === 'card' ? 'card_view' : 'reminder-list-view';
 
 			if (items.length === 0) {
 				setElementHTML(containerEl, `<p class="info-message">No upcoming ${type}s in the selected range.</p>`); return;
 			}
 			items.forEach(m => {
-				if (!m || !m.eventDate) { console.warn("Skipping malformed reminder item:", m); return; }
+				if (!m || !m.eventDate || !m.id) { // Added !m.id check
+                    console.warn("Skipping malformed reminder item:", m);
+                    return;
+                }
 				const reminderId = `${type}_${m.id}_${m.eventDate.toISOString().split('T')[0]}`;
 				const isAcknowledged = storage.sessionLoad(REMINDER_ACK_STORAGE_KEY_PREFIX + reminderId, false);
 				const ageOrYears = type === 'birthday' ? (dateUtils.age(m.dob) + 1) : m.years;
-                // ================= FIX: Use m.joinDate for display =================
 				const eventLabel = type === 'birthday' ? `Birthday: ${dateUtils.format(m.eventDate)} <br> (Turns ${ageOrYears})` : `Anniversary: ${dateUtils.format(m.eventDate)} <br> (${m.years} years)`;
-                const joinOrDobLabel = type === 'birthday' ? `DOB: ${dateUtils.format(m.dob)}` : `Joined: ${dateUtils.format(m.joinDate)}`; // <-- Use joinDate
-                // =====================================================================
-				const icon = type === 'birthday' ? '🎂' : '🎉';
+                const icon = type === 'birthday' ? '🎂' : '🎉';
 				const itemDiv = document.createElement('div'); itemDiv.dataset.reminderId = reminderId;
 				if(isAcknowledged) itemDiv.classList.add('acknowledged');
 
-                // ================= ADD: Profile Picture Source =====================
                 const imgSrc = m.profilePictureUrl || this.DEFAULT_PROFILE_PIC_URL;
-                // =====================================================================
+
+                let dobOrJoinedInfoForReminder = '';
+                if (type === 'birthday') {
+                    if (isAdmin) {
+                        dobOrJoinedInfoForReminder = `DOB: ${dateUtils.format(m.dob)}`;
+                    } else {
+                        dobOrJoinedInfoForReminder = 'Birthday';
+                    }
+                } else { // Anniversary
+                    dobOrJoinedInfoForReminder = `Joined: ${dateUtils.format(m.joinDate)}`;
+                }
 
 				let itemHTML = '';
 				if (this.currentReminderView === 'card') {
 					itemDiv.className = `member_card ${isAcknowledged ? 'acknowledged' : ''}`;
-                    // ================= ADD: Profile Pic & Update HTML ==================
 					itemHTML = `
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                            <img src="${imgSrc}" alt="${m.fullName}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--sec);">
-                            <h4 style="flex-grow: 1; margin: 0;">${m.fullName} ${icon}</h4>
+                            <img src="${imgSrc}" alt="${m.fullName || ''}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--sec);">
+                            <h4 style="flex-grow: 1; margin: 0;">${m.fullName || 'N/A'} ${icon}</h4>
                         </div>
                         <p>${eventLabel}</p>
                         <p>📞 <a href="tel:${m.phone}" class="contact-link">${m.phone||'N/A'}</a></p>
                         <p>🏠 Group: ${m.homeGroup||'N/A'}</p>
-                        <p>${joinOrDobLabel}</p>
+                        <p>(${dobOrJoinedInfoForReminder})</p>
                         <div class="actions" style="margin-top:10px;">
                             <button class="btn_ack_reminder generic_button_styles" ${isAcknowledged ? 'disabled' : ''}>Acknowledge</button>
                         </div>`;
-                    // =====================================================================
 				} else { // list view
 					itemDiv.className = `reminder-list-item ${isAcknowledged ? 'acknowledged' : ''}`;
-                    // ================= ADD: Profile Pic & Update HTML ==================
 					itemHTML = `
-                        <img src="${imgSrc}" alt="${m.fullName}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                        <img src="${imgSrc}" alt="${m.fullName || ''}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                         <div style="flex: 1; margin-left: 10px; font-size: 0.9rem;">
-                            <strong>${m.fullName}</strong> ${icon}<br> (${joinOrDobLabel})
+                            <strong>${m.fullName || 'N/A'}</strong> ${icon}<br> (${dobOrJoinedInfoForReminder})
                             <br>${eventLabel}<br>
                             📞 ${m.phone||'N/A'} | 🏠 ${m.homeGroup||'N/A'}
                         </div>
                         <div class="actions">
                             <button class="btn_ack_reminder generic_button_styles" ${isAcknowledged ? 'disabled' : ''}>Acknowledge</button>
                         </div>`;
-                    itemDiv.style.display = 'flex'; // Ensure flex layout for list items
+                    itemDiv.style.display = 'flex';
                     itemDiv.style.alignItems = 'center';
-                    // =====================================================================
 				}
 				setElementHTML(itemDiv, itemHTML);
 				containerEl.appendChild(itemDiv);
 
 				const ackButton = itemDiv.querySelector('.btn_ack_reminder');
-				if (ackButton && !isAcknowledged) {
-					ackButton.onclick = () => {
-						storage.sessionSave(REMINDER_ACK_STORAGE_KEY_PREFIX + reminderId, true);
-						itemDiv.classList.add('acknowledged');
-						ackButton.disabled = true;
-						ackButton.textContent = 'Acknowledged';
-						showToast(`${m.fullName}'s ${type} acknowledged.`, 'success');
-					};
-				} else if (ackButton && isAcknowledged) {
-					 ackButton.textContent = 'Acknowledged';
+				if (ackButton) { // Simpler check
+                    if (isAcknowledged) {
+                        ackButton.disabled = true;
+                        ackButton.textContent = 'Acknowledged';
+                    } else {
+                        ackButton.onclick = () => {
+                            storage.sessionSave(REMINDER_ACK_STORAGE_KEY_PREFIX + reminderId, true);
+                            itemDiv.classList.add('acknowledged');
+                            ackButton.disabled = true;
+                            ackButton.textContent = 'Acknowledged';
+                            showToast(`${m.fullName || 'Member'}'s ${type} acknowledged.`, 'success');
+                        };
+                    }
 				}
 			});
 		};
 
-		try { renderItems(upcomingBirthdays, listBirthEl, 'birthday'); } catch (e) { console.error("Error rendering birthday items:", e); if(listBirthEl) setElementHTML(listBirthEl, "<p class='info-message'>Error displaying birthday reminders.</p>"); }
-		try { renderItems(upcomingAnniversaries, listAnniversaryEl, 'anniversary'); } catch(e) { console.error("Error rendering anniversary items:", e); if(listAnniversaryEl) setElementHTML(listAnniversaryEl, "<p class='info-message'>Error displaying anniversary reminders.</p>"); }
-		console.log("CCC Dashboard Web App v4.4.5: renderReminders() completed.");
+		try { renderItems(upcomingBirthdays, listBirthEl, 'birthday'); } catch (e) { console.error("CCC Dashboard: Error rendering birthday items:", e); if(listBirthEl) setElementHTML(listBirthEl, "<p class='info-message'>Error displaying birthday reminders.</p>"); }
+		try { renderItems(upcomingAnniversaries, listAnniversaryEl, 'anniversary'); } catch(e) { console.error("CCC Dashboard: Error rendering anniversary items:", e); if(listAnniversaryEl) setElementHTML(listAnniversaryEl, "<p class='info-message'>Error displaying anniversary reminders.</p>"); }
+		console.log("CCC Dashboard: renderReminders() completed.");
 	}
 
 //////////////////////////////////////////
 
 	applyFiltersAndSearch() {
-		console.log("CCC Dashboard Web App v4.4.5: Applying filters and search...");
+        console.log("CCC Dashboard: applyFiltersAndSearch called. Total members:", this.members ? this.members.length : 'N/A');
 		const searchTermElement = document.getElementById('member_search_input');
 		const groupFilterElement = document.getElementById('member_filter_group');
 		const positionFilterElement = document.getElementById('member_filter_position');
@@ -3565,28 +3665,34 @@ renderViewContent() {
 		const filterGender = genderFilterElement ? genderFilterElement.value : '';
 		const filterMarital = maritalFilterElement ? maritalFilterElement.value : '';
 
-		this.filteredMembers = this.members.filter(member => {
-			// Search term logic
-			const nameMatch = member.fullName ? member.fullName.toLowerCase().includes(searchTerm) : false;
-			const emailMatch = member.email ? member.email.toLowerCase().includes(searchTerm) : false;
-			const phoneMatch = member.phone ? member.phone.toLowerCase().includes(searchTerm) : false;
-			const addressMatch = member.addr ? member.addr.toLowerCase().includes(searchTerm) : false;
-			const idMatch = member.id ? member.id.toLowerCase().includes(searchTerm) : false;
-			
-			const matchesSearch = searchTerm === '' || nameMatch || emailMatch || phoneMatch || addressMatch || idMatch;
+        if (!this.members || !Array.isArray(this.members)) {
+            console.error("CCC Dashboard: this.members is not available or not an array in applyFiltersAndSearch!");
+            this.filteredMembers = [];
+        } else {
+            this.filteredMembers = this.members.filter(member => {
+                if (!member) return false; // Should not happen if data is clean
 
-			// Filter logic
-			const matchesGroup = filterGroup === '' || (member.homeGroup || 'Unknown') === filterGroup;
-			const matchesPosition = filterPosition === '' || member.position === filterPosition;
-			const matchesGender = filterGender === '' || member.gender === filterGender;
-			const matchesMarital = filterMarital === '' || member.marital === filterMarital;
+                const nameMatch = member.fullName ? member.fullName.toLowerCase().includes(searchTerm) : false;
+                const emailMatch = member.email ? member.email.toLowerCase().includes(searchTerm) : false;
+                const phoneMatch = member.phone ? member.phone.toLowerCase().includes(searchTerm) : false;
+                const addressMatch = member.address ? member.address.toLowerCase().includes(searchTerm) : false;
+                const idMatch = member.id ? member.id.toLowerCase().includes(searchTerm) : false;
 
-			return matchesSearch && matchesGroup && matchesPosition && matchesGender && matchesMarital;
-		});
+                const matchesSearch = searchTerm === '' || nameMatch || emailMatch || phoneMatch || addressMatch || idMatch;
+                const matchesGroup = filterGroup === '' || (member.homeGroup || 'Unknown') === filterGroup;
+                const matchesPosition = filterPosition === '' || member.position === filterPosition;
+                const matchesGender = filterGender === '' || member.gender === filterGender;
+                const matchesMarital = filterMarital === '' || member.maritalStatus === filterMarital;
 
-		console.log(`CCC Dashboard Web App v4.4.5: Found ${this.filteredMembers.length} members after filtering.`);
-		this.renderViewContent(); // This is crucial - it re-renders the member list with the filtered results
+                return matchesSearch && matchesGroup && matchesPosition && matchesGender && matchesMarital;
+            });
+        }
+
+		console.log(`CCC Dashboard: applyFiltersAndSearch - Found ${this.filteredMembers.length} members after filtering.`);
+        console.log("CCC Dashboard: applyFiltersAndSearch - Calling renderViewContent.");
+		this.renderViewContent();
 	}
+
 		// --- IMPORT / EXPORT Tab ---
 	loadImportExport() {
 		console.log("CCC Dashboard Web App v4.4.5: Loading Import/Export page...");
@@ -3830,89 +3936,80 @@ renderViewContent() {
 //////////////////////
 
 
-_showFamilyModal(householdId) {
-if (!this.members || !Array.isArray(this.members)) {
-  showToast("Members list is not ready.", "error");
-  return;
-}
- /* if (!householdId) {
-    showToast("Household ID not provided for family view.", "error");
-    return;
-  }
-*/
-  // ✅ Include head (whose id === householdId)
-const familyMembers = this.members.filter(m =>
-  m.householdId == householdId || m.id == householdId
-);
+_showFamilyModal(householdId) { // householdId can be the actual householdId or a memberId if they are the head/single
+            if (!this.members || !Array.isArray(this.members)) {
+              showToast("Members list is not ready for family view.", "error");
+              return;
+            }
 
-  const headMember =
-    familyMembers.find(m => m.isHouseholdHead) ||
-    familyMembers.find(m => m.relationshipToHead === 'Head') ||
-    familyMembers.find(m => m.id === householdId) ||
-    familyMembers[0];
+            // Find all members belonging to this household key
+            // A member belongs if their householdId matches OR if they are the head and their id matches householdId (for single-person households)
+            const familyMembers = this.members.filter(m => m.householdId === householdId || m.id === householdId);
 
-  if (!headMember) {
-    showModal("Family Members", "<p>Could not determine head of household or find family members.</p>");
-    return;
-  }
+            if (familyMembers.length === 0) {
+                showModal("Family View", "<p>No members found for this household ID.</p>");
+                return;
+            }
 
-  let listHTML = `<h4>Family of ${headMember.fullName}</h4><ul>`;
+            // Determine the head member for display purposes
+            const headMember = familyMembers.find(m => m.isHouseholdHead && m.id === householdId) || // Explicit head
+                               familyMembers.find(m => m.isHouseholdHead) || // Any head in the group
+                               familyMembers.find(m => m.id === householdId && !m.householdId) || // Single person
+                               familyMembers[0]; // Fallback to first member
 
-  const roleOrder = { 'Head': 1, 'Spouse': 2, 'Child': 3 };
+            let listHTML = `<h4>Family of ${headMember ? headMember.fullName : 'Selected Household'}</h4><ul style="list-style: none; padding: 0; max-height: 60vh; overflow-y: auto;">`;
+            const isAdmin = this.role === 'admin';
 
-  function getBadge(role) {
-    const badgeMap = {
-      "Head": "👑 Head",
-      "Spouse": "💍 Spouse",
-      "Child": "👶 Child",
-      "Sibling": "🧑‍🤝‍🧑 Sibling",
-      "Household Member": "👤 Member",
-      "Member": "👤 Member"
-    };
-    return badgeMap[role] || `👤 ${role}`;
-  }
+            const roleOrder = { 'Head': 1, 'Spouse': 2, 'Child': 3 }; // For sorting
+            function getBadge(role) { /* ... (keep your getBadge function) ... */
+                const badgeMap = { "Head": "👑 Head", "Spouse": "💍 Spouse", "Child": "👶 Child", "Sibling": "🧑‍🤝‍🧑 Sibling", "Other Relative": "👤 Relative", "Household Member": "👤 Member", "Member": "👤 Member" };
+                return badgeMap[role] || `👤 ${role}`;
+            }
 
-  if (familyMembers.length > 0) {
-    familyMembers.sort((a, b) => {
-      const roleA = roleOrder[a.relationshipToHead] || (a.isHouseholdHead ? 0 : 4);
-      const roleB = roleOrder[b.relationshipToHead] || (b.isHouseholdHead ? 0 : 4);
-      if (roleA !== roleB) return roleA - roleB;
-      if (a.dob && b.dob) return new Date(a.dob) - new Date(b.dob);
-      return a.fullName.localeCompare(b.fullName);
-    }).forEach(m => {
-      let role = m.relationshipToHead || "Member";
-      if (m.id === headMember.id && m.isHouseholdHead) role = "Head";
 
-      listHTML += `
-        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-          <img src="${m.profilePictureUrl || 'default.png'}" alt="${m.fullName}'s photo" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--sec);">
-          <div style="flex-grow: 1;">
-            <strong>${m.fullName}</strong> <span style="font-size: 0.8em; color: var(--fg-muted);">(${getBadge(role)})</span><br>
-            <span style="font-size: 0.85em;">
-              📞 ${m.phone || 'N/A'} | ✉️ ${m.email || 'N/A'}<br>
-              DOB: ${dateUtils.format(m.dob) || 'N/A'} | Age: ${dateUtils.age(m.dob) || 'N/A'}
-            </span><br/>
-            <button class="generic_button_styles btn_edit_member_from_family" data-id="${m.id}" style="font-size:0.8em; padding:3px 6px; margin-top:4px;">Edit</button>
-          </div>
-        </li>`;
-    });
-  } else {
-    listHTML += `<li>No family members found for this household.</li>`;
-  }
+            familyMembers.sort((a, b) => {
+              const roleAOrder = roleOrder[a.relationshipToHead] || (a.isHouseholdHead ? 0 : 4);
+              const roleBOrder = roleOrder[b.relationshipToHead] || (b.isHouseholdHead ? 0 : 4);
+              if (roleAOrder !== roleBOrder) return roleAOrder - roleBOrder;
+              if (a.dob && b.dob) return new Date(a.dob) - new Date(b.dob);
+              return (a.fullName || '').localeCompare(b.fullName || '');
+            }).forEach(m => {
+              let role = m.relationshipToHead || "Member";
+              // Ensure head is displayed as Head if they are the primary key for the household
+              if (m.id === householdId && m.isHouseholdHead) role = "Head";
+              else if (m.isHouseholdHead) role = "Head"; // General case if iterating actual household
 
-  listHTML += "</ul>";
+              let dobInFamilyModal = '';
+              if (isAdmin) {
+                  dobInFamilyModal = `DOB: ${dateUtils.format(m.dob) || 'N/A'} | `;
+              }
 
-  const modal = showModal(`Family View: ${headMember.fullName}'s Household`, listHTML);
-  if (modal) {
-    modal.querySelectorAll('.btn_edit_member_from_family').forEach(btn => {
-      btn.onclick = (e) => {
-        const memberIdToEdit = e.target.dataset.id;
-        modal.remove(); // Close family modal before opening edit form
-        this.editMember(memberIdToEdit);
-      };
-    });
-  }
-}
+              listHTML += `
+                <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid var(--sec); padding-bottom: 10px;">
+                  <img src="${m.profilePictureUrl || this.DEFAULT_PROFILE_PIC_URL}" alt="${m.fullName || ''}'s photo" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--sec);">
+                  <div style="flex-grow: 1;">
+                    <strong>${m.fullName || 'N/A'}</strong> <span style="font-size: 0.8em; color: var(--fg-muted);">(${getBadge(role)})</span><br>
+                    <span style="font-size: 0.85em;">
+                      📞 ${m.phone || 'N/A'} | ✉️ ${m.email || 'N/A'}<br>
+                      ${dobInFamilyModal}Age: ${dateUtils.age(m.dob) || 'N/A'}
+                    </span><br/>
+                    <button class="generic_button_styles btn_edit_member_from_family" data-id="${m.id}" style="font-size:0.8em; padding:3px 6px; margin-top:4px;">Edit</button>
+                  </div>
+                </li>`;
+            });
+            listHTML += "</ul>";
+
+            const modal = showModal(`Family View: ${headMember ? headMember.fullName + "'s Household" : 'Household'}`, listHTML);
+            if (modal) {
+                modal.querySelectorAll('.btn_edit_member_from_family').forEach(btn => {
+                    btn.onclick = (e) => {
+                        const memberIdToEdit = e.target.dataset.id;
+                        modal.remove();
+                        this.editMember(memberIdToEdit);
+                    };
+                });
+            }
+        }
 	
 	}
 
@@ -3936,7 +4033,7 @@ document.addEventListener('click', function(e) {
       e.target.textContent = card.classList.contains('expanded') ? '▲ Hide Details' : '▼ Show More';
     }
   }
-});
+	});
 
 /////////////////////////////////////////
 //   for profile picture animation 
