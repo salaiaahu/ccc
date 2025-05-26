@@ -305,7 +305,198 @@
 	.panel3d button { background: var(--primary); color: white; cursor: pointer; box-shadow: 0 2px 4px var(--shadow-color); transition: transform 0.2s, box-shadow 0.2s; }
 	.panel3d button:hover { transform: translateY(-2px) translateZ(8px); box-shadow: 0 4px 8px var(--shadow-color-dark); }
 	.info-message { text-align:left; padding:0px; color: var(--fg); font-style: italic;font-size: 1.3rem }
-	form#mmd_form { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: auto; margin: 5px auto; padding: 10px; background: var(--accent); border-radius: 10px; box-shadow: 0 5px 15px var(--shadow-color); transform: translateZ(5px); }
+	form#mmd_form {
+  background: var(--accent);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  padding: 25px;
+  transition: all 0.3s ease;
+}
+/* Fieldset Styling for Grouping */
+form#mmd_form fieldset {
+  border: 1px solid var(--sec);
+  border-radius: 8px;
+  padding: 15px 20px 20px 20px;
+  margin-bottom: 20px;
+  grid-column: span 2; /* Make fieldsets span both columns */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Maintain 2 columns inside fieldsets */
+  gap: 18px;
+  background-color: color-mix(in srgb, var(--bg) 50%, transparent);
+}
+
+form#mmd_form fieldset legend {
+  font-weight: bold;
+  color: var(--primary);
+  padding: 0 10px;
+  font-size: 1.1rem;
+  margin-left: 10px;
+}
+
+form#mmd_form fieldset.fieldset-main {
+    background-color: transparent; /* No background for main fieldset */
+    border: none;
+    padding: 0;
+}
+
+/* Ensure labels inside fieldsets work correctly */
+form#mmd_form fieldset label {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Handle full-width items inside fieldsets */
+form#mmd_form fieldset .full-width {
+    grid-column: span 2;
+}
+/* Input & Select Enhancements */
+form#mmd_form input,
+form#mmd_form select {
+  padding: 12px 15px; /* More padding */
+  font-size: 0.95rem; /* Slightly adjust font */
+  border: 1px solid var(--sec);
+  border-radius: 6px;
+  background-color: var(--bg);
+  color: var(--fg);
+  width: 100%; /* Ensure they take full label width */
+  box-sizing: border-box; /* Include padding in width */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form#mmd_form input:focus,
+form#mmd_form select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent);
+  outline: none;
+}
+
+form#mmd_form label.required::after {
+  font-size: 1.1em; /* Make asterisk slightly larger */
+  margin-left: 2px;
+}
+
+/* Profile Picture Area */
+.profile-pic-area {
+  background: var(--bg);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px dashed var(--sec);
+}
+
+.profile-pic-area label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.profile-pic-area input[type="file"] {
+  display: inline-block; /* Or style a custom button */
+  margin-bottom: 10px;
+  width: auto; /* Don't force file input full width */
+  padding: 8px; /* Less padding */
+}
+
+#f_profile_pic_preview {
+  display: block; /* Make it block to center it */
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  margin: 10px auto 0 auto; /* Center it */
+}
+
+/* Conditional Section Transitions */
+.conditional-section {
+  display: grid; /* Keep as grid for layout */
+  grid-template-columns: 1fr 1fr;
+  gap: inherit;
+  grid-column: span 2;
+  max-height: 0; /* Start hidden */
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in, padding 0.7s ease-out, margin 0.7s ease-out, border 0.7s ease-out;
+  padding: 0 20px; /* Match fieldset padding, but start with 0 top/bottom */
+  margin-top: 0;
+  border: none; /* Start without border */
+  border-radius: 8px;
+}
+
+.conditional-section.visible {
+  max-height: 1500px; /* Set a large max-height */
+  opacity: 1;
+  padding: 15px 20px 20px 20px;
+  margin-top: 20px;
+  border: 1px solid var(--sec); /* Add border when visible */
+  background-color: color-mix(in srgb, var(--bg) 50%, transparent);
+}
+
+/* For sections within fieldsets that don't need their own border */
+.conditional-section.no-border {
+    border: none !important;
+    background-color: transparent !important;
+    padding: 0;
+    margin-top: 15px;
+}
+.conditional-section.no-border.visible {
+    padding: 0;
+    margin-top: 15px;
+}
+
+/* Child/Relative item styling */
+.conditional-section .section-divider {
+  border-top: 1px dotted var(--sec);
+  margin-top: 15px;
+  padding-top: 15px;
+  grid-column: span 2;
+}
+.conditional-section h4 { /* For "Child 1", etc. */
+    grid-column: span 2;
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: var(--fg);
+    font-weight: 600;
+}
+
+/* Submit Button */
+form#mmd_form button[type="submit"] {
+  grid-column: span 2;
+  padding: 15px; /* Larger padding */
+  font-size: 1.1rem; /* Larger font */
+  background: var(--primary);
+  border-radius: 8px; /* More rounded */
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+form#mmd_form button[type="submit"]:hover {
+  background-color: color-mix(in srgb, var(--primary) 80%, black);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px var(--shadow-color-dark);
+}
+
+/* === Mobile Enhancements for Form === */
+@media (max-width: 768px) {
+  form#mmd_form,
+  form#mmd_form fieldset,
+  form#mmd_form .conditional-section {
+    grid-template-columns: 1fr !important; /* Force single column */
+  }
+
+  form#mmd_form .full-width,
+  form#mmd_form fieldset .full-width,
+  form#mmd_form .conditional-section h4,
+  form#mmd_form .conditional-section .section-divider {
+      grid-column: 1 / -1 !important; /* Ensure these stay single column */
+  }
+
+  form#mmd_form {
+    padding: 15px;
+  }
+  form#mmd_form fieldset {
+    padding: 10px 15px 15px 15px;
+  }
+}
 	form#mmd_form label { display: flex; flex-direction: column; font-weight: 600; font-size: 1.0rem; }
 	form#mmd_form label.required::after { content: " *"; color: var(--danger-bg); font-weight:bold; }
 	form#mmd_form input, form#mmd_form select, form#mmd_form textarea { padding: 5px; border: 1px solid var(--sec); border-radius: 6px; background-color: var(--bg); color: var(--fg); font-size: 1.0rem; font-family: inherit; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1), 0 1px 1px var(--shadow-color-light); transition: box-shadow 0.2s ease, border-color 0.2s ease; }
@@ -323,8 +514,8 @@
 /* --- Member Card Responsive Grid --- */
 .card_view {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* WAS 300 or 320 */
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* WAS 300 or 320 */
+  gap: 16px;
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
@@ -366,7 +557,7 @@
 }
 
 .card_view.single-card .member-card {
-  max-width: 350px;
+  max-width: 450px;
   margin: 0 auto;
 }
 
@@ -375,7 +566,7 @@
 }
 
 .card_view .member-card:only-child {
-  max-width: 350px;
+  max-width: 450px;
   margin: 0 auto;
 }
 
@@ -480,7 +671,7 @@
 	.member_card .actions { margin-top: auto; padding-top:10px; text-align:right; }
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 15px;
   margin-top: 15px;
 }
@@ -790,7 +981,7 @@ table#mmd_table td img {
 	}
 	.panel3d {
 		font-size: 1.0rem;
-	  padding: 10px !important;
+	  padding: 5px !important;
 	  margin-bottom: 5px !important;
 	  }
 	  .panel3d h3 {
@@ -1021,12 +1212,7 @@ table#mmd_table td img {
 	  font: 1.0rem; 
 	  text-align: left;
 	}
-	form#mmd_form {
-		display: grid; 
-		grid-template-columns: 1fr !important; 
-		width: 90% !important;
-		padding: 5px 5px;
-	}
+
 	#page_register {
 		align-items: center;
 	}
@@ -1347,12 +1533,7 @@ table#mmd_table td img {
 		font-size: 1.05rem; 
 	}
 	@media (max-width: 480px) {
-	 form#mmd_form {
-		display: grid; 
-		grid-template-columns: 1fr !important; 
-		gap: 12px !important;
-		width: 100vw !important;
-	}
+
 	form#mmd_form .full-width,
 	form#mmd_form .conditional-section,
 	form#mmd_form label, 
