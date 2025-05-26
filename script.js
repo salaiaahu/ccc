@@ -208,7 +208,11 @@ function setElementHTML(element, htmlString) {
     };
 
     if (closeBtnEl) closeBtnEl.onclick = closeModalCleanup;
-    overlay.onclick = (e) => { if (e.target === overlay) closeModalCleanup(); };
+    		overlay.onclick = (e) => {
+			if (e.target === overlay) {
+				closePopup();
+			}
+		};
 
     if (buttonsConfig.length === 0 && footerEl && footerEl.children.length === 0) {
         buttonsConfig = [{ label: "Close", action: () => { /* Handled by cleanup */ } }];
@@ -1112,13 +1116,13 @@ function showToast(msg, type = 'info', duration = 3500) {
 
             const initialHTML = `
                 <div id="mmd_header">
-                    <button id="mobile_menu_toggle" aria-label="Toggle menu" aria-expanded="false">☰</button> 
-                    <div class="header-center-content"> 
+                    <button id="mobile_menu_toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+                    <img src="https://firebasestorage.googleapis.com/v0/b/cccmembershipca.firebasestorage.app/o/CCC%20Logo.png?alt=media&token=541dbe12-e729-46c5-9cb6-8dcee9ea3620" alt="Church Logo" id="church_logo_header">
+                    <div class="header-center-content">
                         <h1>CHIN CHRISTIAN CHURCH</h1>
                         <p><label>"Na bia cu ka kei caah meiin a si, ka lam ah ceunak a si"<br>SALM 119:105</label></p>
                     </div>
                     <button id="theme_toggle" title="Toggle Theme">☀️</button>
-                   
                 </div>
                 <div id="mmd_tabs">
                     <button data-page="home">🏠 Home</button>
@@ -1235,21 +1239,45 @@ function showToast(msg, type = 'info', duration = 3500) {
         setupMobileMenu(containerContext) {
             const mobileMenuToggleBtn = containerContext.querySelector('#mobile_menu_toggle');
             const tabsContainer = containerContext.querySelector('#mmd_tabs');
+
             if (mobileMenuToggleBtn && tabsContainer) {
+                const closeMobileMenu = () => {
+                    if (tabsContainer.classList.contains('mmd_tabs_visible_mobile')) {
+                        tabsContainer.classList.remove('mmd_tabs_visible_mobile');
+                        mobileMenuToggleBtn.setAttribute('aria-expanded', 'false');
+                        mobileMenuToggleBtn.innerHTML = '☰';
+                        document.removeEventListener('click', handleClickOutsideMenu, true); // Use capture phase
+                    }
+                };
+
+                const handleClickOutsideMenu = (event) => {
+                    // If the click is outside the menu AND outside the toggle button itself
+                    if (!tabsContainer.contains(event.target) && event.target !== mobileMenuToggleBtn && !mobileMenuToggleBtn.contains(event.target)) {
+                        closeMobileMenu();
+                    }
+                };
+
                 mobileMenuToggleBtn.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    tabsContainer.classList.toggle('mmd_tabs_visible_mobile');
-                    const isNowVisible = tabsContainer.classList.contains('mmd_tabs_visible_mobile');
+                    event.stopPropagation(); // Important: Prevents this click from being caught by handleClickOutsideMenu immediately
+                    const isNowVisible = tabsContainer.classList.toggle('mmd_tabs_visible_mobile');
                     this.setAttribute('aria-expanded', isNowVisible);
-                    this.innerHTML = isNowVisible ? '&times;' : '☰';
+                    this.innerHTML = isNowVisible ? '×' : '☰';
+
+                    if (isNowVisible) {
+                        // Add listener in capture phase to catch clicks before they might be stopped by other elements
+                        document.addEventListener('click', handleClickOutsideMenu, true);
+                    } else {
+                        document.removeEventListener('click', handleClickOutsideMenu, true);
+                    }
                 });
+
+                // Listener for tab buttons within the menu to close it
                 const tabButtons = tabsContainer.querySelectorAll('button[data-page]');
                 tabButtons.forEach(tabButton => {
                     tabButton.addEventListener('click', () => {
-                        if (window.getComputedStyle(mobileMenuToggleBtn).display !== 'none' && tabsContainer.classList.contains('mmd_tabs_visible_mobile')) {
-                            tabsContainer.classList.remove('mmd_tabs_visible_mobile');
-                            mobileMenuToggleBtn.setAttribute('aria-expanded', 'false');
-                            mobileMenuToggleBtn.innerHTML = '☰';
+                        // This will also trigger closeMobileMenu if the menu is visible
+                        if (tabsContainer.classList.contains('mmd_tabs_visible_mobile')) {
+                           closeMobileMenu();
                         }
                     });
                 });
@@ -1340,21 +1368,35 @@ function showToast(msg, type = 'info', duration = 3500) {
 	
 
 
-			_showRoleMembersModal(role) {
-				const roleMembers = this.members.filter(m => m.position === role);
-				let listHTML = "<ul>";
-				if (roleMembers.length > 0) {
-					roleMembers.forEach(m => {
-						listHTML += `<li><strong>${m.fullName}</strong><br>
-							${m.phone ? `📞 <a href="tel:${m.phone}" class="contact-link">${m.phone}</a><br>` : ''}
-							${m.email ? `✉️ <a href="mailto:${m.email}" class="contact-link">${m.email}</a><br>` : ''}
-							${m.addr ? `📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.addr)}" target="_blank" rel="noopener noreferrer" class="map-link contact-link">${m.addr}</a>` : 'Address N/A'}
-						</li>`;
-					});
-				} else { listHTML += `<li>No members found with the role of ${role}.</li>`; }
-				listHTML += "</ul>";
-				showModal(`${role} List (${roleMembers.length})`, listHTML);
-			}
+		_showRoleMembersModal(role) {
+			const roleMembers = this.members.filter(m => m.position === role);
+			let listHTML = `<ul style="list-style: none; padding: 0; max-height: 60vh; overflow-y: auto;">`; // Added max-height and overflow
+
+			if (roleMembers.length > 0) {
+				roleMembers.forEach(m => {
+                    const imgSrc = m.profilePictureUrl || this.DEFAULT_PROFILE_PIC_URL;
+                    // Using m.address, assuming it's the standard address field. Change to m.addr if that's specifically used here.
+                    const addressInfo = m.address ? `📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address)}" target="_blank" rel="noopener noreferrer" class="map-link contact-link">${m.address}</a>` : 'Address N/A';
+
+					listHTML += `
+                        <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--sec);">
+                            <img src="${imgSrc}" alt="${m.fullName || 'Profile'}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--sec);">
+                            <div style="flex-grow: 1;">
+                                <strong style="font-size: 1.05em;">${m.fullName || 'N/A'}</strong><br>
+                                <span style="font-size: 0.9em; color: var(--fg-muted);">
+                                    ${m.phone ? `📞 <a href="tel:${m.phone}" class="contact-link">${m.phone}</a><br>` : ''}
+                                    ${m.email ? `✉️ <a href="mailto:${m.email}" class="contact-link">${m.email}</a><br>` : ''}
+                                    ${addressInfo}
+                                </span>
+                            </div>
+                        </li>`;
+				});
+			} else {
+                listHTML += `<li>No members found with the role of ${role}.</li>`;
+            }
+			listHTML += "</ul>";
+			showModal(`${role} List (${roleMembers.length})`, listHTML);
+		}
 
 		_showHomeGroupDetailsModal(groupName = null, currentFilterMinAge = null, currentFilterMaxAge = null) {
 		const baseTitle = groupName ? `Home Group: ${groupName} - Stats` : "All Home Groups - Aggregated Stats";
@@ -2881,6 +2923,13 @@ renderViewContent() {
                             dobDisplayCard = `<strong>DOB:</strong> ${dateUtils.format(m.dob)} | `;
                         }
 
+                        // ==================== ROLE-BASED DELETE BUTTON FOR CARD VIEW ====================
+                        let deleteButtonCardHTML = '';
+                        if (isAdmin) {
+                            deleteButtonCardHTML = `<button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Delete</button>`;
+                        }
+                        // ===============================================================================
+
                         return `
                             <div class="member-card" data-id="${m.id}" style="position: relative;">
                               ${checkboxHTML}
@@ -2906,7 +2955,7 @@ renderViewContent() {
                                   <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank">${m.address || 'N/A'}</a></p>
                                   <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--sec); text-align: right;">
                                       <button class="btn_edit_member generic_button_styles" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Edit</button>
-                                      <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Delete</button>
+                                      ${deleteButtonCardHTML}
                                   </div>
                                 </div>
                               </div>
@@ -2969,6 +3018,13 @@ renderViewContent() {
                             dobDisplayTable = dateUtils.format(m.dob);
                         }
 
+                        // ==================== ROLE-BASED DELETE BUTTON FOR TABLE VIEW ===================
+                        let deleteButtonTableHTML = '';
+                        if (isAdmin) {
+                            deleteButtonTableHTML = `<button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 8px;font-size:0.8rem;">Delete</button>`;
+                        }
+                        // ==============================================================================
+
                         return `
                           <tr data-id="${m.id}">
                             <td style="text-align:center; vertical-align:middle; width:40px;">${checkboxHTML}</td>
@@ -2989,7 +3045,7 @@ renderViewContent() {
                             <td>${m.homeGroup||'N/A'}</td>
                             <td>
                               <button class="btn_edit_member generic_button_styles" data-id="${m.id}" style="padding:5px 8px;font-size:0.8rem;">Edit</button>
-                              <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 8px;font-size:0.8rem;">Delete</button>
+                              ${deleteButtonTableHTML} {/* Conditionally added delete button */}
                             </td>
                           </tr>`;
                     }).join('');
@@ -3030,6 +3086,7 @@ renderViewContent() {
 				viewContentContainer.querySelectorAll('.btn_edit_member').forEach(btn => {
 					btn.onclick = (e) => this.editMember(e.target.dataset.id);
 				});
+                // Only attach delete listeners if the buttons could have been rendered (i.e., if admin, or if non-admin but we still select, then the listener won't find any if not admin)
 				viewContentContainer.querySelectorAll('.btn_delete_member').forEach(btn => {
 					btn.onclick = (e) => this.deleteMember(e.target.dataset.id);
 				});
