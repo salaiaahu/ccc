@@ -129,10 +129,6 @@
         from { transform: translateY(40px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
       }
-      #mmd_container {
-        max-width: 100vw;
-        overflow-x: hidden;
-      }
 	  
 	* { box-sizing: border-box; }
 	body { /* Added for standalone page */
@@ -175,6 +171,8 @@
 	  /* z-index: 99999; */ 
 	  border: 1px solid var(--sec);
 	  transform-style: preserve-3d; /* For 3D effects within */
+        max-width: 100vw;
+        overflow-x: hidden;
 	}
 	#mmd_header {
 	  background: var(--primary);
@@ -271,7 +269,7 @@
 		-ms-overflow-style: none;
 	  padding: 10px; background: var(--bg);
 	  perspective: 1800px; 
-	margin-bottom: 50px;
+	//margin-bottom: 50px;
 	}
 	#mmd_pages::-webkit-scrollbar {
 	display: none;               /* Chrome, Safari, Opera */
@@ -284,6 +282,48 @@
 	  gap: 15px;
 	  padding: 10px 10px;
 	}
+
+/* === Button Group Styles === */
+.dynamic-button-group {
+    display: inline-flex; /* Makes buttons sit side-by-side */
+    vertical-align: middle; /* Aligns with the 'Selected' text */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15); /* Optional: Add a subtle shadow */
+    border-radius: 6px; /* Rounded corners for the whole group */
+    overflow: hidden; /* Important: Clips button corners to fit group */
+}
+
+.dynamic-button-group button {
+    margin: 0 !important; /* Remove all margins between buttons */
+    border-radius: 0 !important; /* Remove individual button rounding */
+    border-right: 1px solid rgba(0,0,0,0.1); /* Separator line (optional) */
+    /* Ensure consistent padding if needed */
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* No right border for the last button */
+.dynamic-button-group button:last-child {
+    border-right: none;
+}
+
+/* Add back border-radius to the first and last buttons */
+.dynamic-button-group button:first-child {
+   border-top-left-radius: 6px !important;
+   border-bottom-left-radius: 6px !important;
+}
+.dynamic-button-group button:last-child {
+   border-top-right-radius: 6px !important;
+   border-bottom-right-radius: 6px !important;
+}
+
+/* Adjust hover/active states if needed to look good in a group */
+.dynamic-button-group button:hover {
+    z-index: 1; /* Ensure hovered button is on top */
+    transform: translateY(0) translateZ(0) scale(1.02); /* Less dramatic transform */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+
 	.panel3d {
 	  background: var(--accent); color: var(--fg); padding: 22px;
 	  border-radius: 12px;
@@ -762,7 +802,7 @@ table#mmd_table td img {
 	#theme_toggle:hover { background: rgba(255, 255, 255, 0.2); border-color: transparent; transform: scale(1.1); box-shadow: none; }
 	html.dark #theme_toggle { color: #fff; }
 	#panel_age input, #panel_age button, #panel_dist select { margin-right: 5px; }
-	#mmd_modal_overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--modal-overlay-bg); display: flex; align-items: center; justify-content: center; z-index: 100001; padding:0px; box-sizing: border-box; }
+	#mmd_modal_overlay { position: fixed; top: 10px; left: 0; width: 100vw; height: 90vh; background-color: var(--modal-overlay-bg); display: flex; align-items: center; justify-content: center; z-index: 100001; padding:0px; box-sizing: border-box; }
 	.mmd_modal_content {
 	  background-color: var(--modal-content-bg);
 	  color: var(--fg);
@@ -775,7 +815,9 @@ table#mmd_table td img {
 	  flex-direction: column;
 	  /* Max height is important if content can be long */
 	  max-height: 90vh; 
-	  overflow: hidden; 
+	  overflow-y: auto;
+	  scrollbar-width: none;
+	-ms-overflow-style: none;  
 	}
 	.mmd_modal_header {
 	  padding: 12px 15px; 
