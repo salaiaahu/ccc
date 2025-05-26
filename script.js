@@ -2866,7 +2866,7 @@ renderViewContent() {
 
                         if (canBeRouted) {
                             checkboxHTML = `
-                                <div style="position: absolute; top: 5px; right: 5px; background: rgba(255,255,255,0.7); padding: 3px; border-radius: 3px; z-index: 5;">
+                                <div style="position: absolute; top: 5px; right: 5px; background: padding: 3px; border-radius: 3px; z-index: 5;">
                                     <input type="checkbox" class="route-select-checkbox"
                                            data-member-id="${m.id}"
                                            data-address="${encodeURIComponent(m.address || '')}"
