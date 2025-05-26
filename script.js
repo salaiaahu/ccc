@@ -356,70 +356,71 @@ function showToast(msg, type = 'info', duration = 3500) {
 	register: `
 	<p style="text-align: center; grid-column: span 2; font-size:0.9em;"><em>Innkhat ah a umṭi mi member vialte  kha hmunkhat te ah khumh ṭi ding.</em></p>
 	  <form id="mmd_form" style="align-items: center;">
-	   <!-- <p style="grid-column: span 2; font-size:0.9em; color:var(--sec);"><em>Nupi le fale kha an pa le tang ah khumh chih ding. (Spouse and Children will be under the Head of Household)</em></p> -->
-		
-		<label class="required">Full Name (Head of Household)<input id="f_name" required></label>
-        <div class="full-width" style="grid-column: span 2; margin-bottom: 15px; padding: 10px; border: 1px solid var(--sec); border-radius: 4px;">
-            <label for="f_profile_pic" style="display:block; margin-bottom: 8px; font-weight: bold;">Profile Picture</label>
-            <input type="file" id="f_profile_pic" accept="image/*" style="display: block; margin-bottom: 10px;">
-            <img id="f_profile_pic_preview" src="#" alt="Profile Preview" style="max-width: 150px; max-height: 150px; border-radius: 50%; object-fit: cover; display: none; border: 1px solid var(--sec);"/>
-			<img id="f_profile_pic_preview" style="display:none;" />
-			<img id="f_s_profile_pic_preview" style="display:none;" />
-			<img id="c_profile_pic_preview0" style="display:none;" />
-			<img id="or_profile_pic_preview0" style="display:none;" />
-        </div>
-		<label class="required">DOB<input type="date" id="f_dob" required></label>
-		<label>Gender<select id="f_gender"><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></label>
-		<label class="required">Joined<input type="date" id="f_join" required></label>
-		<label class="required">Phone<input type="tel" id="f_phone" required></label>
-		<label class="full-width required">Email<input type="email" id="f_email" required></label>
-		<label class="full-width required">Address<input id="f_addr" required></label>
-		<label>Baptism<select id="f_bapt"><option value="">--Select--</option><option>Baptized</option><option>Not Baptized</option></select></label>
-		<label>Position<select id="f_pos"><option>Member</option><option>Pastor</option><option>Deacon</option></select></label>
-		<label>Home Group<select id="f_group"><option value="">--Select--</option><option>A</option><option>B</option><option>C</option><option>D</option><option>Unknown</option></select></label>
-		<label>Marital Status<select id="f_marital">
-			<option value="Single" selected>Single</option>
-			<option value="Married">Married</option>
-			<option value="Divorced">Divorced</option>
-			<option value="Widowed">Widowed</option>
-			<option value="Other">Other</option>
-		</select></label>
 
-		
-		<div id="spouse_section" class="conditional-section full-width"> 
-			<h4>Spouse Details</h4>
+        <fieldset class="fieldset-main">
+            <legend>Head of Household</legend>
+            <label class="required">Full Name<input id="f_name" required></label>
+
+            <div class="full-width profile-pic-area">
+                <label for="f_profile_pic">Profile Picture</label>
+                <input type="file" id="f_profile_pic" accept="image/*">
+                <img id="f_profile_pic_preview" src="#" alt="Profile Preview" style="display: none;"/>
+                <img id="f_s_profile_pic_preview" style="display:none;" />
+                <img id="c_profile_pic_preview0" style="display:none;" />
+                <img id="or_profile_pic_preview0" style="display:none;" />
+            </div>
+
+            <label class="required">DOB<input type="date" id="f_dob" required></label>
+            <label>Gender<select id="f_gender"><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></label>
+            <label class="required">Joined<input type="date" id="f_join" required></label>
+            <label class="required">Phone<input type="tel" id="f_phone" required></label>
+            <label class="full-width required">Email<input type="email" id="f_email" required></label>
+            <label class="full-width required">Address<input id="f_addr" required></label>
+            <label>Baptism<select id="f_bapt"><option value="">--Select--</option><option>Baptized</option><option>Not Baptized</option></select></label>
+            <label>Position<select id="f_pos"><option>Member</option><option>Pastor</option><option>Deacon</option></select></label>
+            <label>Home Group<select id="f_group"><option value="">--Select--</option><option>A</option><option>B</option><option>C</option><option>D</option><option>Unknown</option></select></label>
+            <label>Marital Status<select id="f_marital">
+                <option value="Single" selected>Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Other">Other</option>
+            </select></label>
+        </fieldset>
+
+		<fieldset id="spouse_section" class="conditional-section full-width">
+			<legend>Spouse Details</legend>
 			<label>Spouse's Full Name<input id="f_s_name"></label>
 			<label>Spouse's DOB<input type="date" id="f_s_dob"></label>
 			<label>Spouse's Gender<select id="f_s_gender"><option value="Female">Female</option><option value="Male">Male</option><option value="Other">Other</option></select></label>
-			<label>Spouse's Joined Date (if different)<input type="date" id="f_s_join"></label>
+			<label>Spouse's Joined Date<input type="date" id="f_s_join"></label>
 			<label>Spouse's Phone<input type="tel" id="f_s_phone"></label>
 			<label class="full-width">Spouse's Email<input type="email" id="f_s_email"></label>
-			<label class="full-width">Spouse's Address (if different)<input id="f_s_addr"></label>
+			<label class="full-width">Spouse's Address<input id="f_s_addr"></label>
 			<label>Spouse's Baptism<select id="f_s_bapt"><option value="">--Select--</option><option>Baptized</option><option>Not Baptized</option></select></label>
 			<label>Spouse's Position<select id="f_s_pos"><option>Member</option><option>Pastor</option><option>Deacon</option></select></label>
-		</div>
+		</fieldset>
 
-	  
-		<label>Children count<input type="number" id="f_children" min="0" value="0"></label>
-		<div id="children_section" class="conditional-section full-width">
-			<h4>Children Details</h4>
-			<div id="children_section_fields"></div> 
-		</div>
+        <fieldset class="full-width">
+            <legend>Children</legend>
+		    <label>Children count<input type="number" id="f_children" min="0" value="0"></label>
+		    <div id="children_section" class="conditional-section full-width no-border">
+			    <div id="children_section_fields"></div>
+		    </div>
+        </fieldset>
 
-	   
-		<label style="margin-top: 15px; border-top: 1px solid var(--sec); padding-top:15px;">
-			Other Relatives in Household (e.g., Parent, Sibling of Head)
-			<input type="number" id="f_other_relatives_count" min="0" value="0" style="margin-top:5px;">
-		</label>
-		<div id="other_relatives_section" class="conditional-section full-width">
-			<h4>Other Relative's Details</h4>
-			<div id="other_relatives_section_fields"></div>     </div>
+        <fieldset class="full-width">
+            <legend>Other Relatives</legend>
+            <label>Other Relatives in Household
+                <input type="number" id="f_other_relatives_count" min="0" value="0" style="margin-top:5px;">
+            </label>
+            <div id="other_relatives_section" class="conditional-section full-width no-border">
+                <div id="other_relatives_section_fields"></div>
+            </div>
+        </fieldset>
 
 		 <button type="submit" style="margin:5px 5px; max-width: 250px; max-height: 50px;">Register Household</button>
-		<p>
 	  </form>
-
-	  
 	`,
 
 	view: `
@@ -1712,6 +1713,7 @@ function showToast(msg, type = 'info', duration = 3500) {
 			this.householdsForRoute = this.householdsForRoute.filter(hh => (hh.householdId || hh.id) !== uniqueHouseholdKey);
 		}
 		this.updateDynamicRouteBar(); // <--- CALL THIS to update visibility and count
+this.updateViewMemberCheckboxes();
 	}
 
 	updateRoutePlannerSelectionDisplay() {
@@ -2745,7 +2747,7 @@ const childData = {
 /////////////////////////////////
 
 		// Inside class Dashboard:
-		renderViewContent() {
+renderViewContent() {
 			console.log(`CCC Dashboard Web App v4.4.5: Rendering View content in ${this.viewMode} mode...`);
 			const membersToDisplay = this.filteredMembers;
 			const cont = document.getElementById('view_content');
@@ -2762,36 +2764,78 @@ const childData = {
 				return;
 			}
 
+            // --- NEW: Create a map for quick household address lookup ---
+            const householdAddresses = this.members.reduce((acc, member) => {
+                const hhId = member.householdId || member.id;
+                // Prefer Head's address, otherwise take the first valid one found.
+                if (member.isHouseholdHead && member.address && member.address.trim() !== '') {
+                    acc[hhId] = member.address.trim();
+                } else if (!acc[hhId] && member.address && member.address.trim() !== '') {
+                    acc[hhId] = member.address.trim();
+                }
+                return acc;
+            }, {});
+            // --- END: New map ---
+
 			if (this.viewMode === 'card') {
-  cont.className = 'card_view';
-let cardsHTML = membersToDisplay.map(m => {
-  return `
-    <div class="member-card" data-id="${m.id}">
-      <img src="${m.profilePictureUrl || 'default.png'}" class="member_profile_pic">
-      <div class="basic-info">
-        <h4>${m.fullName}</h4>
-        <p><strong>Age:</strong> ${dateUtils.age(m.dob)}</p>
-        <p><strong>Group:</strong> ${m.homeGroup || 'N/A'}</p>
-        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
-  <button type="button" class="toggle-details-btn generic_button_styles">▼ Show More</button>
-  ${m.householdId && this.members.filter(f => f.householdId === m.householdId).length > 1 ? `
-    <button class="view-family-btn generic_button_styles" data-member-id="${m.id}" data-household-id="${m.householdId || m.id}"">
-      👨‍👩‍👧 View Family
-    </button>
-  ` : ''}
-</div>
-        <div class="member-details">
-          <p><strong>DOB:</strong> ${dateUtils.format(m.dob)} | <strong>Gender:</strong> ${m.gender}</p>
-          <p><strong>Position:</strong> ${m.position}</p>
-          <p><strong>Marital:</strong> ${m.maritalStatus || 'N/A'}</p>
-          <p>📞 <a href="tel:${m.phone}">${m.phone}</a></p>
-          <p>✉️ <a href="mailto:${m.email}">${m.email}</a></p>
-          <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank">${m.address || 'N/A'}</a></p>
-</div>
-      </div>
-    </div>`;
-}).join('');
-setElementHTML(cont, cardsHTML);
+               cont.className = 'card_view';
+                let cardsHTML = membersToDisplay.map(m => {
+                    const uniqueHouseholdKey = m.householdId || m.id;
+                    const householdAddress = householdAddresses[uniqueHouseholdKey]; // Lookup address
+                    const canBeRouted = !!householdAddress; // Check if household address exists
+                    const isSelectedForRoute = this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueHouseholdKey);
+                    let checkboxHTML = '';
+
+                    if (canBeRouted) { // Show if household has an address
+                        checkboxHTML = `
+                            <div style="position: absolute; top: 5px; right: 5px; background: rgba(255,255,255,0.7); padding: 3px; border-radius: 3px; z-index: 5;">
+                                <input type="checkbox" class="route-select-checkbox"
+                                       data-member-id="${m.id}"
+                                       data-address="${encodeURIComponent(householdAddress)}"
+                                       data-name="${encodeURIComponent(m.fullName)}"
+                                       data-household-id="${uniqueHouseholdKey}"
+                                       ${isSelectedForRoute ? 'checked' : ''}
+                                       title="Add/Remove Household from Route">
+                            </div>`;
+                    }
+
+                    return `
+                        <div class="member-card" data-id="${m.id}" style="position: relative;">
+                          ${checkboxHTML}
+                          <img src="${m.profilePictureUrl || 'default.png'}" class="member_profile_pic">
+                          <div class="basic-info">
+                            <h4>${m.fullName}</h4>
+                            <p><strong>Age:</strong> ${dateUtils.age(m.dob)}</p>
+                            <p><strong>Group:</strong> ${m.homeGroup || 'N/A'}</p>
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                              <button type="button" class="toggle-details-btn generic_button_styles">▼ Show More</button>
+                              ${m.householdId && this.members.filter(f => f.householdId === m.householdId).length > 1 ? `
+                                <button class="view-family-btn generic_button_styles" data-member-id="${m.id}" data-household-id="${m.householdId || m.id}"">
+                                  👨‍👩‍👧 View Family
+                                </button>
+                              ` : ''}
+                            </div>
+                            <div class="member-details">
+                              <p><strong>DOB:</strong> ${dateUtils.format(m.dob)} | <strong>Gender:</strong> ${m.gender}</p>
+                              <p><strong>Position:</strong> ${m.position}</p>
+                              <p><strong>Marital:</strong> ${m.maritalStatus || 'N/A'}</p>
+                              <p>📞 <a href="tel:${m.phone}">${m.phone || 'N/A'}</a></p>
+                              <p>✉️ <a href="mailto:${m.email}">${m.email || 'N/A'}</a></p>
+                              <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address || '')}" target="_blank">${m.address || 'N/A'}</a></p>
+
+                              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--sec); text-align: right;">
+                                  <button class="btn_edit_member generic_button_styles" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Edit</button>
+                                  <button class="btn_delete_member generic_button_styles danger" data-id="${m.id}" style="padding:5px 10px;font-size:0.8rem;">Delete</button>
+                              </div>
+                              </div>
+                          </div>
+                        </div>`;
+                }).join('');
+                setElementHTML(cont, cardsHTML);
+                // Ensure family buttons work (assuming bindViewFamilyButtonsWhenReady exists and works)
+                if (typeof bindViewFamilyButtonsWhenReady === 'function') {
+                   bindViewFamilyButtonsWhenReady();
+                }
 
 			} else { // Table view
 				cont.className = '';
@@ -2818,20 +2862,18 @@ setElementHTML(cont, cardsHTML);
 						relationshipDisplay = "Member";
 					}
 
-					const uniqueHouseholdKey = m.householdId || m.id;
-					const familyCount = this.members.filter(f => (f.householdId || f.id) === uniqueHouseholdKey).length;
+                    const uniqueHouseholdKey = m.householdId || m.id;
+                    const householdAddress = householdAddresses[uniqueHouseholdKey]; // Lookup address
+					const canBeRouted = !!householdAddress; // Check if household address exists
 					const isSelectedForRoute = this.householdsForRoute.some(hh => (hh.householdId || hh.id) === uniqueHouseholdKey);
-					
-					// ***** FIX: Use m.address instead of m.addr *****
-					const canBeRouted = m.address && m.address.trim() !== '';
-					const isRepresentativeForRoute = (m.householdId && m.isHouseholdHead) || !m.householdId;
-
 					let checkboxHTML = '';
-					if (canBeRouted && isRepresentativeForRoute) {
-						checkboxHTML = `<input type="checkbox" class="route-select-checkbox" 
-												data-member-id="${m.id}" 
-												data-address="${encodeURIComponent(m.address)}" data-name="${encodeURIComponent(m.fullName)}"
-												data-household-id="${m.householdId || ''}" 
+
+					if (canBeRouted) { // Show if household has an address
+						checkboxHTML = `<input type="checkbox" class="route-select-checkbox"
+												data-member-id="${m.id}"
+												data-address="${encodeURIComponent(householdAddress)}"
+												data-name="${encodeURIComponent(m.fullName)}"
+												data-household-id="${uniqueHouseholdKey}"
 												${isSelectedForRoute ? 'checked' : ''}>`;
 					}
 
@@ -2865,40 +2907,24 @@ setElementHTML(cont, cardsHTML);
 									  </table>`);
 				if (window.Tablesort && cont.querySelector('table#mmd_table')) {
 					const tableEl = cont.querySelector('table#mmd_table');
-					if (!tableEl.tablesortInstance) { // Avoid re-initializing if already done
+					if (!tableEl.tablesortInstance) {
 						tableEl.tablesortInstance = new Tablesort(tableEl);
 					} else {
-						tableEl.tablesortInstance.refresh(); // Refresh sorting if table content changed
+						tableEl.tablesortInstance.refresh();
 					}
 				}
 			}
 
-document.querySelectorAll('.view-family-btn').forEach(btn => {
-  btn.addEventListener('click', function () {
-const householdId = this.dataset.householdId?.trim();
-    if (window.dashboardInstance && typeof window.dashboardInstance._showFamilyModal === 'function') {
-      window.dashboardInstance._showFamilyModal(householdId);
-    } else {
-      showToast("Family modal not available", "error");
-    }
-  });
-});
-
-const grid = document.querySelector('.card_view');
-if (grid && grid.children.length === 1) {
-  grid.classList.add('single-card');
-} else {
-  grid.classList.remove('single-card');
-}
-			// --- Attach event listeners for edit, delete, family view, and checkboxes AFTER content is set ---
+            // --- Attach event listeners AFTER content is set ---
 			const viewContentContainer = document.getElementById('view_content');
 			if (viewContentContainer) {
 				viewContentContainer.querySelectorAll('.route-select-checkbox').forEach(checkbox => {
-					checkbox.onchange = (e) => { // Use onchange directly
+					checkbox.onchange = (e) => {
 						const memberId = e.target.dataset.memberId;
-						const address = e.target.dataset.address; // This is already URI encoded
+						const address = e.target.dataset.address;
 						const name = decodeURIComponent(e.target.dataset.name);
 						const householdId = e.target.dataset.householdId;
+                        // Use the unique household key for toggling
 						this.toggleHouseholdForRoute(memberId, address, name, e.target.checked, householdId);
 					};
 				});
@@ -2910,18 +2936,14 @@ if (grid && grid.children.length === 1) {
 					btn.onclick = (e) => this.deleteMember(e.target.dataset.id);
 				});
 				viewContentContainer.querySelectorAll('.view-family-btn').forEach(btn => {
-					btn.onclick = (e) => {
-						// The view-family-btn in card view has data-member-id.
-						// If you intend to pass householdId for _showFamilyModal, ensure it's available.
-						// The original _showFamilyModal took a householdId. Let's assume you pass the memberId
-						// and _showFamilyModal can find the householdId from the member.
-						// My version of _showFamilyModal took `viewedMemberId`.
-						this._showFamilyModal(e.target.dataset.memberId);
-					};
+                    // Pass householdId if available, otherwise memberId
+					btn.onclick = (e) => this._showFamilyModal(e.target.dataset.householdId || e.target.dataset.memberId);
 				});
+                // Add card view specific listeners if needed (like toggle details)
+   
 			}
 			this.updateDynamicRouteBar();
-			// this.updateViewMemberCheckboxes(); // Called implicitly by re-rendering checkboxes with correct checked state.
+            this.updateViewMemberCheckboxes(); // Ensure checkboxes are synced on initial render
 		}
 
 ///////////////////////
@@ -3402,57 +3424,44 @@ if (grid && grid.children.length === 1) {
 		const anniversaryRangeSelect = document.getElementById('sel_anniversary_range');
 
 		if (!listBirthEl || !listAnniversaryEl || !birthdayRangeSelect || !anniversaryRangeSelect) {
-			console.error("One or more critical elements for rendering reminders are missing. Check tpl.reminders and element IDs.");
+			console.error("One or more critical elements for rendering reminders are missing.");
 			showToast("Error: Reminder display elements are missing.", "error");
 			return;
 		}
 		const birthdayRange = parseInt(birthdayRangeSelect.value);
 		const anniversaryRange = parseInt(anniversaryRangeSelect.value);
-		console.log("Selected Birthday Range (days):", birthdayRange, "Selected Anniversary Range (days):", anniversaryRange);
-		console.log("All members for reminder check:", JSON.parse(JSON.stringify(this.members))); // Deep copy for logging
 
 		let upcomingBirthdays = [];
 		try {
 			upcomingBirthdays = this.members
 				.map(m => {
-					if (!m || !m.dob) return null; // Ensure member and dob exist
+					if (!m || !m.dob) return null;
 					const eventDate = dateUtils.upcomingBirthday(m.dob);
-					// console.log(`Member: ${m.fullName}, DOB: ${m.dob}, Upcoming BD:`, eventDate);
 					return eventDate ? { ...m, type: 'birthday', eventDate } : null;
 				})
-				.filter(m => {
-					if (!m || !m.eventDate) return false;
-					const isInRange = dateUtils.inRange(m.eventDate, birthdayRange);
-					// console.log(`Birthday for ${m.fullName} on ${m.eventDate.toLocaleDateString()}: inRange(${birthdayRange} days)? ${isInRange}`);
-					return isInRange;
-				})
+				.filter(m => m && m.eventDate && dateUtils.inRange(m.eventDate, birthdayRange))
 				.sort((a, b) => a.eventDate - b.eventDate);
-			console.log("Filtered Upcoming Birthdays:", upcomingBirthdays);
-		} catch (e) { 
-			console.error("Error processing upcoming birthdays:", e); 
-			if(listBirthEl) setElementHTML(listBirthEl, "<p class='info-message'>Error loading birthday data. Check console.</p>");
+		} catch (e) {
+			console.error("Error processing upcoming birthdays:", e);
+			if(listBirthEl) setElementHTML(listBirthEl, "<p class='info-message'>Error loading birthday data.</p>");
 		}
 
 		let upcomingAnniversaries = [];
 		try {
 			upcomingAnniversaries = this.members
 				.map(m => {
-					if (!m || !m.join) return null; // Ensure member and join date exist
-					const anni = dateUtils.upcomingAnniversary(m.join);
-					// console.log(`Member: ${m.fullName}, Joined: ${m.join}, Upcoming Anni:`, anni);
+                    // ================= FIX: Use m.joinDate instead of m.join =================
+					if (!m || !m.joinDate) return null;
+					const anni = dateUtils.upcomingAnniversary(m.joinDate);
+                    // =========================================================================
 					return anni ? { ...m, type: 'anniversary', eventDate: anni.date, years: anni.years } : null;
 				})
-				.filter(m => {
-					if (!m || !m.eventDate) return false;
-					const isInRange = dateUtils.inRange(m.eventDate, anniversaryRange);
-					// console.log(`Anniversary for ${m.fullName} on ${m.eventDate.toLocaleDateString()}: inRange(${anniversaryRange} days)? ${isInRange}`);
-					return isInRange;
-				})
+				.filter(m => m && m.eventDate && dateUtils.inRange(m.eventDate, anniversaryRange))
 				.sort((a, b) => a.eventDate - b.eventDate);
-			console.log("Filtered Upcoming Anniversaries:", upcomingAnniversaries);
-		} catch(e) { 
-			console.error("Error processing upcoming anniversaries:", e); 
-			if(listAnniversaryEl) setElementHTML(listAnniversaryEl, "<p class='info-message'>Error loading anniversary data. Check console.</p>");
+            console.log("Filtered Anniversaries:", upcomingAnniversaries); // For debugging
+		} catch(e) {
+			console.error("Error processing upcoming anniversaries:", e);
+			if(listAnniversaryEl) setElementHTML(listAnniversaryEl, "<p class='info-message'>Error loading anniversary data.</p>");
 		}
 
 		const badge = document.getElementById('badge_reminders');
@@ -3470,19 +3479,52 @@ if (grid && grid.children.length === 1) {
 				if (!m || !m.eventDate) { console.warn("Skipping malformed reminder item:", m); return; }
 				const reminderId = `${type}_${m.id}_${m.eventDate.toISOString().split('T')[0]}`;
 				const isAcknowledged = storage.sessionLoad(REMINDER_ACK_STORAGE_KEY_PREFIX + reminderId, false);
-				const ageOrYears = type === 'birthday' ? (dateUtils.age(m.dob) + 1) : m.years; // age will be next age
+				const ageOrYears = type === 'birthday' ? (dateUtils.age(m.dob) + 1) : m.years;
+                // ================= FIX: Use m.joinDate for display =================
 				const eventLabel = type === 'birthday' ? `Birthday: ${dateUtils.format(m.eventDate)} <br> (Turns ${ageOrYears})` : `Anniversary: ${dateUtils.format(m.eventDate)} <br> (${m.years} years)`;
+                const joinOrDobLabel = type === 'birthday' ? `DOB: ${dateUtils.format(m.dob)}` : `Joined: ${dateUtils.format(m.joinDate)}`; // <-- Use joinDate
+                // =====================================================================
 				const icon = type === 'birthday' ? '🎂' : '🎉';
 				const itemDiv = document.createElement('div'); itemDiv.dataset.reminderId = reminderId;
 				if(isAcknowledged) itemDiv.classList.add('acknowledged');
 
+                // ================= ADD: Profile Picture Source =====================
+                const imgSrc = m.profilePictureUrl || this.DEFAULT_PROFILE_PIC_URL;
+                // =====================================================================
+
 				let itemHTML = '';
 				if (this.currentReminderView === 'card') {
 					itemDiv.className = `member_card ${isAcknowledged ? 'acknowledged' : ''}`;
-					itemHTML = `<h4>${m.fullName} ${icon}</h4><p>${eventLabel}</p><p>📞 <a href="tel:${m.phone}" class="contact-link">${m.phone||'N/A'}</a></p><p>🏠 Group: ${m.homeGroup||'N/A'}</p>${type === 'anniversary' ? `<p>Joined: ${dateUtils.format(m.join)}</p>` : ''}${type === 'birthday' ? `<p>DOB: ${dateUtils.format(m.dob)}</p>` : ''}<div class="actions" style="margin-top:10px;"><button class="btn_ack_reminder generic_button_styles" ${isAcknowledged ? 'disabled' : ''}>Acknowledge</button></div>`;
+                    // ================= ADD: Profile Pic & Update HTML ==================
+					itemHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <img src="${imgSrc}" alt="${m.fullName}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--sec);">
+                            <h4 style="flex-grow: 1; margin: 0;">${m.fullName} ${icon}</h4>
+                        </div>
+                        <p>${eventLabel}</p>
+                        <p>📞 <a href="tel:${m.phone}" class="contact-link">${m.phone||'N/A'}</a></p>
+                        <p>🏠 Group: ${m.homeGroup||'N/A'}</p>
+                        <p>${joinOrDobLabel}</p>
+                        <div class="actions" style="margin-top:10px;">
+                            <button class="btn_ack_reminder generic_button_styles" ${isAcknowledged ? 'disabled' : ''}>Acknowledge</button>
+                        </div>`;
+                    // =====================================================================
 				} else { // list view
 					itemDiv.className = `reminder-list-item ${isAcknowledged ? 'acknowledged' : ''}`;
-					itemHTML = `<div><strong>${m.fullName}</strong> ${icon}<br> (${type === 'birthday' ? `DOB: ${dateUtils.format(m.dob)}` : `Joined: ${dateUtils.format(m.join)}`}) <br>${eventLabel}<br>📞 ${m.phone||'N/A'} | 🏠 ${m.homeGroup||'N/A'}</div><div class="actions"><button class="btn_ack_reminder generic_button_styles" ${isAcknowledged ? 'disabled' : ''}>Acknowledge</button></div>`;
+                    // ================= ADD: Profile Pic & Update HTML ==================
+					itemHTML = `
+                        <img src="${imgSrc}" alt="${m.fullName}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                        <div style="flex: 1; margin-left: 10px; font-size: 0.9rem;">
+                            <strong>${m.fullName}</strong> ${icon}<br> (${joinOrDobLabel})
+                            <br>${eventLabel}<br>
+                            📞 ${m.phone||'N/A'} | 🏠 ${m.homeGroup||'N/A'}
+                        </div>
+                        <div class="actions">
+                            <button class="btn_ack_reminder generic_button_styles" ${isAcknowledged ? 'disabled' : ''}>Acknowledge</button>
+                        </div>`;
+                    itemDiv.style.display = 'flex'; // Ensure flex layout for list items
+                    itemDiv.style.alignItems = 'center';
+                    // =====================================================================
 				}
 				setElementHTML(itemDiv, itemHTML);
 				containerEl.appendChild(itemDiv);
@@ -3493,11 +3535,11 @@ if (grid && grid.children.length === 1) {
 						storage.sessionSave(REMINDER_ACK_STORAGE_KEY_PREFIX + reminderId, true);
 						itemDiv.classList.add('acknowledged');
 						ackButton.disabled = true;
-						ackButton.textContent = 'Acknowledged'; // Change text or style
+						ackButton.textContent = 'Acknowledged';
 						showToast(`${m.fullName}'s ${type} acknowledged.`, 'success');
 					};
 				} else if (ackButton && isAcknowledged) {
-					 ackButton.textContent = 'Acknowledged'; // Ensure button text is correct if already ack'd
+					 ackButton.textContent = 'Acknowledged';
 				}
 			});
 		};
@@ -3506,6 +3548,9 @@ if (grid && grid.children.length === 1) {
 		try { renderItems(upcomingAnniversaries, listAnniversaryEl, 'anniversary'); } catch(e) { console.error("Error rendering anniversary items:", e); if(listAnniversaryEl) setElementHTML(listAnniversaryEl, "<p class='info-message'>Error displaying anniversary reminders.</p>"); }
 		console.log("CCC Dashboard Web App v4.4.5: renderReminders() completed.");
 	}
+
+//////////////////////////////////////////
+
 	applyFiltersAndSearch() {
 		console.log("CCC Dashboard Web App v4.4.5: Applying filters and search...");
 		const searchTermElement = document.getElementById('member_search_input');
@@ -3590,20 +3635,24 @@ if (grid && grid.children.length === 1) {
 					showToast("No members to export.", "info");
 					return;
 				}
-				// Define headers including family structure related fields
 				const headers = ["ID", "Household ID", "Is Head", "Relationship To Head", "Spouse ID", "Full Name", "DOB", "Gender", "Joined", "Phone", "Email", "Address", "Baptism", "Position", "Home Group", "Marital Status"];
 				const csvRows = [headers.join(',')];
-				
+
 				this.members.forEach(m => {
 					const row = [
 						m.id || '', m.householdId || '', m.isHouseholdHead || false, m.relationshipToHead || '', m.spouseId || '',
-						m.fullName || '', m.dob || '', m.gender || '', m.join || '', m.phone || '', m.email || '',
-						m.addr ? `"${m.addr.replace(/"/g, '""')}"` : '', // Handle commas in address
-						m.baptism || '', m.position || '', m.homeGroup || '', m.marital || ''
+						m.fullName || '', m.dob || '', m.gender || '',
+                        // ================= FIX: Use m.joinDate =================
+                        m.joinDate || '', // <--- Use joinDate here
+                        // =======================================================
+                        m.phone || '', m.email || '',
+						m.address ? `"${m.address.replace(/"/g, '""')}"` : '', // Use m.address
+						m.baptismStatus || '', m.position || '', m.homeGroup || '', m.maritalStatus || '' // Use m.maritalStatus and m.baptismStatus
 					];
 					csvRows.push(row.map(val => typeof val === 'string' ? `"${val.replace(/"/g, '""')}"` : `"${val}"`).join(','));
 				});
-				const csvData = csvRows.join('\n');
+                // ... (rest of CSV export logic) ...
+                const csvData = csvRows.join('\n');
 				const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
 				const url = URL.createObjectURL(blob);
 				const a = document.createElement('a');
@@ -3779,20 +3828,22 @@ if (grid && grid.children.length === 1) {
 		}
 
 //////////////////////
+
+
 _showFamilyModal(householdId) {
 if (!this.members || !Array.isArray(this.members)) {
   showToast("Members list is not ready.", "error");
   return;
 }
-  if (!householdId) {
+ /* if (!householdId) {
     showToast("Household ID not provided for family view.", "error");
     return;
   }
-
+*/
   // ✅ Include head (whose id === householdId)
-  const familyMembers = this.members.filter(m =>
-    m.householdId === householdId || m.id === householdId
-  );
+const familyMembers = this.members.filter(m =>
+  m.householdId == householdId || m.id == householdId
+);
 
   const headMember =
     familyMembers.find(m => m.isHouseholdHead) ||
