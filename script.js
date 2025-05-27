@@ -1117,11 +1117,14 @@ function showToast(msg, type = 'info', duration = 3500) {
             const initialHTML = `
                 <div id="mmd_header">
                     <button id="mobile_menu_toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+                    
                     <img src="https://firebasestorage.googleapis.com/v0/b/cccmembershipca.firebasestorage.app/o/CCC%20Logo.png?alt=media&token=541dbe12-e729-46c5-9cb6-8dcee9ea3620" alt="Church Logo" id="church_logo_header">
+                    
                     <div class="header-center-content">
                         <h1>CHIN CHRISTIAN CHURCH</h1>
                         <p><label>"Na bia cu ka kei caah meiin a si, ka lam ah ceunak a si"<br>SALM 119:105</label></p>
                     </div>
+                    
                     <button id="theme_toggle" title="Toggle Theme">☀️</button>
                 </div>
                 <div id="mmd_tabs">
