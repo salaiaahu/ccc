@@ -23,7 +23,7 @@
 	  border: none;
 	  color: #fff; /* Or your desired header icon color */
 	  cursor: pointer;
-	  padding: 5px 10px;
+	  padding: 15px 10px;
 	  position: absolute;
 	  left: 1px;
 	  top: 0%;
@@ -155,13 +155,7 @@
 	#mmd_header p {
 		margin: 0 0 2px 0;
 	}
-#church_logo_header {
-    height: 40px; /* Desktop height */
-    width: auto;
-    margin-right: 15px; /* Space between logo and the central text block */
-    flex-shrink: 0; /* Prevents the logo from shrinking if space is tight */
-    /* vertical-align: middle; /* Not strictly necessary for direct flex children */
-}
+
 		
 	#mmd_container {
 	  /* position: fixed; top: 2%; left: 2%; width: 96%; height: 96%; */ 
@@ -186,7 +180,6 @@
 	  font-size: 1.3rem; /* Base font size for text within the header on desktop */
 	  text-align: center;
 	  font-weight: 500;
-		padding: 10px 15px;
 	  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 	  border-bottom: 1px solid rgba(0,0,0,0.1);
 	  position: relative; /* For positioning theme_toggle and ::before pseudo-element */
@@ -196,6 +189,13 @@
 	  box-sizing: border-box;
 	}
 
+#church_logo_header {
+    height: 100px; /* Adjust to your logo's desired height */
+    width: auto;  /* Maintain aspect ratio */
+   /* margin-right: 15px; /* Space between logo and title block */
+    /* margin-left: 5px; /* Optional: space from the very left edge or mobile menu toggle */
+    vertical-align: middle; /* Good fallback if flex alignment isn't perfect */
+}
 	#mmd_header p:last-of-type {
 		margin-bottom: 0;
 	}
@@ -919,11 +919,12 @@ table#mmd_table td img {
 		min-width: 150px;   
 		box-sizing: border-box;
 	}
-	@media screen and (min-width: 769px) { /* Use a pixel value just ABOVE your mobile breakpoint */
+	@media screen and (min-width: 769px) { 
 	  #mobile_menu_toggle {
 		display: none !important;
 		border: 10px solid red !important; /* Add this to see if rule is even partially processed if display:none fails*/
 		background-color: yellow !important; /* Add this too */
+		padding-left: 5px;
 	  }
 		/* Also, ensure the tabs ARE visible on desktop if the toggle is hidden */
 	  #mmd_tabs {
@@ -947,15 +948,21 @@ table#mmd_table td img {
 	  font-size: 14px !important; 
 	}
 	  #mmd_header {
-		padding: 10px !important; 
-		font-size: 1.5rem !important;  
-		display: flex; 
-		flex-direction: column; 
-		align-items: center; 
-		position: relative;   /* Crucial for absolute positioning of children like menu/theme toggles */
-		min-height: 60px; /* Set a minimum height, adjust as needed */
-		box-sizing: border-box;
-	}
+		padding-left: 10px !important; 
+	/*	font-size: 1.5rem !important;  
+	//	display: flex; 
+	//	flex-direction: column; */
+	    align-items: left; 
+	/*	position: relative;   /* Crucial for absolute positioning of children like menu/theme toggles */
+		min-height: 30px; /* Set a minimum height, adjust as needed */
+	/*	box-sizing: border-box; */
+	} 
+    #church_logo_header {
+        height: 70px; /* Smaller logo on mobile */
+        margin-left: 20px; /* Reduced margin */
+        /* margin-left is often not needed if header has padding-left for the toggle */
+		vertical-align: middle;
+    }
 	 .member_card {
 		display: flex;
 		flex-direction: column;
@@ -988,23 +995,25 @@ table#mmd_table td img {
 	  }
 	  #mmd_header h1 {
 		font-size: 1.5rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
-		line-height: 1 !important;   /* Adjust line height for a potentially shorter H1 */
-		margin: 0 0 2px 0; /* Add a little space below H1 if Bible verse is staying */
+		line-height: 0 !important;   /* Adjust line height for a potentially shorter H1 */
+		padding-top: 10px; 
+		padding-bottom: 0;
 	  }
 	  #mmd_header label {
-		font-size: 0.9rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
-		line-height: 0.1 !important;   /* Adjust line height for a potentially shorter H1 */
-		margin-bottom: 0.1px !important; /* Add a little space below H1 if Bible verse is staying */
+		font-size: 0.75rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
+		line-height: 0 !important;   /* Adjust line height for a potentially shorter H1 */
+		margin-bottom: 0 !important;
+padding-bottom: 0;		
 	  }
 	  #mmd_header p {
-		margin: 0 0 2px 0;    /* Reduce top/bottom margin for paragraphs */
+		padding-top: 0;    /* Reduce top/bottom margin for paragraphs */
 
 	  }
 	  #mmd_header #theme_toggle {
 		font-size: 1.0rem !important; /* Slightly smaller theme toggle */
 		padding: 2px 3px !important;  /* Adjust padding if needed */
 		position: absolute !important; /* Keep it positioned if that's how it is */
-		top: 10px !important;         /* Adjust position as needed with new padding */
+		top: 15px !important;         /* Adjust position as needed with new padding */
 		right: 5px !important;
 	  }
 	#mmd_tabs button {
@@ -1030,7 +1039,7 @@ table#mmd_table td img {
 	}
 	.panel3d {
 		font-size: 1.0rem;
-	  padding: 5px !important;
+	  padding: 15px !important;
 	  margin-bottom: 5px !important;
 	  }
 	  .panel3d h3 {
@@ -1152,7 +1161,8 @@ table#mmd_table td img {
 	  }
 	.map_panel, /* If the map panel itself has a fixed height not set by its content */
 	#map_home img { /* Target the image inside the map panel directly */
-	  height: 150px !important; /* Reduce map/image height */
+	  height: 200px !important; /* Reduce map/image height */
+	width: auto
 	}
 	.mmd_page, /* General page content */
 	.mmd_page p,
@@ -1172,14 +1182,14 @@ table#mmd_table td img {
 	/* For very small screens, you might want even more aggressive changes */
 	@media (max-width: 480px) {
 	  #mmd_header {
-		padding: 8px 10px;
+	/*	padding: 8px 10px;
 		font-size: 1.0rem; 
 		position: relative;   /* Crucial for absolute positioning of children like menu/theme toggles */
 		min-height: 30px; /* Set a minimum height, adjust as needed */
-	  box-sizing: border-box
-	  }
+	/*  box-sizing: border-box
+	  } */
 	  #mmd_header h1 {
-		font-size: 1.1rem; 
+		font-size: 0.85rem; 
 		/* Optionally, you could even hide the H1 sub-text (Bible verse) on very small screens */
 	  }
 	  #mmd_header p label {
@@ -1206,7 +1216,7 @@ table#mmd_table td img {
 		#mmd_pages {
 		flex: 1;
 		overflow: auto;
-		padding: 5px; 
+		padding: 10px; 
 		background: var(--bg);
 		scrollbar-width: none;
 		-ms-overflow-style: none;
@@ -1646,7 +1656,7 @@ table#mmd_table td img {
 	  border: none;
 	  color: #fff; /* Match header text color */
 	  cursor: pointer;
-	  padding: 5px 10px;
+	  padding: 5px;
 	  position: absolute; /* Position it within the header */
 	  left: 5px;       /* Example: top-left */
 	  top: 80% ;
