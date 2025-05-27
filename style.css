@@ -959,7 +959,7 @@ table#mmd_table td img {
 	} 
     #church_logo_header {
         height: 70px; /* Smaller logo on mobile */
-        margin-left: 20px; /* Reduced margin */
+        margin-left: 10px; /* Reduced margin */
         /* margin-left is often not needed if header has padding-left for the toggle */
 		vertical-align: middle;
     }
@@ -994,13 +994,13 @@ table#mmd_table td img {
 		padding: 8px 10px !important; /* Was 10px 12px */
 	  }
 	  #mmd_header h1 {
-		font-size: 1.5rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
+		font-size: 1.3rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
 		line-height: 0 !important;   /* Adjust line height for a potentially shorter H1 */
 		padding-top: 10px; 
 		padding-bottom: 0;
 	  }
 	  #mmd_header label {
-		font-size: 0.75rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
+		font-size: 0.73rem !important; /* Make H1 slightly larger than base if desired, or just inherit */
 		line-height: 0 !important;   /* Adjust line height for a potentially shorter H1 */
 		margin-bottom: 0 !important;
 padding-bottom: 0;		
